@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "NODE_ENV=test PORT=4205 node ./bin/www"
+    "dev": "NODE_ENV=test PORT=4205 nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
