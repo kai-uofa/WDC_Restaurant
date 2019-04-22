@@ -9,8 +9,8 @@ A restaurant booking web application that allows users to book tables at restaur
 
 ## Setup Environment
 1. Install MariaDB: https://myuni.adelaide.edu.au/courses/45380/pages/mariadb-setup-guide
-2. Create user and database:
-Open a terminal, go to project root and run the following:
+2. Create user and database:  
+Open a terminal, go to project root and run the following:  
 `mysql.server start`
-`mysql -u root < models/live_database.sql`
+`mysql -u root < models/live_database.sql`  
 **NOTE**: for development, use dev_database.sql
