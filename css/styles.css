@@ -1,0 +1,159 @@
+#header {
+  background-color: #f5e9e3;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75em;
+}
+.top-bar-logo {
+  margin-left: 1em;
+  align-self: center;
+}
+.top-bar-nav ul {
+  display: flex;
+}
+.top-bar-nav ul li {
+  padding: 0.5em 0.75em;
+}
+
+.sign-up {
+  background-color: rgba(37, 138, 221, 0.774);
+  border-radius: 0.3em;
+  color: white;
+  transition-property: background-color;
+}
+.sign-up:hover {
+  background-color: rgba(8, 125, 221, 0.993);
+}
+
+.page-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/top-bar.jpg") no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+  height: 24em;
+  margin-top: 3.8em;
+}
+
+.page-header-main {
+  margin: 0 auto;
+}
+.page-header-main .content {
+  color: white;
+  font-size: 1.3em;
+  text-align: center;
+}
+.page-header-main .search {
+  margin-top: 1.5em;
+}
+
+@media (min-width: 700px) {
+  .page-header-main {
+    width: 90%;
+  }
+}
+@media (min-width: 1024px) {
+  .page-header-main {
+    margin-top: 4em;
+  }
+
+  form {
+    display: flex;
+    flex-direction: row;
+    margin-top: 4em;
+  }
+
+  .btn-submit {
+    width: 10%;
+  }
+
+  .search-container {
+    width: 30%;
+    margin-right: 2em;
+  }
+
+  .picker-selector {
+    width: 60%;
+    margin-right: 2em;
+  }
+}
+form .picker-selector {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+form .search-container {
+  margin-bottom: 1em;
+  text-align: center;
+  padding: 1em 0;
+  background-color: white;
+  border-radius: 0.3em;
+}
+form .btn-submit {
+  text-align: center;
+  padding: 1em 0;
+  color: white;
+  background-color: white;
+  border-radius: 0.3em;
+  margin-bottom: 1em;
+}
+form .selector {
+  background-color: white;
+  width: 100%;
+  padding: 1em 0;
+}
+form .date-picker {
+  border-radius: 0.3em 0 0 0.3em;
+  border-right: 1px solid rgba(128, 128, 128, 0.233);
+}
+form .time-picker {
+  border-right: 1px solid rgba(128, 128, 128, 0.233);
+}
+form .party-size-picker {
+  border-radius: 0 0.3em 0.3em 0;
+}
+form a {
+  color: black;
+}
+
+.page-main {
+  margin: 2em;
+}
+
+.main-top-left {
+  width: 70%;
+}
+.main-top-left h2 {
+  margin-top: 0;
+  line-height: 1.5;
+  font-size: 2.2em;
+}
+.main-top-left img {
+  width: 200px;
+  height: 200px;
+}
+.main-top-left p {
+  font-size: 1.5em;
+  line-height: 1.5;
+}
+.main-top-left button {
+  padding: 0.75em;
+  border-radius: 0.3em;
+  outline: none;
+  font-size: 1.5em;
+  border: 3px solid #695891;
+  color: #695891;
+  transition-property: background-color, color;
+}
+.main-top-left button:hover {
+  background-color: #695891;
+  color: white;
+}
+
+/*# sourceMappingURL=styles.css.map */

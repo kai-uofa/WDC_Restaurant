@@ -1,0 +1,56 @@
+.page-header{
+    background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url("../images/top-bar.jpg") no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+    height: 24em;
+    margin-top: 3.8em;
+}
+.page-header-main{
+    margin: 0 auto;
+    .content{
+        color: white;
+        font-size: 1.3em;
+        text-align: center;
+    }
+    .search{
+        margin-top: 1.5em;
+    }
+}
+
+
+//resposive header page 
+
+@media (min-width: 700px){
+    .page-header-main{
+        width: 90%;    
+    } 
+}
+
+@media (min-width: 1024px){
+    .page-header-main{
+        margin-top: 4em;
+    }
+    form{
+        display: flex;
+        flex-direction: row;
+        margin-top: 4em;
+    }
+    .btn-submit{
+        width: 10%;
+    }
+    .search-container{
+        width: 30%;
+        margin-right: 2em;
+    }
+    .picker-selector{
+        width: 60%;
+        margin-right: 2em;
+    }
+}
+
+
+
+   
+
+
+

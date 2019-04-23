@@ -1,0 +1,48 @@
+form{
+    .picker-selector{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1em;
+        
+    } 
+    .search-container{
+        margin-bottom: 1em;
+        text-align: center;
+        padding: 1em 0;
+        background-color: white;
+        border-radius: .3em;
+
+    }
+
+    .btn-submit{
+        text-align: center;
+        padding: 1em 0;
+        color: white;
+        background-color: white;
+        border-radius: .3em;
+        margin-bottom: 1em;
+    }
+//inside each div
+    .selector{
+        background-color: white;
+        width: 100%;
+        padding: 1em 0;
+    }
+
+    .date-picker{
+        border-radius: .3em 0 0 .3em;
+        border-right: 1px solid rgba(128, 128, 128, 0.233);
+    }
+
+    .time-picker {
+        border-right: 1px solid rgba(128, 128, 128, 0.233);
+    }
+
+    .party-size-picker{
+        border-radius: 0 .3em .3em 0;
+    }
+
+    a{
+        color: black;
+    }
+}

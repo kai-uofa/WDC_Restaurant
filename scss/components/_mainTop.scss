@@ -1,0 +1,35 @@
+.page-main{
+    margin: 2em;
+}
+.main-top{
+    &-left{
+        width: 70%;
+        h2{
+            margin-top: 0;
+            line-height: 1.5;
+            font-size: 2.2em;
+        }
+        img{
+            width: 200px;
+            height: 200px;
+        }
+        p{
+            font-size: 1.5em;
+            line-height: 1.5;
+        }
+        button{
+            padding: .75em;
+            border-radius: .3em;
+            outline: none;
+            font-size: 1.5em;
+            border: 3px solid rgb(105, 88, 145);
+            color: rgb(105, 88, 145);
+            transition-property: background-color, color;
+            &:hover{
+                background-color: rgb(105, 88, 145);
+                color:white;
+            }
+        }
+        
+    }
+}
