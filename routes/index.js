@@ -4,7 +4,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'WDC Restaurant' });
+  res.render('index', { title: 'WDC Restaurant ABC' });
 });
 
 module.exports = router;
