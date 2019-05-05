@@ -1,0 +1,110 @@
+body {
+  overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
+}
+
+.home-page {
+  padding-top: 4em;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("./images/home-page.jpg") no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+  height: 44em;
+}
+
+.home-inner {
+  padding-top: 13em;
+  height: auto;
+}
+
+@media (max-width: 575.98px) {
+  .home-inner {
+    padding-top: 6.5em;
+  }
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .home-inner {
+    padding-top: 6.5em;
+  }
+}
+.text-shadow {
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.caption p {
+  color: #e7c7ce;
+  font-size: 1.2em;
+}
+
+.search-bar {
+  border-radius: 10rem;
+  background: #fff;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+}
+
+.search-bar .form-group {
+  position: relative;
+  margin-bottom: 0;
+}
+
+.btn {
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 10rem;
+}
+
+.divider {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+}
+
+@media (max-width: 1200px) {
+  .search-bar {
+    border-radius: 20px;
+  }
+
+  .divider {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+  }
+
+  .form-group {
+    padding-bottom: 1em;
+  }
+}
+.recommend {
+  padding-top: 4em;
+}
+
+@media (max-width: 767.98px) {
+  .recommend .card {
+    margin: 0 auto;
+  }
+}
+.feature {
+  padding-top: 4em;
+}
+
+.member {
+  margin: 6em 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("./images/joining.jpg") no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+  height: 30em;
+}
+.member .content {
+  padding-top: 7em;
+  font-family: "Playfair Display", serif !important;
+}
+
+@media (max-width: 770px) {
+  .member .content {
+    padding-top: 3em;
+    text-align: center;
+  }
+}
+footer {
+  background-color: rgba(3, 3, 3, 0.486);
+  height: 20em;
+  color: white;
+}
+
+/*# sourceMappingURL=styles.css.map */
