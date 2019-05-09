@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
+
+
 import logo from './images/logo.jpeg';
 import right1 from './images/top-right-1.jpg';
 import right2 from './images/top-right-2.jpg';
 import right3 from './images/top-right-3.jpg';
+import signup from './signup'
 
 class App extends Component{
     constructor(props) {
         super(props);
         this.state = { apiResponse: "" };
+      
+        
     }
 
     callAPI() {
@@ -19,11 +24,13 @@ class App extends Component{
     componentWillMount() {
         this.callAPI();
     }
+  
 
     render() {
         return (
-            <React.Fragment>
+            <React.Fragment>    
                 <header id="home">
+                
                     {/* <!-- navbar start--> */}
                     <nav className="navbar navbar-expand-sm fixed-top shadow navbar-light bg-white">
                         <div className="container-fluid">
@@ -41,8 +48,10 @@ class App extends Component{
                                     <li className="nav-item">
                                         <a className="nav-link" href="#">About Us</a>
                                     </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="#">Sign Up</a>
+                                    <li className="nav-item">    
+                                    <BrowserRouter>
+                                        <Link to={"/signup"} className="nav-link" >Sign Up</Link>
+                                    </BrowserRouter>
                                     </li>
                                     <li className="nav-item">
                                         <a className="nav-link" href="#">Sign In</a>
@@ -196,9 +205,12 @@ class App extends Component{
                         </div>
                     </div>
                 </footer>
+
             </React.Fragment>
         );
+        
     }
+ 
 }
 
 
