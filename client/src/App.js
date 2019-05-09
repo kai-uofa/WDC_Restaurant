@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, {Component} from 'react';
 
 
@@ -247,7 +247,6 @@ class App extends Component {
       </React.Fragment>
     );
   }
->>>>>>> a5bc7f280dd1ff7435f11a5bdcb7a88a6ff99e7b
-}
 
-export default App;
+
+export default App 
