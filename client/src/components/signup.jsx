@@ -1,6 +1,4 @@
 import React from "react";
-import logo from "../images/logo.jpeg";
-
 const SignUp = () => {
   return (
     <div class="container-fluid px-3">
