@@ -78,4 +78,7 @@ body {
 .background-signin {
   background-image: url("./images/joining.jpg");
 }
+.errorMsg{
+  color : red;
+}
 /*# sourceMappingURL=styles.css.map */
