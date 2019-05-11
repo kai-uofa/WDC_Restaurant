@@ -19,7 +19,7 @@ const SignUp = () => {
                   type="text"
                   placeholder="First Name"
                   autocomplete="off"
-                  required=""
+                  required
                   data-msg="Please enter your first name"
                   class="form-control"
                   /> 
@@ -34,7 +34,7 @@ const SignUp = () => {
                   type="text"
                   placeholder="Last Name"
                   autocomplete="off"
-                  required=""
+                  required
                   data-msg="Please enter your last name"
                   class="form-control"
                   /> 
@@ -49,7 +49,7 @@ const SignUp = () => {
                   type="email"
                   placeholder="name@address.com"
                   autocomplete="off"
-                  required=""
+                  required
                   data-msg="Please enter your email"
                   class="form-control"
                 />
@@ -64,7 +64,7 @@ const SignUp = () => {
                   id="loginPassword"
                   placeholder="Password"
                   type="password"
-                  required=""
+                  required
                   data-msg="Please enter your password"
                   class="form-control"
                 />
@@ -78,7 +78,7 @@ const SignUp = () => {
                   id="loginPassword2"
                   placeholder="Password"
                   type="password"
-                  required=""
+                  required
                   data-msg="Please enter your password"
                   class="form-control"
                 />
