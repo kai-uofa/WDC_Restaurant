@@ -9,6 +9,36 @@ const SignUp = () => {
               <h2>Sign up</h2>
             </div>
             <form class="form-validate">
+              <div class ="form-group">
+                <label for="firstName" class="form-label">
+                  First Name
+                </label>
+                <input
+                  name="firstName"
+                  id="firstName"
+                  type="text"
+                  placeholder="First Name"
+                  autocomplete="off"
+                  required=""
+                  data-msg="Please enter your first name"
+                  class="form-control"
+                  /> 
+              </div>
+              <div class ="form-group">
+                <label for="lastName" class="form-label">
+                  First Name
+                </label>
+                <input
+                  name="lastName"
+                  id="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                  autocomplete="off"
+                  required=""
+                  data-msg="Please enter your last name"
+                  class="form-control"
+                  /> 
+              </div>
               <div class="form-group">
                 <label for="loginUsername" class="form-label">
                   Email Address
