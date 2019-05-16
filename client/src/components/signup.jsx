@@ -55,6 +55,10 @@ import React, { Component } from "react";
           errors["firstName"] = "*Please enter alphabet characters only.";
         }
       }
+      if (fields["firstName"].length < 3){
+        formIsValid = false;
+        errors["firstName"] = "Please enter at least 3 character.";
+      }
       if (!fields["lastName"]) {
         formIsValid = false;
         errors["lastName"] = "*Please enter your Last Name.";
@@ -64,6 +68,10 @@ import React, { Component } from "react";
         if (!fields["lastName"].match(/^[a-zA-Z ]*$/)) {
           formIsValid = false;
           errors["lastName"] = "*Please enter alphabet characters only.";
+        }
+        if (fields["lastName"].length < 3){
+          formIsValid = false;
+          errors["lastName"] = "Please enter at least 3 character.";
         }
       }
       if (!fields["email"]) {
@@ -147,7 +155,7 @@ import React, { Component } from "react";
   
               <div class ="form-group">
                 <label for="lastName" class="form-label">
-                  First Name
+                  Last Name
                 </label>
                 <input
                   name="lastName"
