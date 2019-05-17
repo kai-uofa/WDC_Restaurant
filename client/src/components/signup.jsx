@@ -1,19 +1,26 @@
 // import React from "react";
 import React, { Component } from "react";
+import GoogleLogin from 'react-google-login';
+import {PostData} from '../PostData.js';
+import {Redirect} from 'react-router-dom';
 // const SignUp = () => {
- 
   class SignUp extends Component {
     constructor() {
       super();
       this.state = {
         fields: {},
-        errors: {}
+        errors: {},
+        loginError: false,
+       redirect: false
+
       }
 
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.signup = this.signup.bind(this);
 
     };
+
 
     handleChange(e) {
       let fields = this.state.fields;
@@ -119,11 +126,46 @@ import React, { Component } from "react";
 
     }
 
+    signup(res, type) {
+      let postData;
+
+ 
+     if (type === 'google' && res.w3.U3) {
+     postData = {
+       name: res.w3.ig,
+       provider: type,
+       email: res.w3.U3,
+       provider_id: res.El,
+       token: res.Zi.access_token,
+       provider_pic: res.w3.Paa
+     };
+ }
+ 
+ if (postData) {
+ PostData('signup', postData).then((result) => {
+    let responseJson = result;
+    sessionStorage.setItem("userData", JSON.stringify(responseJson));
+    this.setState({redirect: true});
+ });
+ } else {}
+ }
+ 
+
   
   
     
     
   render() {
+    if (this.state.redirect || sessionStorage.getItem('userData')) {
+      return (<Redirect to={'/home'}/>)
+  }
+  
+  
+  const responseGoogle = (response) => {
+      console.log("google console");
+      console.log(response);
+      this.signup(response, 'google');
+  }
     
   return (
     <div className="container-fluid px-3">
@@ -229,10 +271,18 @@ import React, { Component } from "react";
                 Sign up
               </button>
               <hr />
-              <button class="btn btn-outline-secondary mb-3 btn-block text-center ">
+              {/* <button className="g-signin2" className="btn btn-outline-secondary mb-3 btn-block text-center" data-onsuccess="onSignIn">
                 <span class="d-sm-inline text-dark">Connect with Google</span>
-              </button>
+              </button> */}
+              {/* <div className="g-signin2" data-onsuccess="onSignIn"></div> */}
             </form>
+            <GoogleLogin
+    clientId="89188414152-adct1ksocrdfh2mqqlki7ps2rd1smhaf.apps.googleusercontent.com"
+    buttonText="Login"
+    onSuccess={responseGoogle}
+    onFailure={responseGoogle}
+    cookiePolicy={'single_host_origin'}
+  />,
           </div>
         </div>
         <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
