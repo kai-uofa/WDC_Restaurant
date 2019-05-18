@@ -4,6 +4,7 @@ import GoogleLogin from 'react-google-login';
 import {PostData} from '../PostData.js';
 import {Redirect} from 'react-router-dom';
 // const SignUp = () => {
+  //a
   class SignUp extends Component {
     constructor() {
       super();
