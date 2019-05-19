@@ -1,12 +1,12 @@
 // Using ECMAScript prior to 2017
-const mariadb = require('mysql');
+const mariadb = require('mariadb');
 
 const port = process.env.PORT || 5000;
 
-let connection;
+let pool;
 
-if (port === '5000') {
-  connection = mariadb.createConnection({
+if (port === 5000) {
+  pool = mariadb.createPool({
     host: 'localhost',
     port: 3306,
     database: 'dev_database',
@@ -14,7 +14,7 @@ if (port === '5000') {
     password: 'resPassword',
   });
 } else {
-  connection = mariadb.createConnection({
+  pool = mariadb.createPool({
     host: 'localhost',
     port: 3306,
     database: 'live_database',
@@ -23,4 +23,4 @@ if (port === '5000') {
   });
 }
 
-module.exports = connection;
+module.exports = pool;
