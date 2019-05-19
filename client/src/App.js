@@ -25,7 +25,7 @@ class App extends Component {
                 path="/search/restaurants/:id"
                 component={Detailrest}
               />
-              <Route exact to="/search" component={Restlist} />
+              <Route exact path="/search" component={Restlist} />
             </Switch>
           </React.Fragment>
         </Router>
