@@ -15,7 +15,7 @@ const RestList = props => {
         </div>
         <div className="col-sm-4 d-flex mt-5 justify-content-end">
           <p>
-            <strong /> results found
+            <strong>{results.length}</strong> results found
           </p>
         </div>
       </div>

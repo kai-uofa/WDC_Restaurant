@@ -6,28 +6,25 @@ import { Redirect } from "react-router-dom";
 // const SignUp = () => {
 //a
 class SignUp extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fields: {},
       errors: {},
       loginError: false,
       redirect: false
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.signup = this.signup.bind(this);
   }
 
-  handleChange(e) {
+  handleChange = e => {
     let fields = this.state.fields;
     fields[e.target.name] = e.target.value;
     this.setState({
       fields
     });
-  }
-  handleSubmit(e) {
+  };
+  handleSubmit = e => {
     e.preventDefault();
     if (this.validateForm()) {
       let fields = {};
@@ -39,7 +36,7 @@ class SignUp extends Component {
       this.setState({ fields: fields });
       alert("Form submitted");
     }
-  }
+  };
 
   validateForm() {
     let fields = this.state.fields;

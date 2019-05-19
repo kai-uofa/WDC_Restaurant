@@ -62,6 +62,26 @@ body {
   top: 100px;
 }
 
+.member {
+  margin-top: 6em;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./images//joining.jpg") no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+  height: 30em;
+}
+.member .content {
+  padding-top: 7em;
+  font-family: "Playfair Display", serif !important;
+}
+
+@media (max-width: 770px) {
+  .member .content {
+    padding-top: 3em;
+    text-align: center;
+  }
+}
+
 @media (max-width: 1200px) {
   .search-bar {
     border-radius: 20px;
@@ -82,7 +102,7 @@ body {
 .background-signin {
   background-image: url("./images/joining.jpg");
 }
-.errorMsg{
-  color : red;
+.errorMsg {
+  color: red;
 }
 /*# sourceMappingURL=styles.css.map */

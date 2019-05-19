@@ -16,15 +16,27 @@ class Search extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    // axios
+    //   .get(
+    //     `http://localhost:5000/search?q=${
+    //       this.state.searchText
+    //     }`
+    //   )
+    //   .then(res => {
+    //     console.log(res);
+    //     this.setState({ rest_list: res.data });
+    //   })
+    //   .catch(err => console.log(err));
+    // e.currentTarget.reset();
     axios
       .get(
-        `http://localhost:5000/search?q=${
+        `https://developers.zomato.com/api/v2.1/search?q=${
           this.state.searchText
-        }`
+        }&apikey=51b7e1ab05b391b0e31af2e5160523a5`
       )
       .then(res => {
-        console.log(res);
-        this.setState({ rest_list: res.data });
+        console.log(res.data);
+        this.setState({ rest_list: res.data.restaurants });
       })
       .catch(err => console.log(err));
     e.currentTarget.reset();
