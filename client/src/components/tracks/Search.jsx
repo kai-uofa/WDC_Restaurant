@@ -18,13 +18,13 @@ class Search extends Component {
     e.preventDefault();
     axios
       .get(
-        `https://developers.zomato.com/api/v2.1/search?q=${
+        `http://localhost:5000/search?q=${
           this.state.searchText
-        }&apikey=51b7e1ab05b391b0e31af2e5160523a5`
+        }`
       )
       .then(res => {
-        console.log(res.data);
-        this.setState({ rest_list: res.data.restaurants });
+        console.log(res);
+        this.setState({ rest_list: res.data });
       })
       .catch(err => console.log(err));
     e.currentTarget.reset();
