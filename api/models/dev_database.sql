@@ -81,7 +81,7 @@ UNLOCK TABLES;
     `first_name` varchar(100),
     `last_name` varchar(100),
     `email` varchar(100) UNIQUE KEY,
-    `passwords` varchar(100)
+    `password` varchar(100)
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 -- Create Table Booking table
   CREATE
@@ -111,6 +111,6 @@ UNLOCK TABLES;
     `restaurant_id` varchar(10) NOT NULL,
     `first_name` varchar(100),
     `last_name` varchar(100),
-    `email` varchar(100),
-    `passwords` varchar(100)
+    `email` varchar(100) UNIQUE KEY,
+    `password` varchar(100)
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
