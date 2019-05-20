@@ -2,7 +2,6 @@ import React from "react";
 import Rests from "./Rests";
 
 const RestList = props => {
-  const { results } = props.location.list;
   console.log(props);
   return (
     <div className="container">
@@ -15,12 +14,12 @@ const RestList = props => {
         </div>
         <div className="col-sm-4 d-flex mt-5 justify-content-end">
           <p>
-            <strong>{results.length}</strong> results found
+            <strong>{props.restList.length}</strong> results found
           </p>
         </div>
       </div>
       <div className="row">
-        {results.map(item => (
+        {props.restList.map(item => (
           <Rests key={item.restaurant.id} rest={item.restaurant} />
         ))}
       </div>
