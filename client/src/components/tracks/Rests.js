@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Rests = props => {
   const { rest } = props;
   return (
-    <div className="col-xl-4 col-lg-6 col-md-12 mb-5">
+    <div className="col-xl-3 col-lg-6 col-md-12 mb-5">
       <div className="card">
         <img src={rest.thumb} className="card-img-top h-50" alt="..." />
         <div className="card-body">

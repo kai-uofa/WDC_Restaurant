@@ -8,7 +8,8 @@ const Index = props => {
   return (
     <React.Fragment>
       <Search
-        handleSubmit={props.handleSubmit}
+        history={props.history}
+        handleOnClick={props.handleOnClick}
         onSearchChange={props.onSearchChange}
         restList={props.restList}
       />

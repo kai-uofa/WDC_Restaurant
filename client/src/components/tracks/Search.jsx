@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 
 const Search = props => {
   return (
@@ -18,7 +17,7 @@ const Search = props => {
                   </h1>
                 </div>
                 <div className="search-bar mt-5 p-3 p-xl-1 pl-xl-4">
-                  <form onSubmit={props.handleSubmit}>
+                  <form onSubmit={e => props.handleOnClick(e, props.history)}>
                     <div className="row ">
                       <div className="col-xl-10 d-flex align-items-center form-group divider">
                         <input
@@ -36,21 +35,14 @@ const Search = props => {
                       <div className="col-xl-2 d-flex align-items-center ">
                         <button
                           type="submit"
-                          className="btn btn-primary btn-block rounded-xl h-100 "
+                          className="btn btn-primary btn-block
+                          rounded-xl h-100 "
                         >
-                          Search{" "}
+                          Search
                         </button>
                       </div>
                     </div>
                   </form>
-
-                  {props.restList.length > 0 && (
-                    <Redirect
-                      to={{
-                        pathname: "/search"
-                      }}
-                    />
-                  )}
                 </div>
               </div>
             </div>
