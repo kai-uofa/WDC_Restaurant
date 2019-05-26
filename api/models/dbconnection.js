@@ -5,7 +5,7 @@ const port = process.env.PORT || 5000;
 
 let pool;
 
-if (port === 5000) {
+if (port == 5000) {
   pool = mariadb.createPool({
     host: 'localhost',
     port: 3306,

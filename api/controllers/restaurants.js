@@ -9,19 +9,25 @@ const Restaurants = {
     // This is a shortcut to get a connection from pool, execute a query and release connection.
     // https://mariadb.com/kb/en/library/connector-nodejs-promise-api/#poolgetconnection-promise
     if ('q' in req.query) {
-      const q = `%${  req.query.q}`;
-      const query = 'SELECT * FROM Restaurants WHERE restaurant_name LIKE (?)';
-      db.query(query, [q])
-      .then(results => {
-          res.json(results);
-      })
-      .catch(error => {
-          console.log(error);
-          res.json({});
+      let nameRes; let addRes;
+      const q = `%${  req.query.q}%`;
+      const queryName = 'SELECT * FROM Restaurants WHERE restaurant_name LIKE (?)';
+      const queryAdd = 'SELECT * FROM Restaurants WHERE restaurant_address LIKE (?)';
+      db.query(queryName, [q])
+        .then(resName => {
+          db.query(queryAdd, [q])
+            .then(resAdd => {
+              res.json(resName.concat(resAdd));
+            }).catch(error => {
+              console.log(error);
+            });
+        })
+        .catch(error => {
+        console.log(error);
       });
     } else {
       // TODO: return all restaurant base on location
-      const query = 'SELECT * FROM Restaurants ';
+      const query = 'SELECT * FROM Restaurants';
       db.query(query)
       .then(results => {
         res.json(results);
@@ -32,6 +38,22 @@ const Restaurants = {
       });
     }
   },
+  // function to get restaurant details from id
+  getRestaurantDetails(req, res) {
+    if ('res_id' in req.query) {
+      const q = req.query.res_id;
+      const query = 'SELECT * FROM Restaurants WHERE restaurant_id LIKE (?)';
+      db.query(query, [q])
+        .then(results => {
+          res.json(results);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      res.json({});
+    }
+  }
 };
 
 module.exports = Restaurants;

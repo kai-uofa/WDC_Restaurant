@@ -4,6 +4,7 @@ import axios from "axios";
 import NavBar from "./components/layout/Navbar";
 import SignIn from "./components/layout/Signin";
 import SignUp from "./components/layout/Signup";
+import MSignUp from "./components/manager/MSignup";
 import Index from "./components/layout/Index";
 import Detailrest from "./components/tracks/Detailrest";
 import Restlist from "./components/tracks/Restlist";
@@ -67,6 +68,7 @@ class App extends Component {
 
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
+            <Route path="/manager/signup" component={MSignUp} />
           </Switch>
         </React.Fragment>
       </Router>

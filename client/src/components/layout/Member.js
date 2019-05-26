@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Member = () => {
   return (
@@ -10,9 +11,9 @@ const Member = () => {
             <br />
             Join our WDC family!
           </h3>
-          <a href="..." className="btn btn-outline-light btn-lg">
+          <Link className="btn btn-outline-light btn-lg" to="/manager/signup">
             Get Started
-          </a>
+          </Link>
         </div>
       </div>
     </section>
