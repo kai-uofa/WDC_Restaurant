@@ -24,6 +24,7 @@ class SignUp extends Component {
       fields
     });
   };
+  
   handleSubmit = e => {
     e.preventDefault();
     if (this.validateForm()) {
