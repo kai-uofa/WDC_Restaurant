@@ -1,5 +1,5 @@
 import React from "react";
-const SignIn = () => {
+const MSignIn = () => {
   return (
     <div className="container-fluid px-3">
       <div className="row min-vh-100">
@@ -63,4 +63,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default MSignIn;
