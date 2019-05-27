@@ -22,9 +22,6 @@ app.set('view engine', 'pug');
 // FIXME: Redirect to HTTPS connection
 app.use(function(req, res, next) {
   if (!/https/.test(req.protocol)) {
-    console.log(
-      `https://${req.hostname}:${req.socket.localPort + 443}${req.url}`
-    );
     res.redirect(
       `https://${req.hostname}:${req.socket.localPort + 443}${req.url}`
     );
