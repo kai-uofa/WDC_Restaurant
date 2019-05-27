@@ -27,16 +27,18 @@ const Manager = {
                       console.log(error);
                       res.sendStatus(403);
                     });
+                  // call googleAPI
+                  googleMapsService.geocode({ address: req.body.fields.restaurantAdd })
+                    .asPromise()
+                    .then(response => {
+                      const queryLL = 'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
+                      db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, _id])
+                        .then( (result) => {
+                          console.log(result);
+                        }).catch(error => { console.log(error); });
+                    }).catch(error => { console.log(error); });
                 }).catch(error => { console.log(error); });
             }).catch(error => { console.log(error); });
-          googleMapsService.geocode({ address: req.body.fields.restaurantAdd })
-            .asPromise()
-            .then(response => {
-              console.log(response.json.results);
-              console.log(response.json.results[0].geometry.location.lat);
-              console.log(response.json.results[0].geometry.location.lng);
-              // TODO: query to add lat/lng to the restaurant
-          }).catch(error => { console.log(error); });
         }
       }).catch(error => { console.log(error); });
   },

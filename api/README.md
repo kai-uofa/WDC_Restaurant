@@ -13,7 +13,9 @@ A restaurant booking web application that allows users to book tables at restaur
 Open a terminal, go to project root and run the following:  
 `mysql.server start`  
 `mysql -u root < models/dev_database.sql`  
-**NOTE**: for live version, use live_database.sql
+**NOTE**: 
+for live version, use live_database.sql 
+to dump database: `mysqldump -u root -p --databases dev_database > dev_database_new.sql`
 3. Install NodeJS: https://nodejs.org/en/download/package-manager/#windows
 - For better development, it is recommended to install [Nodemon](https://github.com/remy/nodemon)  
 `npm install -g nodemon`

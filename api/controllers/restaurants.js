@@ -9,21 +9,12 @@ const Restaurants = {
     // This is a shortcut to get a connection from pool, execute a query and release connection.
     // https://mariadb.com/kb/en/library/connector-nodejs-promise-api/#poolgetconnection-promise
     if ('q' in req.query) {
-      let nameRes; let addRes;
       const q = `%${  req.query.q}%`;
-      const queryName = 'SELECT * FROM Restaurants WHERE restaurant_name LIKE (?)';
-      const queryAdd = 'SELECT * FROM Restaurants WHERE restaurant_address LIKE (?)';
-      db.query(queryName, [q])
-        .then(resName => {
-          db.query(queryAdd, [q])
-            .then(resAdd => {
-              res.json(resName.concat(resAdd));
-            }).catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(error => {
-        console.log(error);
+      const query = 'SELECT * FROM Restaurants WHERE restaurant_name LIKE (?) OR restaurant_address LIKE (?)';
+      db.query(query, [q,q])
+        .then(results => {
+              res.json(results);
+        }).catch(error => {console.log(error);
       });
     } else {
       // TODO: return all restaurant base on location

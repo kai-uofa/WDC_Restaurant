@@ -4,12 +4,17 @@ const Manager = require('../controllers/manager');
 
 const router = express.Router();
 
-// router.get('/signin', function(req, res, next) {
-//   Restaurants.searchRestaurants(req, res);
-// });
+router.post('/', function(req, res, next) {
+  Manager.signIn(req, res);
+});
 
 router.post('/signup', function(req, res, next) {
   Manager.signUp(req, res);
+});
+
+router.get('/', function(req, res, next) {
+  // TODO: display manager home page (booking list)
+  // TODO: check login status
 });
 
 module.exports = router;
