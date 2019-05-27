@@ -19,6 +19,20 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// FIXME: Redirect to HTTPS connection
+app.use(function(req, res, next) {
+  if (!/https/.test(req.protocol)) {
+    console.log(
+      `https://${req.hostname}:${req.socket.localPort + 443}${req.url}`
+    );
+    res.redirect(
+      `https://${req.hostname}:${req.socket.localPort + 443}${req.url}`
+    );
+  } else {
+    return next();
+  }
+});
+
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,6 +45,7 @@ app.use(
     secret: 'The very secret keyword of WDC',
     resave: false,
     saveUninitialized: true,
+    cookie: { secure: true },
   })
 );
 
