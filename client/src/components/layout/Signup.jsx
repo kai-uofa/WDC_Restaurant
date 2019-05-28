@@ -1,7 +1,6 @@
 // import React from "react";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import { PostData } from "../../PostData";
 import { Redirect } from "react-router-dom";
 class SignUp extends Component {
   constructor(props) {
@@ -130,12 +129,9 @@ class SignUp extends Component {
     }
     // TODO: Pass the token to auth function
     if (postData) {
-      PostData("signup", postData).then(result => {
-        let responseJson = result;
-        sessionStorage.setItem("userData", JSON.stringify(responseJson));
-        this.setState({ redirect: true });
-      });
+     console.log(postData);
     } else {
+      // Handle errors
     }
   }
 
