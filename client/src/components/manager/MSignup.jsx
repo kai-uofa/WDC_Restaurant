@@ -1,7 +1,5 @@
 // import React from "react";
 import React, { Component } from "react";
-import GoogleLogin from "react-google-login";
-import { PostData } from "../../PostData";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 
@@ -36,7 +34,7 @@ class MSignUp extends Component {
       fields["password2"] = "";
       this.setState({ fields: fields });
       axios
-        .post("http://localhost:5000/manager/signup", {
+        .post("https://localhost:5443/manager/signup", {
           fields: this.state.fields
         })
         .then(res => {
@@ -127,40 +125,10 @@ class MSignUp extends Component {
     return formIsValid;
   }
 
-  signup(res, type) {
-    let postData;
-
-    if (type === "google" && res.w3.U3) {
-      postData = {
-        name: res.w3.ig,
-        provider: type,
-        email: res.w3.U3,
-        provider_id: res.El,
-        token: res.Zi.access_token,
-        provider_pic: res.w3.Paa
-      };
-    }
-
-    if (postData) {
-      PostData("signup", postData).then(result => {
-        let responseJson = result;
-        sessionStorage.setItem("userData", JSON.stringify(responseJson));
-        this.setState({ redirect: true });
-      });
-    } else {
-    }
-  }
-
   render() {
     if (this.state.redirect || sessionStorage.getItem("userData")) {
       return <Redirect to={"/"} />;
     }
-
-    const responseGoogle = response => {
-      console.log("google console");
-      console.log(response);
-      this.signup(response, "google");
-    };
 
     return (
       <div className="container-fluid px-3">
@@ -269,14 +237,6 @@ class MSignUp extends Component {
                 </button>
                 <hr />
               </form>
-              <GoogleLogin
-                clientId="89188414152-adct1ksocrdfh2mqqlki7ps2rd1smhaf.apps.googleusercontent.com"
-                buttonText="Login"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={"single_host_origin"}
-              />
-              ,
             </div>
           </div>
           <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">

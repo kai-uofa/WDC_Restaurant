@@ -6,7 +6,7 @@ const MSignIn = () => {
         <div className="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
           <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
             <div className="mb-6 pb-5">
-              <h2>Welcome Back</h2>
+              <h2>WDC Restaurant Manager</h2>
             </div>
             <form className="form-validate">
               <div className="form-group">
@@ -44,13 +44,6 @@ const MSignIn = () => {
                 className="btn btn-lg btn-block btn-primary"
               >
                 SIGN IN
-              </button>
-              <hr />
-
-              <button className="btn btn-outline-secondary mb-3 btn-block text-center ">
-                <span className="d-sm-inline text-dark py-sm-2">
-                  Connect with Google
-                </span>
               </button>
             </form>
           </div>

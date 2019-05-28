@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { PostData } from "../../PostData";
 import { Redirect } from "react-router-dom";
-// const SignUp = () => {
-//a
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +12,7 @@ class SignUp extends Component {
       loginError: false,
       redirect: false
     };
-    this.signup = this.signup.bind(this);
+    this.loginOpenID = this.loginOpenID.bind(this);
   }
 
   handleChange = e => {
@@ -117,20 +115,20 @@ class SignUp extends Component {
     return formIsValid;
   }
 
-  signup(res, type) {
+  loginOpenID(googleUser, type) {
     let postData;
 
-    if (type === "google" && res.w3.U3) {
+    if (type === "google" && googleUser.w3.U3) {
       postData = {
-        name: res.w3.ig,
+        name: googleUser.w3.ig,
         provider: type,
-        email: res.w3.U3,
-        provider_id: res.El,
-        token: res.Zi.access_token,
-        provider_pic: res.w3.Paa
+        email: googleUser.w3.U3,
+        provider_id: googleUser.El,
+        token: googleUser.Zi.access_token,
+        provider_pic: googleUser.w3.Paa
       };
     }
-
+    // TODO: Pass the token to auth function
     if (postData) {
       PostData("signup", postData).then(result => {
         let responseJson = result;
@@ -147,9 +145,7 @@ class SignUp extends Component {
     }
 
     const responseGoogle = response => {
-      console.log("google console");
-      console.log(response);
-      this.signup(response, "google");
+      this.loginOpenID(response, 'google');
     };
 
     return (
@@ -260,13 +256,12 @@ class SignUp extends Component {
                 <hr />
               </form>
               <GoogleLogin
-                clientId="89188414152-adct1ksocrdfh2mqqlki7ps2rd1smhaf.apps.googleusercontent.com"
-                buttonText="Login"
+                clientId="713013961507-2cfn2k2qp09r9vb6gnomblspf0s7i6il.apps.googleusercontent.com"
+                buttonText="Sign in with Google"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
               />
-              ,
             </div>
           </div>
           <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
