@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -130,6 +131,17 @@ class SignUp extends Component {
     // TODO: Pass the token to auth function
     if (postData) {
      console.log(postData);
+      axios
+        .post("https://localhost:5443/manager/signup", {
+          fields: this.state.fields
+        })
+        .then(res => {
+          alert('Success!')
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } else {
       // Handle errors
     }

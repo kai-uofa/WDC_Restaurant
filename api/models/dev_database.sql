@@ -19,7 +19,7 @@
 -- Current Database: `dev_database`
 --
 
-CREATE OR REPLACE DATABASE /*!32312 IF NOT EXISTS*/ `dev_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `dev_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 --
 -- Create user and grant permission for: `dev_database`
