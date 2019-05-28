@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-loop-func */
 const db = require('../models/dbconnection');
-const googleMapsService = require('./googleMapsService');
+const googleMapsService = require('./apikeys/googleMapsService');
 
 const query =
   'SELECT restaurant_address FROM Restaurants WHERE restaurant_id = ?';

@@ -116,34 +116,24 @@ class SignUp extends Component {
   }
 
   loginOpenID(googleUser, type) {
-    let postData;
 
     if (type === "google" && googleUser.w3.U3) {
-      postData = {
-        name: googleUser.w3.ig,
-        provider: type,
-        email: googleUser.w3.U3,
-        provider_id: googleUser.El,
-        token: googleUser.Zi.access_token,
-        provider_pic: googleUser.w3.Paa
-      };
-    }
-    // TODO: Pass the token to auth function
-    if (postData) {
-     console.log(postData);
+        const token = googleUser.Zi.access_token;
       axios
-        .post("https://localhost:5443/manager/signup", {
-          fields: this.state.fields
+        .post("https://localhost:5443/signup", {
+          token: token
         })
         .then(res => {
-          alert('Success!')
+          // TODO: handle redirect???
+          this.setState({redirect: true});
           console.log(res);
         })
         .catch(err => {
+          this.setState({loginError: true});
           console.log(err);
         });
     } else {
-      // Handle errors
+      // Handle errors because type != google
     }
   }
 

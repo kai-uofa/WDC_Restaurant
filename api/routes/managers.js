@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 const express = require('express');
-const Manager = require('../controllers/manager');
+const Manager = require('../controllers/managers');
 
 const router = express.Router();
 
@@ -13,8 +13,12 @@ router.post('/signup', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-  // TODO: display manager home page (booking list)
-  // TODO: check login status
+  if (req.session.email === undefined) {
+    res.sendStatus(403);
+  } else {
+    // TODO: display manager home page (booking list);
+    // call function to get all bookings for this req.session
+  }
 });
 
 module.exports = router;
