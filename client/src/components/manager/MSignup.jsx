@@ -125,6 +125,7 @@ class MSignUp extends Component {
     return formIsValid;
   }
 
+  // TODO: create new restaurant => need more fields: restaurant name, restaurant address, restaurant capacity, restaurant description (optional)
   render() {
     if (this.state.redirect || sessionStorage.getItem("userData")) {
       return <Redirect to={"/"} />;

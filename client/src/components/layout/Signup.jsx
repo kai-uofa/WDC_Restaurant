@@ -1,40 +1,21 @@
-// import React from "react";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import config from '../../config.json';
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fields: {},
-      errors: {},
-      loginError: false,
-      redirect: false
+      errors: {}, // collect errors for validateForm
     };
-    this.loginOpenID = this.loginOpenID.bind(this);
   }
 
   handleChange = e => {
     let fields = this.state.fields;
     fields[e.target.name] = e.target.value;
-    this.setState({
-      fields
-    });
-  };
-  
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.validateForm()) {
-      let fields = {};
-      fields["firstName"] = "";
-      fields["lastName"] = "";
-      fields["email"] = "";
-      fields["password"] = "";
-      fields["password2"] = "";
-      this.setState({ fields: fields });
-      alert("Form submitted");
-    }
+    this.setState({ fields });
   };
 
   validateForm() {
@@ -113,48 +94,59 @@ class SignUp extends Component {
       errors: errors
     });
     return formIsValid;
-  }
+  };
 
-  loginOpenID(googleUser, type) {
-    let postData;
-
-    if (type === "google" && googleUser.w3.U3) {
-      postData = {
-        name: googleUser.w3.ig,
-        provider: type,
-        email: googleUser.w3.U3,
-        provider_id: googleUser.El,
-        token: googleUser.Zi.access_token,
-        provider_pic: googleUser.w3.Paa
-      };
-    }
-    // TODO: Pass the token to auth function
-    if (postData) {
-     console.log(postData);
+  normalSignUp = e => {
+    e.preventDefault();
+    if (this.validateForm()) {
+      // Send request to server
       axios
-        .post("https://localhost:5443/manager/signup", {
+        .post("https://localhost:5443/signup", {
           fields: this.state.fields
         })
         .then(res => {
-          alert('Success!')
+          // TODO: handle server response codes 200, 409, 401
           console.log(res);
         })
-        .catch(err => {
-          console.log(err);
-        });
-    } else {
-      // Handle errors
+        .catch(console.error);
+      
+      // Reset all text fields
+      let fields = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        password2: ''
+      };
+      this.setState({ fields: fields });
     }
-  }
+  };
+
+  onFailure = error => {
+    alert(error);
+  };
+
+  googleResponse = response => {
+      axios
+        .post("https://localhost:5443/signup", {
+          firstName: response.profileObj.givenName,
+          lastName: response.profileObj.familyName,
+          email: response.profileObj.email,
+          token: response.accessToken,
+        })
+        .then(res => {
+          // TODO: handle server response codes 200, 409, 401
+          console.log(res);
+        })
+        .catch(console.error);
+  };
 
   render() {
+    // TODO: handle server response codes 200, 409, 401
+    // TODO: handle user session login (req.session.email)
     if (this.state.redirect || sessionStorage.getItem("userData")) {
       return <Redirect to={"/"} />;
     }
-
-    const responseGoogle = response => {
-      this.loginOpenID(response, 'google');
-    };
 
     return (
       <div className="container-fluid px-3">
@@ -164,11 +156,7 @@ class SignUp extends Component {
               <div className="mb-4">
                 <h2>Sign up</h2>
               </div>
-              <form
-                method="post"
-                className="form-validate"
-                onSubmit={this.handleSubmit}
-              >
+              <form className="form-validate" method="post" onSubmit={this.normalSignUp}>
                 <div className="form-group">
                   <label htmlFor="firstName" class="form-label">
                     First Name
@@ -225,7 +213,7 @@ class SignUp extends Component {
                 </div>
                 <div className="errorMsg">{this.state.errors.email}</div>
                 <div class="form-group">
-                  <label for="loginPassword" class="form-label">
+                  <label for="password" class="form-label">
                     {" "}
                     Password
                   </label>
@@ -243,7 +231,7 @@ class SignUp extends Component {
                   <div className="errorMsg">{this.state.errors.password}</div>
                 </div>
                 <div class="form-group mb-4">
-                  <label for="loginPassword2" class="form-label">
+                  <label for="password2" class="form-label">
                     Confirm your password
                   </label>
                   <input
@@ -259,15 +247,15 @@ class SignUp extends Component {
                   />
                 </div>
                 <button type="submit" class="btn btn-lg btn-block btn-primary">
-                  Sign up
+                  SIGN UP
                 </button>
                 <hr />
               </form>
               <GoogleLogin
-                clientId="713013961507-2cfn2k2qp09r9vb6gnomblspf0s7i6il.apps.googleusercontent.com"
-                buttonText="Sign in with Google"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                clientId={config.GOOGLE_CLIENT_ID}
+                buttonText="Sign up with Google"
+                onSuccess={this.googleResponse}
+                onFailure={this.onFailure}
                 cookiePolicy={"single_host_origin"}
               />
             </div>
@@ -278,7 +266,7 @@ class SignUp extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
 export default SignUp;
