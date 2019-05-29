@@ -11,7 +11,7 @@ const uuid = require("uuid/v4");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const searchRouter = require("./routes/search");
-const managerRouter = require("./routes/manager");
+const managerRouter = require("./routes/managers");
 const restRouter = require("./routes/restaurant");
 
 const app = express();
@@ -50,7 +50,7 @@ app.use(
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/search", searchRouter);
-app.use("/manager", managerRouter);
+app.use("/managers", managerRouter);
 app.use("/restaurant", restRouter);
 
 // catch 404 and forward to error handler
