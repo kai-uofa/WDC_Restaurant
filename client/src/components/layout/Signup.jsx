@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import config from '../../config.json';
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -110,24 +111,25 @@ class SignUp extends Component {
       errors: errors
     });
     return formIsValid;
-  }
+  };
 
-  loginOpenID = (googleUser, type) => {
-    console.log(googleUser);
-    if (type === "google" && googleUser.w3.U3) {
-        const token = googleUser.Zi.access_token;
+  onFailure = error => {
+    alert(error);
+  };
+
+  googleResponse = response => {
       axios
         .post("https://localhost:5443/signup", {
-          token: token
+          firstName: response.profileObj.givenName,
+          lastName: response.profileObj.familyName,
+          email: response.profileObj.email,
+          token: response.accessToken,
         })
         .then(res => {
           console.log(res);
         })
         .catch(console.error);
-    } else {
-      // Handle errors because type != google
-    }
-  }
+  };
 
   render() {
     // TODO: handle server response codes 200, 409, 401
@@ -135,10 +137,6 @@ class SignUp extends Component {
     if (this.state.redirect || sessionStorage.getItem("userData")) {
       return <Redirect to={"/"} />;
     }
-
-    const responseGoogle = response => {
-      this.loginOpenID(response, 'google');
-    };
 
     return (
       <div className="container-fluid px-3">
@@ -248,10 +246,10 @@ class SignUp extends Component {
                 <hr />
               </form>
               <GoogleLogin
-                clientId="713013961507-2cfn2k2qp09r9vb6gnomblspf0s7i6il.apps.googleusercontent.com"
+                clientId={config.GOOGLE_CLIENT_ID}
                 buttonText="Sign in with Google"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onSuccess={this.googleResponse}
+                onFailure={this.onFailure}
                 cookiePolicy={"single_host_origin"}
               />
             </div>

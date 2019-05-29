@@ -14,6 +14,7 @@ router.post('/signup', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
   if (req.session.email === undefined) {
+    // TODO: check if user is a manager or not
     res.sendStatus(403);
   } else {
     // TODO: display manager home page (booking list);
