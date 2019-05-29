@@ -7,6 +7,8 @@ const googleMapsService = require('./apikeys/googleMapsService');
 const Managers = {
   async signUp(req, res) {
     let manager = null;
+    let conflict = false;
+    
     if (req.session.email !== undefined) {
       manager = req.session.email;
     } else if (
@@ -51,13 +53,17 @@ const Managers = {
               }).catch(console.error);
 
           }).catch(console.error);
+      } else {
+        conflict = true;
       }
     }
 
-    if (manager !== null) {
-      res.sendStatus(200);
-    } else {
+    if( conflict === true ) {
+      res.sendStatus(409); // Conflict
+    } else if (manager === null) {
       res.sendStatus(401); // Unauthorized
+    } else {
+      res.sendStatus(200);
     }
   },
 

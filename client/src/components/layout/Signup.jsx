@@ -8,11 +8,8 @@ class SignUp extends Component {
     super(props);
     this.state = {
       fields: {},
-      errors: {},
-      loginError: false,
-      redirect: false
+      errors: {}, // collect errors for validateForm
     };
-    this.loginOpenID = this.loginOpenID.bind(this);
   }
 
   handleChange = e => {
@@ -115,8 +112,8 @@ class SignUp extends Component {
     return formIsValid;
   }
 
-  loginOpenID(googleUser, type) {
-
+  loginOpenID = (googleUser, type) => {
+    console.log(googleUser);
     if (type === "google" && googleUser.w3.U3) {
         const token = googleUser.Zi.access_token;
       axios
@@ -124,20 +121,17 @@ class SignUp extends Component {
           token: token
         })
         .then(res => {
-          // TODO: handle redirect???
-          this.setState({redirect: true});
           console.log(res);
         })
-        .catch(err => {
-          this.setState({loginError: true});
-          console.log(err);
-        });
+        .catch(console.error);
     } else {
       // Handle errors because type != google
     }
   }
 
   render() {
+    // TODO: handle server response codes 200, 409, 401
+    // TODO: handle user session login (req.session.email)
     if (this.state.redirect || sessionStorage.getItem("userData")) {
       return <Redirect to={"/"} />;
     }
