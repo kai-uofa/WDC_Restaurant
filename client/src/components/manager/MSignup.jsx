@@ -1,57 +1,49 @@
-// import React from "react";
 import React, { Component } from "react";
+import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-
-class MSignUp extends Component {
+import config from '../../config.json';
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fields: {},
-      errors: {},
-      loginError: false,
-      redirect: false
+      errors: {}, // collect errors for validateForm
     };
-    this.signup = this.signup.bind(this);
   }
 
   handleChange = e => {
     let fields = this.state.fields;
     fields[e.target.name] = e.target.value;
-    this.setState({
-      fields
-    });
-  };
-  
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.validateForm()) {
-      let fields = {};
-      fields["firstName"] = "";
-      fields["lastName"] = "";
-      fields["email"] = "";
-      fields["password"] = "";
-      fields["password2"] = "";
-      this.setState({ fields: fields });
-      axios
-        .post("https://localhost:5443/manager/signup", {
-          fields: this.state.fields
-        })
-        .then(res => {
-          alert('Success!')
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+    this.setState({ fields });
   };
 
   validateForm() {
     let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
+    // Restaurant Name validation
+    if (!fields["resName"]) {
+      formIsValid = false;
+      errors["resName"] = "*Please enter your Restaurant Name.";
+    }
+    if (fields["resName"].length < 3) {
+      formIsValid = false;
+      errors["resName"] = "Please enter at least 3 character.";
+    }
+    // Restaurant adress validation
+    if (!fields["resAdress"]) {
+      formIsValid = false;
+      errors["resAdress"] = "*Please enter your Restaurant Location.";
+    }
 
+    if (typeof fields["resAdress"] !== "undefined") {
+      if (fields["resAdress"].length < 3) {
+        formIsValid = false;
+        errors["resAdress"] = "Please enter at least 3 character.";
+      }
+    }
+    // Manger firstName 
     if (!fields["firstName"]) {
       formIsValid = false;
       errors["firstName"] = "*Please enter your First Name.";
@@ -67,6 +59,7 @@ class MSignUp extends Component {
       formIsValid = false;
       errors["firstName"] = "Please enter at least 3 character.";
     }
+    // Manger Last Name
     if (!fields["lastName"]) {
       formIsValid = false;
       errors["lastName"] = "*Please enter your Last Name.";
@@ -82,6 +75,7 @@ class MSignUp extends Component {
         errors["lastName"] = "Please enter at least 3 character.";
       }
     }
+    // Manger Email
     if (!fields["email"]) {
       formIsValid = false;
       errors["email"] = "*Please enter your email-ID.";
@@ -97,7 +91,7 @@ class MSignUp extends Component {
         errors["email"] = "*Please enter valid email-ID.";
       }
     }
-
+    //Manager password
     if (!fields["password"]) {
       formIsValid = false;
       errors["password"] = "*Please enter your password.";
@@ -111,22 +105,64 @@ class MSignUp extends Component {
       formIsValid = false;
       errors["password"] = "*Password need to at least has 8 character";
     }
-
-    // if (typeof fields["password"] !== "undefined") {
-    //   if (!fields["password"].match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
-    //     formIsValid = false;
-    //     errors["password"] = "*Please enter secure and strong password.";
-    //   }
-    // }
-
     this.setState({
       errors: errors
     });
     return formIsValid;
-  }
+  };
 
-  // TODO: create new restaurant => need more fields: restaurant name, restaurant address, restaurant capacity, restaurant description (optional)
+  normalSignUp = e => {
+    e.preventDefault();
+    if (this.validateForm()) {
+      // Send request to server
+      axios
+        .post("https://localhost:5443/signup", {
+          fields: this.state.fields
+        })
+        .then(res => {
+          // TODO: handle server response codes 200, 409, 401
+          console.log(res);
+        })
+        .catch(console.error);
+      
+      // Reset all text fields
+      let fields = {
+        resName: '',
+        resAdress: '',
+        capacity: '',
+        description: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        password2: ''
+      };
+      this.setState({ fields: fields });
+    }
+  };
+
+  onFailure = error => {
+    alert(error);
+  };
+
+  googleResponse = response => {
+      axios
+        .post("https://localhost:5443/signup", {
+          firstName: response.profileObj.givenName,
+          lastName: response.profileObj.familyName,
+          email: response.profileObj.email,
+          token: response.accessToken,
+        })
+        .then(res => {
+          // TODO: handle server response codes 200, 409, 401
+          console.log(res);
+        })
+        .catch(console.error);
+  };
+
   render() {
+    // TODO: handle server response codes 200, 409, 401
+    // TODO: handle user session login (req.session.email)
     if (this.state.redirect || sessionStorage.getItem("userData")) {
       return <Redirect to={"/"} />;
     }
@@ -137,13 +173,85 @@ class MSignUp extends Component {
           <div className="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
             <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
               <div className="mb-4">
-                <h2>Sign up</h2>
+                <h2>Get started with Us</h2>
+                <p>Tell us a little about you and your restaurant, and we’ll contact you via phone or email to provide information about WDC products and services.</p>
               </div>
-              <form
-                method="post"
-                className="form-validate"
-                onSubmit={this.handleSubmit}
-              >
+              <form className="form-validate" method="post" onSubmit={this.normalSignUp}>
+      
+                {/* Restaurant Name */}
+                <div className="form-group">
+                  <label htmlFor="resName" class="form-label">
+                    Restaurant Name
+                  </label>
+                  <input
+                    name="resName"
+                    id="resName"
+                    type="text"
+                    placeholder="Restaurant Name"
+                    value={this.state.fields.resName}
+                    onChange={this.handleChange}
+                    autoComplete="off"
+                    required
+                    data-msg="Please enter your Restaurant Name"
+                    class="form-control"
+                  />
+                </div>
+                <div className="errorMsg">{this.state.errors.resName}</div>
+                   {/* Restaurant Adress */}
+                <div class="form-group">
+                  <label for="resAdress" class="form-label">
+                    Restaurant Location
+                  </label>
+                  <input
+                    name="resAdress"
+                    id="resAdress"
+                    type="text"
+                    placeholder="Restaurant Location"
+                    value={this.state.fields.resAdress}
+                    onChange={this.handleChange}
+                    autoComplete="off"
+                    required
+                    data-msg="Please enter your Restaurant Location"
+                    class="form-control"
+                  />
+                </div>
+                <div className="errorMsg">{this.state.errors.resAdress}</div>
+                  {/* Restaurant Capacity */}
+                <div class="form-group">
+                  <label for="capacity" class="form-label">
+                    Capacity
+                  </label>
+                  <input
+                    name="capacity"
+                    id="capacity"
+                    type="number"
+                    placeholder="How many customer can you Restaurant hold"
+                    value={this.state.fields.capacity}
+                    onChange={this.handleChange}
+                    autoComplete="off"
+                    required
+                    data-msg="How many customer can you Restaurant hold"
+                    class="form-control"
+                  />
+                </div>
+                <div className="errorMsg">{this.state.errors.capacity}</div>
+                 {/* Restaurant Description */}
+                <div class="form-group">
+                  <label for="password" class="form-label">
+                     Restaurant Description (Optional)
+                  </label>
+                  <input
+                    name="description"
+                    id="description"
+                    placeholder="Tell us about your Restaurant"
+                    value={this.state.fields.description}
+                    onChange={this.handleChange}
+                    type="text"
+                    data-msg="Please  enter your description"
+                    class="form-control"
+                  />
+                </div>
+                 {/* Manager First Name */}
                 <div className="form-group">
                   <label htmlFor="firstName" class="form-label">
                     First Name
@@ -162,7 +270,7 @@ class MSignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.firstName}</div>
-
+                    {/* Manager Last Name */}
                 <div class="form-group">
                   <label for="lastName" class="form-label">
                     Last Name
@@ -181,6 +289,7 @@ class MSignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.lastName}</div>
+                {/* Mangaer Email */}
                 <div class="form-group">
                   <label for="email" class="form-label">
                     Email Address
@@ -199,8 +308,9 @@ class MSignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.email}</div>
+                   {/* Manger Password */}
                 <div class="form-group">
-                  <label for="loginPassword" class="form-label">
+                  <label for="password" class="form-label">
                     {" "}
                     Password
                   </label>
@@ -217,8 +327,9 @@ class MSignUp extends Component {
                   />
                   <div className="errorMsg">{this.state.errors.password}</div>
                 </div>
+                 {/* Confirm password */}
                 <div class="form-group mb-4">
-                  <label for="loginPassword2" class="form-label">
+                  <label for="password2" class="form-label">
                     Confirm your password
                   </label>
                   <input
@@ -234,10 +345,17 @@ class MSignUp extends Component {
                   />
                 </div>
                 <button type="submit" class="btn btn-lg btn-block btn-primary">
-                  Sign up
+                  Submit Form
                 </button>
                 <hr />
               </form>
+              <GoogleLogin
+                clientId={config.GOOGLE_CLIENT_ID}
+                buttonText="Sign up with Google"
+                onSuccess={this.googleResponse}
+                onFailure={this.onFailure}
+                cookiePolicy={"single_host_origin"}
+              />
             </div>
           </div>
           <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
@@ -246,7 +364,7 @@ class MSignUp extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
-export default MSignUp;
+export default SignUp;
