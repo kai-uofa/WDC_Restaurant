@@ -1,4 +1,3 @@
-// import React from "react";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
@@ -16,23 +15,7 @@ class SignUp extends Component {
   handleChange = e => {
     let fields = this.state.fields;
     fields[e.target.name] = e.target.value;
-    this.setState({
-      fields
-    });
-  };
-  
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.validateForm()) {
-      let fields = {};
-      fields["firstName"] = "";
-      fields["lastName"] = "";
-      fields["email"] = "";
-      fields["password"] = "";
-      fields["password2"] = "";
-      this.setState({ fields: fields });
-      alert("Form submitted");
-    }
+    this.setState({ fields });
   };
 
   validateForm() {
@@ -113,6 +96,32 @@ class SignUp extends Component {
     return formIsValid;
   };
 
+  normalSignUp = e => {
+    e.preventDefault();
+    if (this.validateForm()) {
+      // Send request to server
+      axios
+        .post("https://localhost:5443/signup", {
+          fields: this.state.fields
+        })
+        .then(res => {
+          // TODO: handle server response codes 200, 409, 401
+          console.log(res);
+        })
+        .catch(console.error);
+      
+      // Reset all text fields
+      let fields = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        password2: ''
+      };
+      this.setState({ fields: fields });
+    }
+  };
+
   onFailure = error => {
     alert(error);
   };
@@ -126,6 +135,7 @@ class SignUp extends Component {
           token: response.accessToken,
         })
         .then(res => {
+          // TODO: handle server response codes 200, 409, 401
           console.log(res);
         })
         .catch(console.error);
@@ -146,11 +156,7 @@ class SignUp extends Component {
               <div className="mb-4">
                 <h2>Sign up</h2>
               </div>
-              <form
-                method="post"
-                className="form-validate"
-                onSubmit={this.handleSubmit}
-              >
+              <form className="form-validate" method="post" onSubmit={this.normalSignUp}>
                 <div className="form-group">
                   <label htmlFor="firstName" class="form-label">
                     First Name
@@ -207,7 +213,7 @@ class SignUp extends Component {
                 </div>
                 <div className="errorMsg">{this.state.errors.email}</div>
                 <div class="form-group">
-                  <label for="loginPassword" class="form-label">
+                  <label for="password" class="form-label">
                     {" "}
                     Password
                   </label>
@@ -225,7 +231,7 @@ class SignUp extends Component {
                   <div className="errorMsg">{this.state.errors.password}</div>
                 </div>
                 <div class="form-group mb-4">
-                  <label for="loginPassword2" class="form-label">
+                  <label for="password2" class="form-label">
                     Confirm your password
                   </label>
                   <input
@@ -241,13 +247,13 @@ class SignUp extends Component {
                   />
                 </div>
                 <button type="submit" class="btn btn-lg btn-block btn-primary">
-                  Sign up
+                  SIGN UP
                 </button>
                 <hr />
               </form>
               <GoogleLogin
                 clientId={config.GOOGLE_CLIENT_ID}
-                buttonText="Sign in with Google"
+                buttonText="Sign up with Google"
                 onSuccess={this.googleResponse}
                 onFailure={this.onFailure}
                 cookiePolicy={"single_host_origin"}
@@ -260,7 +266,7 @@ class SignUp extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
 export default SignUp;
