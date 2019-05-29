@@ -1,7 +1,14 @@
+/* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
+/* eslint-disable object-shorthand */
 // include the model (aka DB connection)
+const config = require('../configAPIs');
 const db = require('../models/dbconnection');
-const googleMapsService = require('./apikeys/googleMapsService');
+const googleMapsService = require('@google/maps').createClient({
+  key: config.GOOGLE_GEOCODE_API_KEY,
+  Promise: Promise,
+});
+
 
 // create Restaurants class
 const Managers = {

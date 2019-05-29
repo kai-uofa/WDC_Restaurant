@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 const { OAuth2Client } = require('google-auth-library');
-const CLIENT_ID = require('./apikeys/googleOpenID');
+const config = require ('../configAPIs');
 const db = require('../models/dbconnection');
 
-const client = new OAuth2Client(CLIENT_ID);
+const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
 const Customers = {
   async signUp(req, res) {
@@ -47,7 +47,7 @@ const Customers = {
       const ticket = await client
         .verifyIdToken({
           idToken: req.body.token,
-          audience: CLIENT_ID,
+          audience: config.GOOGLE_CLIENT_ID,
         })
         .catch(console.error);
 
@@ -105,7 +105,7 @@ const Customers = {
       const ticket = await client
         .verifyIdToken({
           idToken: req.body.token,
-          audience: CLIENT_ID,
+          audience: config.GOOGLE_CLIENT_ID,
         })
         .catch(console.error);
 
