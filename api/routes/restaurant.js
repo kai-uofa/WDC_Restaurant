@@ -1,10 +1,10 @@
 const express = require("express");
+const Restaurants = require("../controllers/restaurants");
 
 const router = express.Router();
 
-/* GET users listing. */
 router.get("/", function(req, res, next) {
-  res.send("hello");
+  Restaurants.getRestaurantDetails(req, res);
 });
 
 module.exports = router;

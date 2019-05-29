@@ -1,20 +1,25 @@
 import React, { Component } from "react";
 import axios from "axios";
+import MyMap from "./MyMap";
 
 class Detailrest extends Component {
   state = {
-    detail: []
+    detail: [],
+    lat: null,
+    lng: null
   };
 
-  componentDidMount() {
+  componentWillMount() {
     axios
       .get(
-        `https://developers.zomato.com/api/v2.1/restaurant?res_id=${
-          this.props.match.params.id
-        }&apikey=51b7e1ab05b391b0e31af2e5160523a5`
+        `https://localhost:5443/restaurant?res_id=${this.props.match.params.id}`
       )
       .then(res => {
-        this.setState({ detail: res.data });
+        this.setState({
+          detail: res.data[0],
+          lat: res.data[0].restaurant_latitude,
+          lng: res.data[0].restaurant_longitude
+        });
       })
       .catch(err => console.log(err));
   }
@@ -25,10 +30,10 @@ class Detailrest extends Component {
         <div className="container">
           <section className="pt-5">
             <div className="mt-5 mb-lg-0">
-              <h2 className="text-shadow verified">{detail.name}</h2>
+              <h2 className="text-shadow verified">{detail.restaurant_name}</h2>
               <p>
                 <i className="fa-map-marker-alt fas mr-2" />
-                {detail.cuisines}
+                {detail.restaurant_address}
               </p>
             </div>
           </section>
@@ -40,25 +45,22 @@ class Detailrest extends Component {
               {/* About */}
               <div className="text-block py-3">
                 <h3 className="mb-3">About</h3>
-                <p className="text-muted">
-                  For modern Italian cuisine in Adelaide, look no further than
-                  Godi La Vita. This cool little restaurant, excellently-located
-                  on King William Road in Hyde Park, is open for breakfast,
-                  lunch and dinner, and whenever you dine, quality is to be very
-                  much expected. If you’re stopping by for dinner, begin with
-                  antipasti or oysters before a plate of artisan pasta or a
-                  prime piece of meat. Along with great food, you’ll receive a
-                  wonderfully warm welcome at Godi La Vita where a community
-                  feel and sense of fun always fill the dining space. It’s
-                  popular, no doubt, so it’s best to reserve a table way ahead
-                  of time.
-                </p>
+                <p className="text-muted">{detail.restaurant_description}</p>
               </div>
 
               {/* Location */}
               <hr className="my-4" />
               <div className="text-block py-3">
                 <h3 className="mb-4">Location</h3>
+                <MyMap
+                  lng={this.state.lng}
+                  lat={this.state.lat}
+                  isMarkerShown
+                  googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyAhIWHIyj2pudRfrZ3ST_0oP2bq1C8KLV0`}
+                  loadingElement={<div style={{ height: `100%` }} />}
+                  containerElement={<div style={{ height: `400px` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                />
               </div>
 
               {/* Opening time, address and phone number */}
@@ -106,10 +108,7 @@ class Detailrest extends Component {
                         <i className="fas fa-map-marker-alt fa-2x mr-4" />
                         <span className="text-sm">Address</span>
                       </li>
-                      <p className="mb-4">
-                        Godi La Vita 162B King William Rd, Hyde Park Adelaide
-                        5061
-                      </p>
+                      <p className="mb-4">{detail.restaurant_address}</p>
                       <li className="d-flex">
                         <i className="fas fa-phone-square fa-2x mr-3" />
                         <span>+61870731231</span>
@@ -120,7 +119,7 @@ class Detailrest extends Component {
               </div>
               {/* <!-- reviews --> */}
               <hr className="my-4" />
-              <div className="text-block py-3">
+              <div className="text-block pt-3">
                 <h5 className="subtitle text-sm">Reviews</h5>
                 <div className="media d-block d-sm-flex review">
                   <div className="media-body">
