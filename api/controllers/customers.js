@@ -6,6 +6,36 @@ const db = require('../models/dbconnection');
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
 const Customers = {
+  async _useGoogleId(req) {
+    // If token id matches a google account
+    const ticket = await client
+      .verifyIdToken({
+        idToken: req.body.token,
+        audience: config.GOOGLE_CLIENT_ID,
+      })
+      .catch(console.error);
+
+    const payload = ticket.getPayLoad();
+    const googleID = payload.sub;
+
+    // check if email existed in database
+    const googleAccExist = await db
+      .query(
+        'SELECT email FROM Customers WHERE email = ?',
+        [req.body.email]
+      )
+      .catch(console.error);
+
+    if (googleAccExist.length < 1) {
+      // add this email, name & google ID to server
+      const queryG = 'INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)';
+      db.query(queryG, [req.body.firstName, req.body.lastName, req.body.email, googleID]).catch(console.error);
+    } else {
+      // link google account
+      db.query('UPDATE Customers SET google_id = ? WHERE email = ?', [googleID, req.body.email]).catch(console.error);
+    }
+  },
+
   async signUp(req, res) {
     let customer = null;
     let conflictEmail = false;
@@ -40,28 +70,18 @@ const Customers = {
           // sign-in for customer
           req.session.email = req.body.fields.email;
           customer = req.body.fields.email;
+        } else {
+          conflictEmail = true;
         }
 
       // check if google login token present
     } else if (req.body.token !== undefined) {
-      const ticket = await client
-        .verifyIdToken({
-          idToken: req.body.token,
-          audience: config.GOOGLE_CLIENT_ID,
-        })
-        .catch(console.error);
+      // Call function for googleID signup/signin
+      this._useGoogleId(req);
 
-      const payload = ticket.getPayLoad();
-      const googleID = payload.sub;
-
-      // If google ID matches a user: add this email, name & google ID to server
-      const queryG = 'INSERT INTO Customers (first_name, last_name, email, google_id)';
-      db.query(queryG, [req.body.firstName, req.body.lastName, req.body.email, googleID]).catch(console.error);
       // save the session, and send that username
       req.session.email = req.body.email;
       customer = req.body.email;
-    } else {
-      conflictEmail = true;
     }
 
     if (conflictEmail === true) {
@@ -102,25 +122,12 @@ const Customers = {
 
       // If google login token present
     } else if (req.body.token !== undefined) {
-      const ticket = await client
-        .verifyIdToken({
-          idToken: req.body.token,
-          audience: config.GOOGLE_CLIENT_ID,
-        })
-        .catch(console.error);
+      // Call function for googleID signup/signin
+      this._useGoogleId(req);
 
-      const payload = ticket.getPayLoad();
-      const googleID = payload.sub;
-
-      // If google ID matches a user, save the session, and send that username
-      db.query('SELECT email FROM Customers WHERE google_id = ? ', [googleID])
-        .then(results => {
-          if (results.length > 0) {
-            req.session.email = results[0].email;
-            customer = results[0].email;
-          }
-        })
-        .catch(console.error);
+      // save the session, and send that username
+      req.session.email = req.body.email;
+      customer = req.body.email;
     }
 
     if (customer !== null) {
