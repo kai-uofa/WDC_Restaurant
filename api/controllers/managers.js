@@ -108,10 +108,6 @@ const Managers = {
     res.sendStatus(200);
   },
 
-  getAllBookings(req, res) {
-    // TODO: get all ACTIVE bookings from database
-    // 
-  }
 };
 
 module.exports = Managers;

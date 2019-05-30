@@ -1,8 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable prettier/prettier */
 // include the model (aka DB connection)
-const geolib = require("geolib");
-const db = require("../models/dbconnection");
+const geolib = require('geolib');
+const db = require('../models/dbconnection');
 
 // create Restaurants class
 const Restaurants = {
@@ -10,11 +10,11 @@ const Restaurants = {
   searchRestaurants(req, res) {
     // This is a shortcut to get a connection from pool, execute a query and release connection.
     // https://mariadb.com/kb/en/library/connector-nodejs-promise-api/#poolgetconnection-promise
-    if ("search" in req.query && "lat" in req.query && "lng" in req.query) {
+    if ('search' in req.query && 'lat' in req.query && 'lng' in req.query) {
       const search = `%${req.query.search}%`;
       const { lat } = req.query;
       const { lng } = req.query;
-      const query = "SELECT * FROM Restaurants WHERE restaurant_name LIKE (?)";
+      const query = 'SELECT * FROM Restaurants WHERE restaurant_name LIKE (?)';
       db.query(query, [search])
         .then(_dbres => {
           const results = [];
@@ -44,9 +44,9 @@ const Restaurants = {
 
   // function to get restaurant details from id
   getRestaurantDetails(req, res) {
-    if ("res_id" in req.query) {
+    if ('res_id' in req.query) {
       const q = req.query.res_id;
-      const query = "SELECT * FROM Restaurants WHERE restaurant_id = ?";
+      const query = 'SELECT * FROM Restaurants WHERE restaurant_id = ?';
       db.query(query, [q])
         .then(results => {
           res.json(results);
