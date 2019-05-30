@@ -14,8 +14,23 @@ class App extends Component {
     super(props);
     this.state = {
       searchText: "",
-      rest_list: []
+      rest_list: [],
+      location: {
+        lat: null,
+        lng: null
+      }
     };
+    window.navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          location: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+        });
+      },
+      err => console.log(err)
+    );
   }
 
   onSearchChange = e => {
@@ -24,20 +39,22 @@ class App extends Component {
 
   handleOnClick = (e, history) => {
     e.preventDefault();
+    if (e.target.value === undefined) {
+      this.setState({ searchText: "" });
+    }
     axios
       .get(
-        `https://developers.zomato.com/api/v2.1/search?q=${
+        `https://localhost:5443/search?search=${
           this.state.searchText
-        }
-    }&apikey=51b7e1ab05b391b0e31af2e5160523a5`
+        }&lat=-34.92866&lng=138.59863`
       )
       .then(res => {
-        console.log(res.data);
-        this.setState({ rest_list: res.data.restaurants });
-        let path = `/search/${this.state.searchText}`;
+        this.setState({ rest_list: res.data });
+        let path = `/search/restaurants-near-me`;
         history.push(path);
       })
       .catch(err => console.log(err));
+    e.currentTarget.reset();
   };
 
   render() {
@@ -80,13 +97,15 @@ export default App;
 
 // axios
 //   .get(
-//     `http://localhost:5000/search?q=${
+//     `https://developers.zomato.com/api/v2.1/search?q=${
 //       this.state.searchText
-//     }`
+//     }
+// }&apikey=51b7e1ab05b391b0e31af2e5160523a5`
 //   )
 //   .then(res => {
-//     console.log(res);
-//     this.setState({ rest_list: res.data });
+//     console.log(res.data);
+//     this.setState({ rest_list: res.data.restaurants });
+//     let path = `/search/${this.state.searchText}`;
+//     history.push(path);
 //   })
 //   .catch(err => console.log(err));
-// e.currentTarget.reset();
