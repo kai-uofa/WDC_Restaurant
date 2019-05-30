@@ -19,7 +19,8 @@
 -- Current Database: `dev_database`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `dev_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE
+OR REPLACE DATABASE `dev_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 --
 -- Create user and grant permission for: `dev_database`
@@ -32,32 +33,32 @@ GRANT ALL PRIVILEGES ON dev_database.* TO 'res_admin' @'localhost';
 USE `dev_database`;
 
 --
--- Table structure for table `Booking`
+-- Table structure for table `Bookings`
 --
 
-DROP TABLE IF EXISTS `Booking`;
+DROP TABLE IF EXISTS `Bookings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Booking` (
+CREATE TABLE `Bookings` (
   `customer_id` int(11) NOT NULL,
   `restaurant_id` int(11) NOT NULL,
   `start_time` time DEFAULT NULL,
   `no_of_people` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  KEY `fk_booking_to_customers` (`customer_id`),
-  KEY `fk_booking_to_restaurants` (`restaurant_id`),
-  CONSTRAINT `fk_booking_to_customers` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`),
-  CONSTRAINT `fk_booking_to_restaurants` FOREIGN KEY (`restaurant_id`) REFERENCES `Restaurants` (`restaurant_id`)
+  KEY `fk_bookings_to_customers` (`customer_id`),
+  KEY `fk_bookings_to_restaurants` (`restaurant_id`),
+  CONSTRAINT `fk_bookings_to_customers` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`),
+  CONSTRAINT `fk_bookings_to_restaurants` FOREIGN KEY (`restaurant_id`) REFERENCES `Restaurants` (`restaurant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Booking`
+-- Dumping data for table `Bookings`
 --
 
-LOCK TABLES `Booking` WRITE;
-/*!40000 ALTER TABLE `Booking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Booking` ENABLE KEYS */;
+LOCK TABLES `Bookings` WRITE;
+/*!40000 ALTER TABLE `Bookings` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -118,29 +119,30 @@ LOCK TABLES `Managers` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `OpenHours`
+-- Table structure for table `Availability`
 --
 
-DROP TABLE IF EXISTS `OpenHours`;
+DROP TABLE IF EXISTS `Availability`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `OpenHours` (
+CREATE TABLE `Availability` (
   `restaurant_id` int(11) NOT NULL,
   `day_of_week` int(11) NOT NULL,
-  `open_time` time DEFAULT NULL,
-  `close_time` time DEFAULT NULL,
-  KEY `fk_openhours_to_restaurants` (`restaurant_id`),
-  CONSTRAINT `fk_openhours_to_restaurants` FOREIGN KEY (`restaurant_id`) REFERENCES `Restaurants` (`restaurant_id`)
+  `start_timeframe` time DEFAULT NULL,
+  `end_timeframe` time DEFAULT NULL,
+  `remaining_tables` int(11) DEFAULT NULL,
+  KEY `fk_availability_to_restaurants` (`restaurant_id`),
+  CONSTRAINT `fk_availability_to_restaurants` FOREIGN KEY (`restaurant_id`) REFERENCES `Restaurants` (`restaurant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `OpenHours`
+-- Dumping data for table `Availability`
 --
 
-LOCK TABLES `OpenHours` WRITE;
-/*!40000 ALTER TABLE `OpenHours` DISABLE KEYS */;
-/*!40000 ALTER TABLE `OpenHours` ENABLE KEYS */;
+LOCK TABLES `Availability` WRITE;
+/*!40000 ALTER TABLE `Availability` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Availability` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

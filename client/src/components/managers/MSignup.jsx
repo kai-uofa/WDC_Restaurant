@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import config from '../../config.json';
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +73,7 @@ class SignUp extends Component {
         errors["lastName"] = "Please enter at least 3 character.";
       }
     }
-    // Manger Email
+    // Manager Email
     if (!fields["email"]) {
       formIsValid = false;
       errors["email"] = "*Please enter your email-ID.";
@@ -116,7 +114,7 @@ class SignUp extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/signup", {
+        .post("https://localhost:5443/managers/signup", {
           fields: this.state.fields
         })
         .then(res => {
@@ -139,25 +137,6 @@ class SignUp extends Component {
       };
       this.setState({ fields: fields });
     }
-  };
-
-  onFailure = error => {
-    alert(error);
-  };
-
-  googleResponse = response => {
-      axios
-        .post("https://localhost:5443/signup", {
-          firstName: response.profileObj.givenName,
-          lastName: response.profileObj.familyName,
-          email: response.profileObj.email,
-          token: response.accessToken,
-        })
-        .then(res => {
-          // TODO: handle server response codes 200, 409, 401
-          console.log(res);
-        })
-        .catch(console.error);
   };
 
   render() {
@@ -225,6 +204,7 @@ class SignUp extends Component {
                     name="capacity"
                     id="capacity"
                     type="number"
+                    min="0"
                     placeholder="How many customer can you Restaurant hold"
                     value={this.state.fields.capacity}
                     onChange={this.handleChange}
@@ -349,13 +329,6 @@ class SignUp extends Component {
                 </button>
                 <hr />
               </form>
-              <GoogleLogin
-                clientId={config.GOOGLE_CLIENT_ID}
-                buttonText="Sign up with Google"
-                onSuccess={this.googleResponse}
-                onFailure={this.onFailure}
-                cookiePolicy={"single_host_origin"}
-              />
             </div>
           </div>
           <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">

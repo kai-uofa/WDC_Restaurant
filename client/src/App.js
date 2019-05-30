@@ -4,10 +4,12 @@ import axios from "axios";
 import NavBar from "./components/layout/Navbar";
 import SignIn from "./components/layout/Signin";
 import SignUp from "./components/layout/Signup";
-import MSignUp from "./components/manager/MSignup";
 import Index from "./components/layout/Index";
 import Detailrest from "./components/tracks/Detailrest";
 import Restlist from "./components/tracks/Restlist";
+import MSignUp from "./components/managers/MSignup";
+import MSignIn from "./components/managers/MSignin";
+import MIndex from "./components/managers/MIndex";
 
 class App extends Component {
   constructor(props) {
@@ -88,7 +90,9 @@ class App extends Component {
                 <SignUp {...props} isSignIn={this.state.isSignIn} />
               )}
             />
-            <Route path="/manager/signup" component={MSignUp} />
+            <Route path="/managers/signup" component={MSignUp} />
+            <Route path="/managers/signin" component={MSignIn} />
+            <Route path="/managers" component={MIndex} />
           </Switch>
         </React.Fragment>
       </Router>

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import config from "../../config.json";
-class SignIn extends Component {
+
+class MSignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,7 +55,7 @@ class SignIn extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/signin", {
+        .post("https://localhost:5443/managers/signin", {
           fields: this.state.fields
         })
         .then(res => {
@@ -74,25 +73,6 @@ class SignIn extends Component {
     }
   };
 
-  onFailure = error => {
-    alert(error);
-  };
-
-  googleResponse = response => {
-    axios
-      .post("https://localhost:5443/signin", {
-        firstName: response.profileObj.givenName,
-        lastName: response.profileObj.familyName,
-        email: response.profileObj.email,
-        token: response.tokenId
-      })
-      .then(res => {
-        // TODO: handle server response codes 200, 409, 401
-        console.log(res);
-      })
-      .catch(console.error);
-  };
-
   render() {
     return (
       <div className="container-fluid px-3">
@@ -100,64 +80,46 @@ class SignIn extends Component {
           <div className="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
             <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
               <div className="mb-6 pb-5">
-                <h2>Welcome Back</h2>
+                <h2>WDC Restaurant Manager</h2>
               </div>
-              <div className="bg-gradient-warning">{this.state.loginError}</div>
-              <form
-                className="form-validate"
-                method="post"
-                onSubmit={this.normalSignIn}
-              >
+              <form className="form-validate">
                 <div className="form-group">
-                  <label htmlFor="email" className="form-label">
+                  <label for="loginUsername" className="form-label">
                     Email Address
-                  </label>
+                </label>
                   <input
-                    name="email"
-                    id="email"
+                    name="loginUsername"
+                    id="loginUsername"
                     type="email"
                     placeholder="name@address.com"
-                    value={this.state.fields.email}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
+                    autocomplete="off"
+                    required=""
                     data-msg="Please enter your email"
                     className="form-control"
                   />
                 </div>
-                <div className="errorMsg">{this.state.errors.email}</div>
                 <div className="form-group">
-                  <label htmlFor="password" className="form-label">
+                  <label for="loginPassword" className="form-label">
+                    {" "}
                     Password
-                  </label>
+                </label>
                   <input
-                    name="password"
-                    id="password"
+                    name="loginPassword"
+                    id="loginPassword"
                     placeholder="Password"
-                    value={this.state.fields.password}
-                    onChange={this.handleChange}
                     type="password"
                     required=""
                     data-msg="Please enter your password"
                     className="form-control"
                   />
                 </div>
-                <div className="errorMsg">{this.state.errors.password}</div>
                 <button
                   type="submit"
                   className="btn btn-lg btn-block btn-primary"
                 >
                   SIGN IN
-                </button>
-                <hr />
+              </button>
               </form>
-              <GoogleLogin
-                clientId={config.GOOGLE_CLIENT_ID}
-                buttonText="Sign in with Google"
-                onSuccess={this.googleResponse}
-                onFailure={this.onFailure}
-                cookiePolicy={"single_host_origin"}
-              />
             </div>
           </div>
           <div className="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
@@ -169,4 +131,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default MSignIn;

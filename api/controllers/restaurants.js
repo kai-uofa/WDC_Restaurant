@@ -18,7 +18,7 @@ const Restaurants = {
       db.query(query, [search])
         .then(_dbres => {
           const results = [];
-          if (lat === "null" && lng === "null") {
+          if (lat === 'null' && lng === 'null') {
             res.json(_dbres);
           } else {
             for (let i = 0; i < _dbres.length; i++) {
@@ -54,10 +54,7 @@ const Restaurants = {
       db.query(query, [q])
         .then(results => {
           res.json(results);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        }).catch(console.error);
     } else {
       res.sendStatus(400); // Bad Request
     }

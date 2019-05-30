@@ -108,6 +108,19 @@ const Managers = {
     res.sendStatus(200);
   },
 
+  managerValidation(email) {
+    if (email !== undefined) {
+      db.query('SELECT email FROM Managers WHERE email = ?', [email])
+        .then( results => {
+          if (results.length > 0) {
+            return true;
+          } 
+            return false;
+        }).catch(console.error);
+    } else {
+      return false;
+    }
+  }
 };
 
 module.exports = Managers;
