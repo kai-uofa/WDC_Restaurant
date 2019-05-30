@@ -18,7 +18,8 @@ class App extends Component {
       location: {
         lat: null,
         lng: null
-      }
+      },
+      isSignIn: false
     };
     window.navigator.geolocation.getCurrentPosition(
       position => {
@@ -44,9 +45,9 @@ class App extends Component {
     }
     axios
       .get(
-        `https://localhost:5443/search?search=${this.state.searchText}&lat=${
-          this.state.location.lat
-        }&lng=${this.state.location.lng}`
+        `https://localhost:5443/search?search=${
+          this.state.searchText
+        }&lat=-34.92866&lng=138.59863`
       )
       .then(res => {
         this.setState({ rest_list: res.data });
@@ -61,15 +62,13 @@ class App extends Component {
     return (
       <Router>
         <React.Fragment>
-          <NavBar />
+          <NavBar isSignIn={this.state.isSignIn} />
           <Switch>
             <Route path="/search/restaurants/:id" component={Detailrest} />
-
             <Route
               path={`/search/:term`}
               render={() => <Restlist restList={this.state.rest_list} />}
             />
-
             <Route
               exact
               path="/"
@@ -82,9 +81,13 @@ class App extends Component {
                 />
               )}
             />
-
             <Route path="/signin" component={SignIn} />
-            <Route path="/signup" component={SignUp} />
+            <Route
+              path="/signup"
+              render={props => (
+                <SignUp {...props} isSignIn={this.state.isSignIn} />
+              )}
+            />
             <Route path="/manager/signup" component={MSignUp} />
           </Switch>
         </React.Fragment>
@@ -94,18 +97,3 @@ class App extends Component {
 }
 
 export default App;
-
-// axios
-//   .get(
-//     `https://developers.zomato.com/api/v2.1/search?q=${
-//       this.state.searchText
-//     }
-// }&apikey=51b7e1ab05b391b0e31af2e5160523a5`
-//   )
-//   .then(res => {
-//     console.log(res.data);
-//     this.setState({ rest_list: res.data.restaurants });
-//     let path = `/search/${this.state.searchText}`;
-//     history.push(path);
-//   })
-//   .catch(err => console.log(err));

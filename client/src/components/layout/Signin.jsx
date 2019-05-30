@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import config from '../../config.json';
+import config from "../../config.json";
 class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fields: {},
       errors: {}, // collect errors for validateForm
+      loginError: ""
     };
   }
-  
+
   handleChange = e => {
     let fields = this.state.fields;
     fields[e.target.name] = e.target.value;
@@ -48,7 +49,7 @@ class SignIn extends Component {
       errors: errors
     });
     return formIsValid;
-  };
+  }
 
   normalSignIn = e => {
     e.preventDefault();
@@ -59,31 +60,31 @@ class SignIn extends Component {
           fields: this.state.fields
         })
         .then(res => {
-          // TODO: handle server response codes 200, 409, 401
+          // TODO: handle server response codes 200, 401
           console.log(res);
         })
         .catch(console.error);
 
       // Reset all text fields
       let fields = {
-        email: '',
-        password: ''
+        email: "",
+        password: ""
       };
       this.setState({ fields: fields });
     }
   };
-  
+
   onFailure = error => {
     alert(error);
   };
-  
+
   googleResponse = response => {
     axios
       .post("https://localhost:5443/signin", {
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
         email: response.profileObj.email,
-        token: response.tokenId,
+        token: response.tokenId
       })
       .then(res => {
         // TODO: handle server response codes 200, 409, 401
@@ -93,12 +94,6 @@ class SignIn extends Component {
   };
 
   render() {
-    // TODO: handle server response codes 200, 409, 401
-    // TODO: handle user session login (req.session.email)
-    if (this.state.redirect || sessionStorage.getItem("userData")) {
-      return <Redirect to={"/"} />;
-    }
-
     return (
       <div className="container-fluid px-3">
         <div className="row min-vh-100">
@@ -107,11 +102,16 @@ class SignIn extends Component {
               <div className="mb-6 pb-5">
                 <h2>Welcome Back</h2>
               </div>
-              <form className="form-validate" method='post' onSubmit={this.normalSignIn}>
+              <div className="bg-gradient-warning">{this.state.loginError}</div>
+              <form
+                className="form-validate"
+                method="post"
+                onSubmit={this.normalSignIn}
+              >
                 <div className="form-group">
-                  <label for="email" className="form-label">
+                  <label htmlFor="email" className="form-label">
                     Email Address
-                </label>
+                  </label>
                   <input
                     name="email"
                     id="email"
@@ -119,7 +119,7 @@ class SignIn extends Component {
                     placeholder="name@address.com"
                     value={this.state.fields.email}
                     onChange={this.handleChange}
-                    autocomplete="off"
+                    autoComplete="off"
                     required
                     data-msg="Please enter your email"
                     className="form-control"
@@ -127,10 +127,9 @@ class SignIn extends Component {
                 </div>
                 <div className="errorMsg">{this.state.errors.email}</div>
                 <div className="form-group">
-                  <label for="password" className="form-label">
-                    {" "}
+                  <label htmlFor="password" className="form-label">
                     Password
-                </label>
+                  </label>
                   <input
                     name="password"
                     id="password"
@@ -144,7 +143,10 @@ class SignIn extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.password}</div>
-                <button type="submit" className="btn btn-lg btn-block btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-lg btn-block btn-primary"
+                >
                   SIGN IN
                 </button>
                 <hr />
@@ -164,7 +166,7 @@ class SignIn extends Component {
         </div>
       </div>
     );
-  };
+  }
 }
 
 export default SignIn;

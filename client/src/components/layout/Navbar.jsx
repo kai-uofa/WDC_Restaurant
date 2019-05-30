@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.jpeg";
 
-const NavBar = () => {
+const NavBar = props => {
   return (
     <header id="home">
       {/* <!-- navbar start--> */}
@@ -31,16 +31,20 @@ const NavBar = () => {
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/signup">
-                  Sign Up
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/signin">
-                  Sign In
-                </Link>
-              </li>
+              {!props.isSignIn && (
+                <React.Fragment>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/signup">
+                      Sign Up
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/signin">
+                      Sign In
+                    </Link>
+                  </li>
+                </React.Fragment>
+              )}
             </ul>
           </div>
           {/* <!--/Navbar collapse--> */}

@@ -8,7 +8,8 @@ class SignUp extends Component {
     super(props);
     this.state = {
       fields: {},
-      errors: {} // collect errors for validateForm
+      errors: {}, // collect errors for validateForm
+      isSignIn: this.props.isSignIn
     };
   }
 
@@ -106,6 +107,9 @@ class SignUp extends Component {
         })
         .then(res => {
           // TODO: handle server response codes 200, 409, 401
+          if (res.status === 200) {
+            this.props.history.push("/");
+          }
           console.log(res);
         })
         .catch(console.error);
@@ -127,28 +131,25 @@ class SignUp extends Component {
   };
 
   googleResponse = response => {
-    console.log(response);
     axios
-        .post("https://localhost:5443/signup", {
-          firstName: response.profileObj.givenName,
-          lastName: response.profileObj.familyName,
-          email: response.profileObj.email,
-          token: response.tokenId,
-        })
-        .then(res => {
-          // TODO: handle server response codes 200, 409, 401
-          console.log(res);
-        })
-        .catch(console.error);
+      .post("https://localhost:5443/signup", {
+        firstName: response.profileObj.givenName,
+        lastName: response.profileObj.familyName,
+        email: response.profileObj.email,
+        token: response.tokenId
+      })
+      .then(res => {
+        // TODO: handle server response codes 200, 409, 401
+        if (res.status === 200) {
+          this.props.history.push("/");
+          this.setState({ isSignIn: true });
+          console.log(this.state.isSignIn);
+        }
+      })
+      .catch(console.error);
   };
 
   render() {
-    // TODO: handle server response codes 200, 409, 401
-    // TODO: handle user session login (req.session.email)
-    if (this.state.redirect || sessionStorage.getItem("userData")) {
-      return <Redirect to={"/"} />;
-    }
-
     return (
       <div className="container-fluid px-3">
         <div className="row min-vh-100">
@@ -260,6 +261,7 @@ class SignUp extends Component {
                 <hr />
               </form>
               <GoogleLogin
+                className="btn btn-lg btn-block btn-primary center"
                 clientId={config.GOOGLE_CLIENT_ID}
                 buttonText="Sign up with Google"
                 onSuccess={this.googleResponse}
