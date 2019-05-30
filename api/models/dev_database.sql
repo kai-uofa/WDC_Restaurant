@@ -184,6 +184,7 @@ CREATE TABLE `Reviews` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `restaurant_id` int(11) NOT NULL,
+  `rating` int(11) NOT NULL,
   `content` varchar(3000) DEFAULT NULL,
   PRIMARY KEY (`review_id`),
   KEY `fk_reviews_to_customers` (`customer_id`),

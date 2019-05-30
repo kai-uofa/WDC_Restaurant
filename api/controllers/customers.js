@@ -15,7 +15,7 @@ const Customers = {
       })
       .catch(console.error);
 
-    const payload = ticket.getPayLoad();
+    const payload = ticket.getPayload();
     const googleID = payload.sub;
 
     // check if email existed in database
@@ -56,29 +56,30 @@ const Customers = {
       // req.body.fields.lastName !== undefined &&
       // req.body.fields.email !== undefined &&
       req.body.fields !== undefined
-    ) {
-      const existedEmail = await db
-        .query("SELECT email FROM Customers WHERE email = ?", [
-          req.body.fields.email
-        ])
-        .catch(console.error);
+      ) {
+        const existedEmail = await db
+          .query(
+            'SELECT email FROM Customers WHERE email = ?',
+            [req.body.fields.email]
+          )
+          .catch(console.error);
 
-      if (existedEmail.length < 1) {
-        // Add customer to database
-        const query =
-          "INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)";
-        db.query(query, [
-          req.body.fields.firstName,
-          req.body.fields.lastName,
-          req.body.fields.email,
-          req.body.fields.password
-        ]).catch(console.error);
-        // sign-in for customer
-        req.session.email = req.body.fields.email;
-        customer = req.body.fields.email;
-      } else {
-        conflictEmail = true;
-      }
+        if (existedEmail.length < 1) {
+          // Add customer to database
+          const query =
+            'INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)';
+          db.query(query, [
+            req.body.fields.firstName,
+            req.body.fields.lastName,
+            req.body.fields.email,
+            req.body.fields.password,
+          ]).catch(console.error);
+          // sign-in for customer
+          req.session.email = req.body.fields.email;
+          customer = req.body.fields.email;
+        } else {
+          conflictEmail = true;
+        }
 
       // check if google login token present
     } else if (req.body.token !== undefined) {

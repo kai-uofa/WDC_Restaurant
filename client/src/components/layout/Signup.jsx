@@ -127,18 +127,19 @@ class SignUp extends Component {
   };
 
   googleResponse = response => {
+    console.log(response);
     axios
-      .post("https://localhost:5443/signup", {
-        firstName: response.profileObj.givenName,
-        lastName: response.profileObj.familyName,
-        email: response.profileObj.email,
-        token: response.accessToken
-      })
-      .then(res => {
-        // TODO: handle server response codes 200, 409, 401
-        console.log(res);
-      })
-      .catch(console.error);
+        .post("https://localhost:5443/signup", {
+          firstName: response.profileObj.givenName,
+          lastName: response.profileObj.familyName,
+          email: response.profileObj.email,
+          token: response.tokenId,
+        })
+        .then(res => {
+          // TODO: handle server response codes 200, 409, 401
+          console.log(res);
+        })
+        .catch(console.error);
   };
 
   render() {
