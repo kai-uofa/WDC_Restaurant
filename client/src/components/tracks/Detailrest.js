@@ -53,6 +53,7 @@ class Detailrest extends Component {
               <div className="text-block py-3">
                 <h3 className="mb-4">Location</h3>
                 <MyMap
+                  detail={detail}
                   lng={this.state.lng}
                   lat={this.state.lat}
                   isMarkerShown

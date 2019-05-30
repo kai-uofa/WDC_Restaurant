@@ -1,3 +1,4 @@
+// TODO: add multiple infowindow
 import React from "react";
 import {
   withScriptjs,
@@ -37,8 +38,6 @@ const MyMaps = withScriptjs(
 export default MyMaps;
 // restaurant_latitude
 // restaurant_longitude
-// -34.92866
-// 138.59863
 
 // -34.8968227
 // 138.5651569
