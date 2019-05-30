@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import config from '../../config.json';
+import config from "../../config.json";
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fields: {},
-      errors: {}, // collect errors for validateForm
+      errors: {} // collect errors for validateForm
     };
   }
 
@@ -94,7 +94,7 @@ class SignUp extends Component {
       errors: errors
     });
     return formIsValid;
-  };
+  }
 
   normalSignUp = e => {
     e.preventDefault();
@@ -109,14 +109,14 @@ class SignUp extends Component {
           console.log(res);
         })
         .catch(console.error);
-      
+
       // Reset all text fields
       let fields = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        password2: ''
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        password2: ""
       };
       this.setState({ fields: fields });
     }
@@ -127,18 +127,18 @@ class SignUp extends Component {
   };
 
   googleResponse = response => {
-      axios
-        .post("https://localhost:5443/signup", {
-          firstName: response.profileObj.givenName,
-          lastName: response.profileObj.familyName,
-          email: response.profileObj.email,
-          token: response.accessToken,
-        })
-        .then(res => {
-          // TODO: handle server response codes 200, 409, 401
-          console.log(res);
-        })
-        .catch(console.error);
+    axios
+      .post("https://localhost:5443/signup", {
+        firstName: response.profileObj.givenName,
+        lastName: response.profileObj.familyName,
+        email: response.profileObj.email,
+        token: response.accessToken
+      })
+      .then(res => {
+        // TODO: handle server response codes 200, 409, 401
+        console.log(res);
+      })
+      .catch(console.error);
   };
 
   render() {
@@ -156,9 +156,13 @@ class SignUp extends Component {
               <div className="mb-4">
                 <h2>Sign up</h2>
               </div>
-              <form className="form-validate" method="post" onSubmit={this.normalSignUp}>
+              <form
+                className="form-validate"
+                method="post"
+                onSubmit={this.normalSignUp}
+              >
                 <div className="form-group">
-                  <label htmlFor="firstName" class="form-label">
+                  <label htmlFor="firstName" className="form-label">
                     First Name
                   </label>
                   <input
@@ -171,13 +175,13 @@ class SignUp extends Component {
                     autoComplete="off"
                     required
                     data-msg="Please enter your first name"
-                    class="form-control"
+                    className="form-control"
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.firstName}</div>
 
-                <div class="form-group">
-                  <label for="lastName" class="form-label">
+                <div className="form-group">
+                  <label htmlFor="lastName" className="form-label">
                     Last Name
                   </label>
                   <input
@@ -190,12 +194,12 @@ class SignUp extends Component {
                     autoComplete="off"
                     required
                     data-msg="Please enter your last name"
-                    class="form-control"
+                    className="form-control"
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.lastName}</div>
-                <div class="form-group">
-                  <label for="email" class="form-label">
+                <div className="form-group">
+                  <label htmlFor="email" className="form-label">
                     Email Address
                   </label>
                   <input
@@ -208,12 +212,12 @@ class SignUp extends Component {
                     autoComplete="off"
                     required
                     data-msg="Please enter your email"
-                    class="form-control"
+                    className="form-control"
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.email}</div>
-                <div class="form-group">
-                  <label for="password" class="form-label">
+                <div className="form-group">
+                  <label htmlFor="password" className="form-label">
                     {" "}
                     Password
                   </label>
@@ -226,12 +230,12 @@ class SignUp extends Component {
                     type="password"
                     required
                     data-msg="Please enter your password"
-                    class="form-control"
+                    className="form-control"
                   />
                   <div className="errorMsg">{this.state.errors.password}</div>
                 </div>
-                <div class="form-group mb-4">
-                  <label for="password2" class="form-label">
+                <div className="form-group mb-4">
+                  <label htmlFor="password2" className="form-label">
                     Confirm your password
                   </label>
                   <input
@@ -243,10 +247,13 @@ class SignUp extends Component {
                     value={this.state.fields.password2}
                     onChange={this.handleChange}
                     data-msg="Please enter your password"
-                    class="form-control"
+                    className="form-control"
                   />
                 </div>
-                <button type="submit" class="btn btn-lg btn-block btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-lg btn-block btn-primary"
+                >
                   SIGN UP
                 </button>
                 <hr />
@@ -260,13 +267,13 @@ class SignUp extends Component {
               />
             </div>
           </div>
-          <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
-            <div class="background-signin bg-cover h-100 mr-n3" />
+          <div className="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
+            <div className="background-signin bg-cover h-100 mr-n3" />
           </div>
         </div>
       </div>
     );
-  };
+  }
 }
 
 export default SignUp;

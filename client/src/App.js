@@ -44,9 +44,9 @@ class App extends Component {
     }
     axios
       .get(
-        `https://localhost:5443/search?search=${
-          this.state.searchText
-        }&lat=-34.92866&lng=138.59863`
+        `https://localhost:5443/search?search=${this.state.searchText}&lat=${
+          this.state.location.lat
+        }&lng=${this.state.location.lng}`
       )
       .then(res => {
         this.setState({ rest_list: res.data });

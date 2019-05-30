@@ -18,21 +18,25 @@ const Restaurants = {
       db.query(query, [search])
         .then(_dbres => {
           const results = [];
-          for (let i = 0; i < _dbres.length; i++) {
-            if (
-              geolib.isPointWithinRadius(
-                {
-                  latitude: _dbres[i].restaurant_latitude,
-                  longitude: _dbres[i].restaurant_longitude
-                },
-                { latitude: lat, longitude: lng },
-                3000
-              )
-            ) {
-              results.push(_dbres[i]);
+          if (lat === "null" && lng === "null") {
+            res.json(_dbres);
+          } else {
+            for (let i = 0; i < _dbres.length; i++) {
+              if (
+                geolib.isPointWithinRadius(
+                  {
+                    latitude: _dbres[i].restaurant_latitude,
+                    longitude: _dbres[i].restaurant_longitude
+                  },
+                  { latitude: lat, longitude: lng },
+                  1000
+                )
+              ) {
+                results.push(_dbres[i]);
+              }
             }
+            res.json(results);
           }
-          res.json(results);
         })
         .catch(error => {
           console.log(error);

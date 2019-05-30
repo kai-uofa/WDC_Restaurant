@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-const { OAuth2Client } = require('google-auth-library');
-const config = require ('../configAPIs');
-const db = require('../models/dbconnection');
+const { OAuth2Client } = require("google-auth-library");
+const config = require("../configAPIs");
+const db = require("../models/dbconnection");
 
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
@@ -11,7 +11,7 @@ const Customers = {
     const ticket = await client
       .verifyIdToken({
         idToken: req.body.token,
-        audience: config.GOOGLE_CLIENT_ID,
+        audience: config.GOOGLE_CLIENT_ID
       })
       .catch(console.error);
 
@@ -20,19 +20,25 @@ const Customers = {
 
     // check if email existed in database
     const googleAccExist = await db
-      .query(
-        'SELECT email FROM Customers WHERE email = ?',
-        [req.body.email]
-      )
+      .query("SELECT email FROM Customers WHERE email = ?", [req.body.email])
       .catch(console.error);
 
     if (googleAccExist.length < 1) {
       // add this email, name & google ID to server
-      const queryG = 'INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)';
-      db.query(queryG, [req.body.firstName, req.body.lastName, req.body.email, googleID]).catch(console.error);
+      const queryG =
+        "INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)";
+      db.query(queryG, [
+        req.body.firstName,
+        req.body.lastName,
+        req.body.email,
+        googleID
+      ]).catch(console.error);
     } else {
       // link google account
-      db.query('UPDATE Customers SET google_id = ? WHERE email = ?', [googleID, req.body.email]).catch(console.error);
+      db.query("UPDATE Customers SET google_id = ? WHERE email = ?", [
+        googleID,
+        req.body.email
+      ]).catch(console.error);
     }
   },
 
@@ -42,37 +48,37 @@ const Customers = {
 
     if (req.session.email !== undefined) {
       customer = req.session.email;
+      console.log(customer);
 
       // check if signup details presents
     } else if (
-      req.body.fields.firstName !== undefined &&
-      req.body.fields.lastName !== undefined &&
-      req.body.fields.email !== undefined &&
-      req.body.fields.password !== undefined
-      ) {
-        const existedEmail = await db
-          .query(
-            'SELECT email FROM Customers WHERE email = ?',
-            [req.body.fields.email]
-          )
-          .catch(console.error);
+      // req.body.fields.firstName !== undefined &&
+      // req.body.fields.lastName !== undefined &&
+      // req.body.fields.email !== undefined &&
+      req.body.fields !== undefined
+    ) {
+      const existedEmail = await db
+        .query("SELECT email FROM Customers WHERE email = ?", [
+          req.body.fields.email
+        ])
+        .catch(console.error);
 
-        if (existedEmail.length < 1) {
-          // Add customer to database
-          const query =
-            'INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)';
-          db.query(query, [
-            req.body.fields.firstName,
-            req.body.fields.lastName,
-            req.body.fields.email,
-            req.body.fields.password,
-          ]).catch(console.error);
-          // sign-in for customer
-          req.session.email = req.body.fields.email;
-          customer = req.body.fields.email;
-        } else {
-          conflictEmail = true;
-        }
+      if (existedEmail.length < 1) {
+        // Add customer to database
+        const query =
+          "INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)";
+        db.query(query, [
+          req.body.fields.firstName,
+          req.body.fields.lastName,
+          req.body.fields.email,
+          req.body.fields.password
+        ]).catch(console.error);
+        // sign-in for customer
+        req.session.email = req.body.fields.email;
+        customer = req.body.fields.email;
+      } else {
+        conflictEmail = true;
+      }
 
       // check if google login token present
     } else if (req.body.token !== undefined) {
@@ -108,10 +114,10 @@ const Customers = {
     ) {
       const { email } = req.body.fields;
       const { password } = req.body.fields;
-      db.query('SELECT email FROM Customers WHERE email = ? AND password = ? ', [
-        email,
-        password,
-      ])
+      db.query(
+        "SELECT email FROM Customers WHERE email = ? AND password = ? ",
+        [email, password]
+      )
         .then(results => {
           if (results.length > 0) {
             req.session.email = email;
@@ -143,7 +149,7 @@ const Customers = {
     }
 
     res.sendStatus(200);
-  },
+  }
 };
 
 module.exports = Customers;
