@@ -15,7 +15,7 @@ const Customers = {
       })
       .catch(console.error);
 
-    const payload = ticket.getPayLoad();
+    const payload = ticket.getPayload();
     const googleID = payload.sub;
 
     // check if email existed in database
@@ -45,10 +45,10 @@ const Customers = {
 
       // check if signup details presents
     } else if (
-      req.body.fields.firstName !== undefined &&
-      req.body.fields.lastName !== undefined &&
-      req.body.fields.email !== undefined &&
-      req.body.fields.password !== undefined
+      // req.body.fields.firstName !== undefined &&
+      // req.body.fields.lastName !== undefined &&
+      // req.body.fields.email !== undefined &&
+      req.body.fields !== undefined
       ) {
         const existedEmail = await db
           .query(

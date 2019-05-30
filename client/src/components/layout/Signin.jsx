@@ -83,7 +83,7 @@ class SignIn extends Component {
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
         email: response.profileObj.email,
-        token: response.accessToken,
+        token: response.tokenId,
       })
       .then(res => {
         // TODO: handle server response codes 200, 409, 401

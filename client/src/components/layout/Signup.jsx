@@ -127,12 +127,13 @@ class SignUp extends Component {
   };
 
   googleResponse = response => {
-      axios
+    console.log(response);  
+    axios
         .post("https://localhost:5443/signup", {
           firstName: response.profileObj.givenName,
           lastName: response.profileObj.familyName,
           email: response.profileObj.email,
-          token: response.accessToken,
+          token: response.tokenId,
         })
         .then(res => {
           // TODO: handle server response codes 200, 409, 401
