@@ -109,7 +109,8 @@ const Managers = {
   },
 
   getAllBookings(req, res) {
-    // TODO: get all bookings from database
+    // TODO: get all ACTIVE bookings from database
+    // 
   }
 };
 
