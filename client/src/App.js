@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import NavBar from "./components/layout/Navbar";
 import SignIn from "./components/layout/Signin";
 import SignUp from "./components/layout/Signup";
+import Logout from "./components/layout/Logout";
 import Index from "./components/layout/Index";
 import Detailrest from "./components/tracks/Detailrest";
 import Restlist from "./components/tracks/Restlist";
 import MSignUp from "./components/managers/MSignup";
 import MSignIn from "./components/managers/MSignin";
-import MIndex from "./components/managers/MIndex";
+// import MIndex from "./components/managers/MIndex";
 
 class App extends Component {
   constructor(props) {
@@ -20,9 +22,9 @@ class App extends Component {
       location: {
         lat: null,
         lng: null
-      },
-      isSignIn: false
+      }
     };
+    //google api to get current location users
     window.navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -36,10 +38,12 @@ class App extends Component {
     );
   }
 
+  //tracking the input changes
   onSearchChange = e => {
     this.setState({ searchText: e.target.value });
   };
 
+  //submit search form
   handleOnClick = (e, history) => {
     e.preventDefault();
     if (e.target.value === undefined) {
@@ -60,11 +64,21 @@ class App extends Component {
     e.currentTarget.reset();
   };
 
+  componentDidMount() {
+    try {
+      const jwt = localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      this.setState({ user });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
     return (
       <Router>
         <React.Fragment>
-          <NavBar isSignIn={this.state.isSignIn} />
+          <NavBar user={this.state.user} />
           <Switch>
             <Route path="/search/restaurants/:id" component={Detailrest} />
             <Route
@@ -83,6 +97,7 @@ class App extends Component {
                 />
               )}
             />
+            <Route path="/logout" component={Logout} />
             <Route path="/signin" component={SignIn} />
             <Route
               path="/signup"
@@ -92,7 +107,7 @@ class App extends Component {
             />
             <Route path="/managers/signup" component={MSignUp} />
             <Route path="/managers/signin" component={MSignIn} />
-            <Route path="/managers" component={MIndex} />
+            {/* <Route path="/managers" component={MIndex} /> */}
           </Switch>
         </React.Fragment>
       </Router>

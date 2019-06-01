@@ -1,85 +1,95 @@
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import config from "../../config.json";
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
-      email : "",
-      password : "",
-      password2: "",
-      errors: {}, // collect errors for validateForm
-      isSignIn: this.props.isSignIn
+      fields: {},
+      errors: {}
     };
   }
 
-  handleChange = (e) => {
-    if(e.target.name == 'firstName') {
-      this.setState({firstName: e.target.value});
-    }
-    if (e.target.name == 'lastName'){
-      this.setState({lastName:e.target.value});
-    }
-    if(e.target.name == 'email') {
-      this.setState({email: e.target.value});
-    }
-    if (e.target.name == 'password'){
-      this.setState({password:e.target.value});
-    }
-    if(e.target.name == 'password2') {
-      this.setState({password2: e.target.value});
-    }
+  handleChange = e => {
+    let fields = this.state.fields;
+    fields[e.target.name] = e.target.value;
+    this.setState({
+      fields
+    });
   };
-
   validateForm() {
-    let firstName = this.state.firstName;
-    let lastName = this.state.lastName;
-    let email = this.state.email;
-    let password = this.state.password;
-    let password2 = this.state.password2;
+    let fields = this.state.fields;
     let errors = {};
     let formIsValid = true;
 
+    if (!fields["firstName"]) {
+      formIsValid = false;
+      errors["firstName"] = "*Please enter your First Name.";
+    }
 
-      if (!firstName.match(/^[a-zA-Z ]*$/)) {
+    if (typeof fields["firstName"] !== "undefined") {
+      if (!fields["firstName"].match(/^[a-zA-Z ]*$/)) {
         formIsValid = false;
         errors["firstName"] = "*Please enter alphabet characters only.";
       }
-
-   
-    if (firstName.length < 2) {
-      formIsValid = false;
-      errors["firstName"] = "Please enter at least 2 character.";
     }
-   
-      if (!lastName.match(/^[a-zA-Z ]*$/)) {
+    if (fields["firstName"].length < 3) {
+      formIsValid = false;
+      errors["firstName"] = "Please enter at least 3 character.";
+    }
+    if (!fields["lastName"]) {
+      formIsValid = false;
+      errors["lastName"] = "*Please enter your Last Name.";
+    }
+
+    if (typeof fields["lastName"] !== "undefined") {
+      if (!fields["lastName"].match(/^[a-zA-Z ]*$/)) {
         formIsValid = false;
         errors["lastName"] = "*Please enter alphabet characters only.";
       }
-      if (lastName.length < 2) {
+      if (fields["lastName"].length < 3) {
         formIsValid = false;
-        errors["lastName"] = "Please enter at least 2 character.";
+        errors["lastName"] = "Please enter at least 3 character.";
       }
+    }
+    if (!fields["email"]) {
+      formIsValid = false;
+      errors["email"] = "*Please enter your email-ID.";
+    }
+
+    if (typeof fields["email"] !== "undefined") {
+      //regular expression for email validation
       var pattern = new RegExp(
         /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
       );
-      if (!pattern.test(email)) {
+      if (!pattern.test(fields["email"])) {
         formIsValid = false;
         errors["email"] = "*Please enter valid email-ID.";
       }
+    }
 
-    if (password !== password2) {
+    if (!fields["password"]) {
+      formIsValid = false;
+      errors["password"] = "*Please enter your password.";
+    }
+
+    if (fields["password"] !== fields["password2"]) {
       formIsValid = false;
       errors["password"] = "*The password is not matching";
     }
-    if (password.length < 8) {
+    if (fields["password"].length < 5) {
       formIsValid = false;
       errors["password"] = "*Password need to at least has 8 character";
     }
+
+    // if (typeof fields["password"] !== "undefined") {
+    //   if (!fields["password"].match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
+    //     formIsValid = false;
+    //     errors["password"] = "*Please enter secure and strong password.";
+    //   }
+    // }
+
     this.setState({
       errors: errors
     });
@@ -93,28 +103,27 @@ class SignUp extends Component {
       axios
         .post("/signup", {
           // fields: this.state.fields
-          firstName : this.state.firstName,
-          lastName : this.state.lastName,
-          email : this.state.email,
-          password : this.state.password,
-          password2 : this.state.password2
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          email: this.state.email,
+          password: this.state.password,
+          password2: this.state.password2
         })
         .then(res => {
-          // TODO: handle server response codes 200, 409, 401
-          if (res.status === 200) {
-            this.props.history.push("/");
-          }
-          console.log(res);
+          localStorage.setItem("token", res.data);
+          window.location = "/";
         })
         .catch(console.error);
 
-      // Reset all text fields   
-      this.setState({ firstName: "",lastName:"",email:"",password:"",password2:"" });
+      // Reset all text fields
+      this.setState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        password2: ""
+      });
     }
-  };
-
-  onFailure = error => {
-    alert(error);
   };
 
   googleResponse = response => {
@@ -126,15 +135,14 @@ class SignUp extends Component {
         token: response.tokenId
       })
       .then(res => {
-        // TODO: handle server response codes 200, 409, 401
-        // TODO: handle json from server
-        if (res.status === 200) {
-          this.props.history.push("/");
-          this.setState({ isSignIn: true });
-          console.log(this.state.isSignIn);
-        }
+        localStorage.setItem("token", res.data);
+        window.location = "/";
       })
       .catch(console.error);
+  };
+
+  onFailure = error => {
+    alert(error);
   };
 
   render() {
@@ -180,7 +188,7 @@ class SignUp extends Component {
                     type="text"
                     placeholder="Last Name"
                     value={this.state.lastName}
-                     onChange={this.handleChange}
+                    onChange={this.handleChange}
                     autoComplete="off"
                     required
                     data-msg="Please enter your last name"

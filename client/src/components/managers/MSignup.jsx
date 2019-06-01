@@ -7,44 +7,44 @@ class SignUp extends Component {
     this.state = {
       firstName: "",
       lastName: "",
-      email : "",
-      password : "",
+      email: "",
+      password: "",
       password2: "",
       resName: "",
       resAdress: "",
-      capacity:"",
+      capacity: "",
       description: "",
-      errors: {}, // collect errors for validateForm
+      errors: {} // collect errors for validateForm
     };
   }
 
   handleChange = e => {
-    if(e.target.name == 'firstName') {
-      this.setState({firstName: e.target.value});
+    if (e.target.name === "firstName") {
+      this.setState({ firstName: e.target.value });
     }
-    if (e.target.name == 'lastName'){
-      this.setState({lastName:e.target.value});
+    if (e.target.name === "lastName") {
+      this.setState({ lastName: e.target.value });
     }
-    if(e.target.name == 'email') {
-      this.setState({email: e.target.value});
+    if (e.target.name === "email") {
+      this.setState({ email: e.target.value });
     }
-    if (e.target.name == 'password'){
-      this.setState({password:e.target.value});
+    if (e.target.name === "password") {
+      this.setState({ password: e.target.value });
     }
-    if(e.target.name == 'password2') {
-      this.setState({password2: e.target.value});
+    if (e.target.name === "password2") {
+      this.setState({ password2: e.target.value });
     }
-    if(e.target.name == 'resName') {
-      this.setState({resName: e.target.value});
+    if (e.target.name === "resName") {
+      this.setState({ resName: e.target.value });
     }
-    if (e.target.name == 'resAdress'){
-      this.setState({resAdress :e.target.value});
+    if (e.target.name === "resAdress") {
+      this.setState({ resAdress: e.target.value });
     }
-    if(e.target.name == 'capacity') {
-      this.setState({capacity: e.target.value});
+    if (e.target.name === "capacity") {
+      this.setState({ capacity: e.target.value });
     }
-    if (e.target.name == 'description'){
-      this.setState({description:e.target.value});
+    if (e.target.name === "description") {
+      this.setState({ description: e.target.value });
     }
   };
 
@@ -73,21 +73,20 @@ class SignUp extends Component {
       errors["resAdress"] = "*Please enter your Restaurant Location.";
     }
 
-      if (resAdress.length < 3) {
-        formIsValid = false;
-        errors["resAdress"] = "Please enter at least 3 character.";
-      }
-    // Manger firstName 
+    if (resAdress.length < 3) {
+      formIsValid = false;
+      errors["resAdress"] = "Please enter at least 3 character.";
+    }
+    // Manger firstName
     if (!firstName.match(/^[a-zA-Z ]*$/)) {
       formIsValid = false;
       errors["firstName"] = "*Please enter alphabet characters only.";
     }
 
- 
-  if (firstName.length < 2) {
-    formIsValid = false;
-    errors["firstName"] = "Please enter at least 2 character.";
-  }
+    if (firstName.length < 2) {
+      formIsValid = false;
+      errors["firstName"] = "Please enter at least 2 character.";
+    }
     //Manager last name
     if (!lastName.match(/^[a-zA-Z ]*$/)) {
       formIsValid = false;
@@ -106,19 +105,19 @@ class SignUp extends Component {
       errors["email"] = "*Please enter valid email-ID.";
     }
 
-  if (password !== password2) {
-    formIsValid = false;
-    errors["password"] = "*The password is not matching";
-  }
-  if (password.length < 8) {
-    formIsValid = false;
-    errors["password"] = "*Password need to at least has 8 character";
-  }
+    if (password !== password2) {
+      formIsValid = false;
+      errors["password"] = "*The password is not matching";
+    }
+    if (password.length < 8) {
+      formIsValid = false;
+      errors["password"] = "*Password need to at least has 8 character";
+    }
     this.setState({
       errors: errors
     });
     return formIsValid;
-  };
+  }
 
   normalSignUp = e => {
     e.preventDefault();
@@ -126,33 +125,35 @@ class SignUp extends Component {
       // Send request to server
       axios
         .post("/managers/signup", {
-          resName : this.state.restName,
-          resAdress : this.state.resAdress,
-          capacity : this.state.capacity,
-          description : this.state.description,
-          firstName : this.state.firstName,
-          lastName : this.state.lastName,
-          email : this.state.email,
-          password : this.state.password,
-          password2 : this.state.password2
+          resName: this.state.restName,
+          resAdress: this.state.resAdress,
+          capacity: this.state.capacity,
+          description: this.state.description,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          email: this.state.email,
+          password: this.state.password,
+          password2: this.state.password2
         })
         .then(res => {
           // TODO: handle server response codes 200, 409, 401
           console.log(res);
         })
         .catch(console.error);
-      
+
       // Reset all text fields
-    
-      this.setState({ resName: '',
-      resAdress: '',
-      capacity: '',
-      description: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      password2: '' });
+
+      this.setState({
+        resName: "",
+        resAdress: "",
+        capacity: "",
+        description: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        password2: ""
+      });
     }
   };
 
@@ -170,10 +171,15 @@ class SignUp extends Component {
             <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
               <div className="mb-4">
                 <h2>Get started with Us</h2>
-                <p>Tell us a little about you and your restaurant, and we’ll contact you via phone or email to provide information about WDC products and services.</p>
+                <p>
+                  Tell us a little about you and your restaurant, and we’ll
+                  contact you via phone or email to provide information about
+                  WDC products and services.
+                </p>
               </div>
-              <form className="form-validate"
-                method="post" 
+              <form
+                className="form-validate"
+                method="post"
                 onSubmit={this.normalSignUp}
               >
                 {/* Restaurant Name */}
@@ -195,7 +201,7 @@ class SignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.resName}</div>
-                   {/* Restaurant Adress */}
+                {/* Restaurant Adress */}
                 <div class="form-group">
                   <label for="resAdress" class="form-label">
                     Restaurant Location
@@ -214,7 +220,7 @@ class SignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.resAdress}</div>
-                  {/* Restaurant Capacity */}
+                {/* Restaurant Capacity */}
                 <div class="form-group">
                   <label for="capacity" class="form-label">
                     Capacity
@@ -234,10 +240,10 @@ class SignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.capacity}</div>
-                 {/* Restaurant Description */}
+                {/* Restaurant Description */}
                 <div class="form-group">
                   <label for="password" class="form-label">
-                     Restaurant Description (Optional)
+                    Restaurant Description (Optional)
                   </label>
                   <input
                     name="description"
@@ -250,7 +256,7 @@ class SignUp extends Component {
                     class="form-control"
                   />
                 </div>
-                 {/* Manager First Name */}
+                {/* Manager First Name */}
                 <div className="form-group">
                   <label htmlFor="firstName" class="form-label">
                     First Name
@@ -269,7 +275,7 @@ class SignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.firstName}</div>
-                    {/* Manager Last Name */}
+                {/* Manager Last Name */}
                 <div class="form-group">
                   <label for="lastName" class="form-label">
                     Last Name
@@ -307,7 +313,7 @@ class SignUp extends Component {
                   />
                 </div>
                 <div className="errorMsg">{this.state.errors.email}</div>
-                   {/* Manger Password */}
+                {/* Manger Password */}
                 <div class="form-group">
                   <label for="password" class="form-label">
                     {" "}
@@ -326,7 +332,7 @@ class SignUp extends Component {
                   />
                   <div className="errorMsg">{this.state.errors.password}</div>
                 </div>
-                 {/* Confirm password */}
+                {/* Confirm password */}
                 <div class="form-group mb-4">
                   <label for="password2" class="form-label">
                     Confirm your password
@@ -356,7 +362,7 @@ class SignUp extends Component {
         </div>
       </div>
     );
-  };
+  }
 }
 
 export default SignUp;
