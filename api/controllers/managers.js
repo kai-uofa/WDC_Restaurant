@@ -106,20 +106,6 @@ const Managers = {
     } else {
       res.sendStatus(401); // Unauthorized
     }
-  },
-
-  managerValidation(email) {
-    if (email !== undefined) {
-      db.query('SELECT email FROM Managers WHERE email = ?', [email])
-        .then( results => {
-          if (results.length > 0) {
-            return true;
-          } 
-            return false;
-        }).catch(console.error);
-    } else {
-      return false;
-    }
   }
 };
 

@@ -5,8 +5,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const session = require('express-session');
-const uuid = require('uuid/v4');
+const jwt = require('jsonwebtoken');
+const config = require('./configAPIs');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -37,15 +37,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(
-  session({
-    genid: req => uuid(), // use UUIDs for session IDs
-    secret: 'The very secret keyword of WDC',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
-  })
-);
+app.use(function(req, res, next) {
+  // Express headers are auto converted to lowercase
+  let token = req.headers['x-access-token'] || req.headers.authorization;
+  if (token.startsWith('Bearer ')) {
+    // Remove Bearer from string
+    token = token.slice(7, token.length);
+  }
+
+  if (token) {
+    jwt.verify(token, config.JWT_SECRET_KEY, (err, decoded) => {
+      if (err) {
+        return res.json({
+          success: false,
+          message: 'Token is not valid',
+        });
+      }
+      req.decoded = decoded;
+      next();
+    });
+  } else {
+    next();
+  }
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
