@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
   if (Managers.managerValidation(req.session.email)) {
     Bookings.getActiveBookings(req, res);
   } else {
-    res.sendStatus(403); // Unauthorized
+    res.sendStatus(403); // Forbidden
   }
 });
 
