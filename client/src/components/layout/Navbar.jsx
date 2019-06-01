@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../../images/logo.jpeg";
 
 const NavBar = props => {
+  const { user } = props;
   return (
     <header id="home">
       {/* <!-- navbar start--> */}
@@ -26,20 +27,34 @@ const NavBar = props => {
           {/* <!--Navbar collapse--> */}
           <div id="navBarCollapse" className="collapse navbar-collapse">
             <ul className="navbar-nav ml-auto">
+              {user && (
+                <li className="nav-item ">
+                  <Link className="nav-link btn btn-light mr-4" to="/profile">
+                    Hello {user.firstName}
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link btn btn-light mr-4" to="/">
                   Home
                 </Link>
               </li>
-              {!props.isSignIn && (
+              {user && (
+                <li className="nav-item">
+                  <Link className="nav-link btn btn-light " to="/logout">
+                    Log out
+                  </Link>
+                </li>
+              )}
+              {!user && (
                 <React.Fragment>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/signup">
+                    <Link className="nav-link btn btn-light mr-4" to="/signup">
                       Sign Up
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/signin">
+                    <Link className="nav-link btn btn-light " to="/signin">
                       Sign In
                     </Link>
                   </li>

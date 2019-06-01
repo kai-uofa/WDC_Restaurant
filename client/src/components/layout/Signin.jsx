@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import config from "../../config.json";
 class SignIn extends Component {
@@ -49,7 +48,7 @@ class SignIn extends Component {
       errors: errors
     });
     return formIsValid;
-  };
+  }
 
   normalSignIn = e => {
     e.preventDefault();
@@ -60,8 +59,8 @@ class SignIn extends Component {
           fields: this.state.fields
         })
         .then(res => {
-          // TODO: handle server response codes 200, 401
-          console.log(res);
+          localStorage.setItem("token", res.data);
+          window.location = "/";
         })
         .catch(console.error);
 
@@ -74,10 +73,6 @@ class SignIn extends Component {
     }
   };
 
-  onFailure = error => {
-    alert(error);
-  };
-
   googleResponse = response => {
     axios
       .post("https://localhost:5443/signin", {
@@ -87,10 +82,15 @@ class SignIn extends Component {
         token: response.tokenId
       })
       .then(res => {
-        // TODO: handle server response codes 200, 409, 401
         console.log(res);
+        localStorage.setItem("token", res.data);
+        window.location = "/";
       })
       .catch(console.error);
+  };
+
+  onFailure = error => {
+    alert(error);
   };
 
   render() {
@@ -119,7 +119,6 @@ class SignIn extends Component {
                     placeholder="name@address.com"
                     value={this.state.fields.email}
                     onChange={this.handleChange}
-                    autoComplete="off"
                     required
                     data-msg="Please enter your email"
                     className="form-control"
@@ -152,6 +151,7 @@ class SignIn extends Component {
                 <hr />
               </form>
               <GoogleLogin
+                className="btn btn-lg btn-block btn-primary"
                 clientId={config.GOOGLE_CLIENT_ID}
                 buttonText="Sign in with Google"
                 onSuccess={this.googleResponse}

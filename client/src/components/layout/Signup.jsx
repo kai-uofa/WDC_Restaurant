@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import config from "../../config.json";
 class SignUp extends Component {
@@ -8,8 +7,7 @@ class SignUp extends Component {
     super(props);
     this.state = {
       fields: {},
-      errors: {}, // collect errors for validateForm
-      isSignIn: this.props.isSignIn
+      errors: {} // collect errors for validateForm
     };
   }
 
@@ -35,7 +33,7 @@ class SignUp extends Component {
         errors["firstName"] = "*Please enter alphabet characters only.";
       }
     }
-    if (fields["firstName"].length < 3) {
+    if (fields["firstName"].length < 1) {
       formIsValid = false;
       errors["firstName"] = "Please enter at least 3 character.";
     }
@@ -49,7 +47,7 @@ class SignUp extends Component {
         formIsValid = false;
         errors["lastName"] = "*Please enter alphabet characters only.";
       }
-      if (fields["lastName"].length < 3) {
+      if (fields["lastName"].length < 1) {
         formIsValid = false;
         errors["lastName"] = "Please enter at least 3 character.";
       }
@@ -79,17 +77,10 @@ class SignUp extends Component {
       formIsValid = false;
       errors["password"] = "*The password is not matching";
     }
-    if (fields["password"].length < 5) {
+    if (fields["password"].length < 2) {
       formIsValid = false;
       errors["password"] = "*Password need to at least has 8 character";
     }
-
-    // if (typeof fields["password"] !== "undefined") {
-    //   if (!fields["password"].match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
-    //     formIsValid = false;
-    //     errors["password"] = "*Please enter secure and strong password.";
-    //   }
-    // }
 
     this.setState({
       errors: errors
@@ -106,11 +97,8 @@ class SignUp extends Component {
           fields: this.state.fields
         })
         .then(res => {
-          // TODO: handle server response codes 200, 409, 401
-          if (res.status === 200) {
-            this.props.history.push("/");
-          }
-          console.log(res);
+          localStorage.setItem("token", res.data);
+          window.location = "/";
         })
         .catch(console.error);
 
@@ -126,10 +114,6 @@ class SignUp extends Component {
     }
   };
 
-  onFailure = error => {
-    alert(error);
-  };
-
   googleResponse = response => {
     axios
       .post("https://localhost:5443/signup", {
@@ -139,15 +123,14 @@ class SignUp extends Component {
         token: response.tokenId
       })
       .then(res => {
-        // TODO: handle server response codes 200, 409, 401
-        // TODO: handle json from server
-        if (res.status === 200) {
-          this.props.history.push("/");
-          this.setState({ isSignIn: true });
-          console.log(this.state.isSignIn);
-        }
+        localStorage.setItem("token", res.data);
+        window.location = "/";
       })
       .catch(console.error);
+  };
+
+  onFailure = error => {
+    alert(error);
   };
 
   render() {

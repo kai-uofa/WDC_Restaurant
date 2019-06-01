@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 class MSignIn extends Component {
@@ -48,7 +47,7 @@ class MSignIn extends Component {
       errors: errors
     });
     return formIsValid;
-  };
+  }
 
   normalSignIn = e => {
     e.preventDefault();
@@ -86,7 +85,7 @@ class MSignIn extends Component {
                 <div className="form-group">
                   <label for="loginUsername" className="form-label">
                     Email Address
-                </label>
+                  </label>
                   <input
                     name="loginUsername"
                     id="loginUsername"
@@ -102,7 +101,7 @@ class MSignIn extends Component {
                   <label for="loginPassword" className="form-label">
                     {" "}
                     Password
-                </label>
+                  </label>
                   <input
                     name="loginPassword"
                     id="loginPassword"
@@ -118,7 +117,7 @@ class MSignIn extends Component {
                   className="btn btn-lg btn-block btn-primary"
                 >
                   SIGN IN
-              </button>
+                </button>
               </form>
             </div>
           </div>

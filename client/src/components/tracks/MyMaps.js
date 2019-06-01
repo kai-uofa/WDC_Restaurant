@@ -8,31 +8,26 @@ import {
 } from "react-google-maps";
 
 const MyMaps = withScriptjs(
-  withGoogleMap(
-    props => (
-      console.log(props),
-      (
-        <GoogleMap
-          defaultZoom={14}
-          defaultCenter={{
-            lat: props.listLocation[0].restaurant_latitude,
-            lng: props.listLocation[0].restaurant_longitude
-          }}
-        >
-          {props.isMarkerShown &&
-            props.listLocation.map(rest => (
-              <Marker
-                key={rest.restaurant_id}
-                position={{
-                  lat: rest.restaurant_latitude,
-                  lng: rest.restaurant_longitude
-                }}
-              />
-            ))}
-        </GoogleMap>
-      )
-    )
-  )
+  withGoogleMap(props => (
+    <GoogleMap
+      defaultZoom={14}
+      defaultCenter={{
+        lat: props.listLocation[0].restaurant_latitude,
+        lng: props.listLocation[0].restaurant_longitude
+      }}
+    >
+      {props.isMarkerShown &&
+        props.listLocation.map(rest => (
+          <Marker
+            key={rest.restaurant_id}
+            position={{
+              lat: rest.restaurant_latitude,
+              lng: rest.restaurant_longitude
+            }}
+          />
+        ))}
+    </GoogleMap>
+  ))
 );
 
 export default MyMaps;
