@@ -6,19 +6,19 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email : "",
+      email: "",
       password: "",
       errors: {}, // collect errors for validateForm
       loginError: ""
     };
   }
 
-  handleChange = (e) => {
-    if(e.target.name == 'email') {
-      this.setState({email: e.target.value});
+  handleChange = e => {
+    if (e.target.name === "email") {
+      this.setState({ email: e.target.value });
     }
-    if (e.target.name == 'password'){
-      this.setState({password:e.target.value});
+    if (e.target.name === "password") {
+      this.setState({ password: e.target.value });
     }
   };
 
@@ -32,15 +32,14 @@ class SignIn extends Component {
       errors["email"] = "*Please enter your email-ID.";
     }
 
-      //regular expression for email validation
-      var pattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-      );
-      if (!pattern.test(email)) {
-        formIsValid = false;
-        errors["email"] = "*Please enter valid email-ID.";
-      }
-
+    //regular expression for email validation
+    var pattern = new RegExp(
+      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+    );
+    if (!pattern.test(email)) {
+      formIsValid = false;
+      errors["email"] = "*Please enter valid email-ID.";
+    }
 
     this.setState({
       errors: errors
@@ -54,8 +53,8 @@ class SignIn extends Component {
       // Send request to server
       axios
         .post("/signin", {
-          email : this.state.email,
-          password : this.state.password
+          email: this.state.email,
+          password: this.state.password
         })
         .then(res => {
           localStorage.setItem("token", res.data);
@@ -64,7 +63,7 @@ class SignIn extends Component {
         .catch(console.error);
 
       // Reset all text fields
-      this.setState({email: "",password: " "});
+      this.setState({ email: "", password: " " });
     }
   };
 
