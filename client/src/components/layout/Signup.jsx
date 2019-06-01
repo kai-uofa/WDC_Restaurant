@@ -49,19 +49,20 @@ class SignUp extends Component {
         formIsValid = false;
         errors["firstName"] = "*Please enter alphabet characters only.";
       }
+
    
-    if (firstName.length < 3) {
+    if (firstName.length < 2) {
       formIsValid = false;
-      errors["firstName"] = "Please enter at least 3 character.";
+      errors["firstName"] = "Please enter at least 2 character.";
     }
    
       if (!lastName.match(/^[a-zA-Z ]*$/)) {
         formIsValid = false;
         errors["lastName"] = "*Please enter alphabet characters only.";
       }
-      if (lastName.length < 3) {
+      if (lastName.length < 2) {
         formIsValid = false;
-        errors["lastName"] = "Please enter at least 3 character.";
+        errors["lastName"] = "Please enter at least 2 character.";
       }
       var pattern = new RegExp(
         /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
@@ -75,7 +76,7 @@ class SignUp extends Component {
       formIsValid = false;
       errors["password"] = "*The password is not matching";
     }
-    if (password.length < 5) {
+    if (password.length < 8) {
       formIsValid = false;
       errors["password"] = "*Password need to at least has 8 character";
     }
