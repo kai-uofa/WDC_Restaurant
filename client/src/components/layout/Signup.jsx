@@ -140,6 +140,7 @@ class SignUp extends Component {
       })
       .then(res => {
         // TODO: handle server response codes 200, 409, 401
+        // TODO: handle json from server
         if (res.status === 200) {
           this.props.history.push("/");
           this.setState({ isSignIn: true });

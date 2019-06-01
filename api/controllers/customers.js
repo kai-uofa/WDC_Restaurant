@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-const { OAuth2Client } = require("google-auth-library");
-const config = require("../configAPIs");
-const db = require("../models/dbconnection");
+const { OAuth2Client } = require('google-auth-library');
+const jwt = require('jsonwebtoken');
+const config = require('../configAPIs');
+const db = require('../models/dbconnection');
 
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
@@ -20,13 +21,13 @@ const Customers = {
 
     // check if email existed in database
     const googleAccExist = await db
-      .query("SELECT email FROM Customers WHERE email = ?", [req.body.email])
+      .query('SELECT email FROM Customers WHERE email = ?', [req.body.email])
       .catch(console.error);
 
     if (googleAccExist.length < 1) {
       // add this email, name & google ID to server
       const queryG =
-        "INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)";
+        'INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)';
       db.query(queryG, [
         req.body.firstName,
         req.body.lastName,
@@ -35,7 +36,7 @@ const Customers = {
       ]).catch(console.error);
     } else {
       // link google account
-      db.query("UPDATE Customers SET google_id = ? WHERE email = ?", [
+      db.query('UPDATE Customers SET google_id = ? WHERE email = ?', [
         googleID,
         req.body.email
       ]).catch(console.error);
@@ -45,7 +46,9 @@ const Customers = {
   async signUp(req, res) {
     let customer = null;
     let conflictEmail = false;
+    let token;
 
+    // TODO: change to JWT
     if (req.session.email !== undefined) {
       customer = req.session.email;
       console.log(customer);
@@ -75,7 +78,9 @@ const Customers = {
             req.body.fields.password,
           ]).catch(console.error);
           // sign-in for customer
-          req.session.email = req.body.fields.email;
+          token = await jwt.sign({firstName: req.body.fields.firstName, lastName: req.body.fields.lastName, email: req.body.fields.email}, config.JWT_SECRET_KEY, {
+            expiresIn: 1440,
+          });
           customer = req.body.fields.email;
         } else {
           conflictEmail = true;
@@ -84,10 +89,12 @@ const Customers = {
       // check if google login token present
     } else if (req.body.token !== undefined) {
       // Call function for googleID signup/signin
-      this._useGoogleId(req);
+      await this._useGoogleId(req);
 
       // save the session, and send that username
-      req.session.email = req.body.email;
+      token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
+        expiresIn: 1440,
+      });
       customer = req.body.email;
     }
 
@@ -96,13 +103,15 @@ const Customers = {
     } else if (customer === null) {
       res.sendStatus(401); // Unauthorized
     } else {
-      res.sendStatus(200);
+      res.send(token);
     }
   },
 
   async signIn(req, res) {
     let customer = null;
+    let token;
 
+    // TODO: change to JWT
     // If valid customer session
     if (req.session.email !== undefined) {
       // eslint-disable-next-line prefer-destructuring
@@ -115,42 +124,35 @@ const Customers = {
     ) {
       const { email } = req.body.fields;
       const { password } = req.body.fields;
-      db.query(
-        "SELECT email FROM Customers WHERE email = ? AND password = ? ",
+      const results = await db.query(
+        'SELECT email FROM Customers WHERE email = ? AND password = ? ',
         [email, password]
-      )
-        .then(results => {
-          if (results.length > 0) {
-            req.session.email = email;
-            customer = email;
-          }
-        })
-        .catch(console.error);
+      ).catch(console.error);
 
+      if (results.length > 0) {
+        token = await jwt.sign({ firstName: req.body.fields.firstName, lastName: req.body.fields.lastName, email: req.body.fields.email }, config.JWT_SECRET_KEY, {
+          expiresIn: 1440,
+        });
+        customer = email;
+      }
       // If google login token present
     } else if (req.body.token !== undefined) {
       // Call function for googleID signup/signin
       this._useGoogleId(req);
 
       // save the session, and send that username
-      req.session.email = req.body.email;
+      token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
+        expiresIn: 1440,
+      });
       customer = req.body.email;
     }
 
     if (customer !== null) {
-      res.sendStatus(200); // OK
+      res.send(token);
     } else {
       res.sendStatus(401); // Unauthorized
     }
   },
-
-  signOut(req, res) {
-    if (req.session.email !== undefined) {
-      delete req.session.email;
-    }
-
-    res.sendStatus(200);
-  }
 };
 
 module.exports = Customers;
