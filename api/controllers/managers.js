@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable object-shorthand */
-// include the model (aka DB connection)
+const jwt = require('jsonwebtoken');
 const config = require('../configAPIs');
 const db = require('../models/dbconnection');
 const googleMapsService = require('@google/maps').createClient({
@@ -15,16 +15,19 @@ const Managers = {
   async signUp(req, res) {
     let manager = null;
     let conflict = false;
+    let token;
     
+    // TODO: change to JWT
     if (req.session.email !== undefined) {
       manager = req.session.email;
     } else if (
-      req.body.fields.firstName !== undefined && 
-      req.body.fields.lastName !== undefined && 
-      req.body.fields.email !== undefined && 
-      req.body.fields.password !== undefined && 
-      req.body.fields.restaurantName !== undefined && 
-      req.body.fields.restaurantAdd !== undefined
+      // req.body.fields.firstName !== undefined && 
+      // req.body.fields.lastName !== undefined && 
+      // req.body.fields.email !== undefined && 
+      // req.body.fields.password !== undefined && 
+      // req.body.fields.restaurantName !== undefined && 
+      // req.body.fields.restaurantAdd !== undefined
+      req.body.fields !== undefined
       ) {
       const existedEmail = await db.query('SELECT email FROM Managers WHERE email = ?', [req.body.fields.email]);
       
@@ -40,7 +43,9 @@ const Managers = {
                 const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
                 db.query(queryMan, [_resId[0].restaurant_id, req.body.fields.firstName, req.body.fields.lastName, req.body.fields.email, req.body.fields.password])
                   .then(() => {
-                    req.session.email = req.body.fields.email;
+                    token = jwt.sign({ firstName: req.body.fields.firstName, lastName: req.body.fields.lastName, email: req.body.fields.email }, config.JWT_SECRET_KEY, {
+                      expiresIn: 1440,
+                    });
                     manager = req.body.fields.email;
                   }).catch(console.error);
 
@@ -70,12 +75,13 @@ const Managers = {
     } else if (manager === null) {
       res.sendStatus(401); // Unauthorized
     } else {
-      res.sendStatus(200);
+      res.send(token);
     }
   },
 
   signIn(req, res) {
     let manager = null;
+    let token;
 
     // check valid manager session
     if (req.session.email !== undefined) {
@@ -87,25 +93,19 @@ const Managers = {
       db.query('SELECT * FROM Managers WHERE email = ? AND password = ? ', [email, password])
         .then( results => {
           if(results.length > 0) {
-            req.session.email = email;
+            token = jwt.sign({ firstName: req.body.fields.firstName, lastName: req.body.fields.lastName, email: req.body.fields.email }, config.JWT_SECRET_KEY, {
+              expiresIn: 1440,
+            });
             manager = email;
           }
         }).catch(console.error);
     }
     
     if (manager !== null) {
-      res.sendStatus(200);
+      res.send(token);
     } else {
       res.sendStatus(401); // Unauthorized
     }
-  },
-
-  signOut(req, res) {
-    if (req.session.email !== undefined) {
-      delete req.session.email;
-    }
-
-    res.sendStatus(200);
   },
 
   managerValidation(email) {

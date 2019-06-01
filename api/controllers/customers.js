@@ -138,7 +138,7 @@ const Customers = {
       // If google login token present
     } else if (req.body.token !== undefined) {
       // Call function for googleID signup/signin
-      this._useGoogleId(req);
+      await this._useGoogleId(req);
 
       // save the session, and send that username
       token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
