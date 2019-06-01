@@ -125,7 +125,7 @@ class SignUp extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/managers/signup", {
+        .post("/managers/signup", {
           resName : this.state.restName,
           resAdress : this.state.resAdress,
           capacity : this.state.capacity,

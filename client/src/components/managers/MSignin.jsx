@@ -52,7 +52,7 @@ class MSignIn extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/managers/signin", {
+        .post("/managers/signin", {
           email : this.state.email,
           password : this.state.password
         })

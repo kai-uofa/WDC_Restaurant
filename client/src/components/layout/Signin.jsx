@@ -54,7 +54,7 @@ class SignIn extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/signin", {
+        .post("/signin", {
           email : this.state.email,
           password : this.state.password
         })
