@@ -7,43 +7,41 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: {},
+      email : "",
+      password: "",
       errors: {}, // collect errors for validateForm
       loginError: ""
     };
   }
 
-  handleChange = e => {
-    let fields = this.state.fields;
-    fields[e.target.name] = e.target.value;
-    this.setState({ fields });
+  handleChange = (e) => {
+    if(e.target.name == 'email') {
+      this.setState({email: e.target.value});
+    }
+    if (e.target.name == 'password'){
+      this.setState({password:e.target.value});
+    }
   };
 
   validateForm() {
-    let fields = this.state.fields;
+    let email = this.state.email;
     let errors = {};
     let formIsValid = true;
 
-    if (!fields["email"]) {
+    if (email === "") {
       formIsValid = false;
       errors["email"] = "*Please enter your email-ID.";
     }
 
-    if (typeof fields["email"] !== "undefined") {
       //regular expression for email validation
       var pattern = new RegExp(
         /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
       );
-      if (!pattern.test(fields["email"])) {
+      if (!pattern.test(email)) {
         formIsValid = false;
         errors["email"] = "*Please enter valid email-ID.";
       }
-    }
 
-    if (!fields["password"]) {
-      formIsValid = false;
-      errors["password"] = "*Please enter your password.";
-    }
 
     this.setState({
       errors: errors
@@ -56,8 +54,9 @@ class SignIn extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("/signin", {
-          fields: this.state.fields
+        .post("https://localhost:5443/signin", {
+          email : this.state.email,
+          password : this.state.password
         })
         .then(res => {
           // TODO: handle server response codes 200, 401
@@ -66,11 +65,7 @@ class SignIn extends Component {
         .catch(console.error);
 
       // Reset all text fields
-      let fields = {
-        email: "",
-        password: ""
-      };
-      this.setState({ fields: fields });
+      this.setState({email: "",password: " "});
     }
   };
 
@@ -117,7 +112,7 @@ class SignIn extends Component {
                     id="email"
                     type="email"
                     placeholder="name@address.com"
-                    value={this.state.fields.email}
+                    value={this.state.email}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -134,10 +129,10 @@ class SignIn extends Component {
                     name="password"
                     id="password"
                     placeholder="Password"
-                    value={this.state.fields.password}
+                    value={this.state.password}
                     onChange={this.handleChange}
                     type="password"
-                    required=""
+                    required
                     data-msg="Please enter your password"
                     className="form-control"
                   />
