@@ -90,7 +90,7 @@ class SignUp extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/signup", {
+        .post("/signup", {
           // fields: this.state.fields
           firstName : this.state.firstName,
           lastName : this.state.lastName,
@@ -118,7 +118,7 @@ class SignUp extends Component {
 
   googleResponse = response => {
     axios
-      .post("https://localhost:5443/signup", {
+      .post("/signup", {
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
         email: response.profileObj.email,

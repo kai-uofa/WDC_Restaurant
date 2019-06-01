@@ -55,7 +55,7 @@ class MSignIn extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/managers/signin", {
+        .post("/managers/signin", {
           fields: this.state.fields
         })
         .then(res => {
@@ -82,7 +82,10 @@ class MSignIn extends Component {
               <div className="mb-6 pb-5">
                 <h2>WDC Restaurant Manager</h2>
               </div>
-              <form className="form-validate">
+              <form className="form-validate"
+                method="post"
+                onSubmit={this.normalSignIn}
+              >
                 <div className="form-group">
                   <label for="loginUsername" className="form-label">
                     Email Address

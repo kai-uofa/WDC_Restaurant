@@ -114,7 +114,7 @@ class SignUp extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/managers/signup", {
+        .post("/managers/signup", {
           fields: this.state.fields
         })
         .then(res => {
@@ -155,8 +155,10 @@ class SignUp extends Component {
                 <h2>Get started with Us</h2>
                 <p>Tell us a little about you and your restaurant, and we’ll contact you via phone or email to provide information about WDC products and services.</p>
               </div>
-              <form className="form-validate" method="post" onSubmit={this.normalSignUp}>
-      
+              <form className="form-validate"
+                method="post" 
+                onSubmit={this.normalSignUp}
+              >
                 {/* Restaurant Name */}
                 <div className="form-group">
                   <label htmlFor="resName" class="form-label">
