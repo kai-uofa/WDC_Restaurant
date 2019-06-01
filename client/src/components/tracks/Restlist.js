@@ -16,6 +16,17 @@ const RestList = props => {
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div>
+      <section class="py-5 bg-light-100 shadow">
+        <div className="container pt-5">
+          <h1 className="mb-4">Adelaide</h1>
+          <p className="lead mb-5">
+            Adelaide is the capital city of the state of South Australia, and
+            the fifth-most populous city of Australia. Adelaide is home to 77
+            percent of the South Australian population, making it the most
+            centralised population of any state in Australia.
+          </p>
+        </div>
+      </section>
       <div className="container">
         <div className="row my-5">
           <div className="col-sm-8">

@@ -75,6 +75,18 @@ body {
   font-family: "Playfair Display", serif !important;
 }
 
+.detailPage {
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./images//detail.jpg") no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+  padding-bottom: 5rem;
+}
+
+.detailName {
+  margin-top: 13rem;
+}
+
 @media (max-width: 770px) {
   .member .content {
     padding-top: 3em;
