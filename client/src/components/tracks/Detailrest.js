@@ -12,7 +12,7 @@ class Detailrest extends Component {
   componentWillMount() {
     axios
       .get(
-        `https://localhost:5443/restaurant?res_id=${this.props.match.params.id}`
+        `/restaurant?res_id=${this.props.match.params.id}`
       )
       .then(res => {
         this.setState({

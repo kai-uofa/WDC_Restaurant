@@ -5,104 +5,115 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: {},
+      firstName: "",
+      lastName: "",
+      email : "",
+      password : "",
+      password2: "",
+      resName: "",
+      resAdress: "",
+      capacity:"",
+      description: "",
       errors: {}, // collect errors for validateForm
     };
   }
 
   handleChange = e => {
-    let fields = this.state.fields;
-    fields[e.target.name] = e.target.value;
-    this.setState({ fields });
+    if(e.target.name == 'firstName') {
+      this.setState({firstName: e.target.value});
+    }
+    if (e.target.name == 'lastName'){
+      this.setState({lastName:e.target.value});
+    }
+    if(e.target.name == 'email') {
+      this.setState({email: e.target.value});
+    }
+    if (e.target.name == 'password'){
+      this.setState({password:e.target.value});
+    }
+    if(e.target.name == 'password2') {
+      this.setState({password2: e.target.value});
+    }
+    if(e.target.name == 'resName') {
+      this.setState({resName: e.target.value});
+    }
+    if (e.target.name == 'resAdress'){
+      this.setState({resAdress :e.target.value});
+    }
+    if(e.target.name == 'capacity') {
+      this.setState({capacity: e.target.value});
+    }
+    if (e.target.name == 'description'){
+      this.setState({description:e.target.value});
+    }
   };
 
   validateForm() {
-    let fields = this.state.fields;
+    let firstName = this.state.firstName;
+    let lastName = this.state.lastName;
+    let email = this.state.email;
+    let password = this.state.password;
+    let password2 = this.state.password2;
+    let resName = this.state.resName;
+    let resAdress = this.state.resAdress;
     let errors = {};
     let formIsValid = true;
     // Restaurant Name validation
-    if (!fields["resName"]) {
+    if (resName === "") {
       formIsValid = false;
       errors["resName"] = "*Please enter your Restaurant Name.";
     }
-    if (fields["resName"].length < 3) {
+    if (resName.length < 3) {
       formIsValid = false;
       errors["resName"] = "Please enter at least 3 character.";
     }
     // Restaurant adress validation
-    if (!fields["resAdress"]) {
+    if (resAdress === "") {
       formIsValid = false;
       errors["resAdress"] = "*Please enter your Restaurant Location.";
     }
 
-    if (typeof fields["resAdress"] !== "undefined") {
-      if (fields["resAdress"].length < 3) {
+      if (resAdress.length < 3) {
         formIsValid = false;
         errors["resAdress"] = "Please enter at least 3 character.";
       }
-    }
     // Manger firstName 
-    if (!fields["firstName"]) {
+    if (!firstName.match(/^[a-zA-Z ]*$/)) {
       formIsValid = false;
-      errors["firstName"] = "*Please enter your First Name.";
+      errors["firstName"] = "*Please enter alphabet characters only.";
     }
 
-    if (typeof fields["firstName"] !== "undefined") {
-      if (!fields["firstName"].match(/^[a-zA-Z ]*$/)) {
-        formIsValid = false;
-        errors["firstName"] = "*Please enter alphabet characters only.";
-      }
-    }
-    if (fields["firstName"].length < 3) {
+ 
+  if (firstName.length < 2) {
+    formIsValid = false;
+    errors["firstName"] = "Please enter at least 2 character.";
+  }
+    //Manager last name
+    if (!lastName.match(/^[a-zA-Z ]*$/)) {
       formIsValid = false;
-      errors["firstName"] = "Please enter at least 3 character.";
+      errors["lastName"] = "*Please enter alphabet characters only.";
     }
-    // Manger Last Name
-    if (!fields["lastName"]) {
+    if (lastName.length < 2) {
       formIsValid = false;
-      errors["lastName"] = "*Please enter your Last Name.";
+      errors["lastName"] = "Please enter at least 2 character.";
+    }
+    var pattern = new RegExp(
+      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+    );
+    //manager email
+    if (!pattern.test(email)) {
+      formIsValid = false;
+      errors["email"] = "*Please enter valid email-ID.";
     }
 
-    if (typeof fields["lastName"] !== "undefined") {
-      if (!fields["lastName"].match(/^[a-zA-Z ]*$/)) {
-        formIsValid = false;
-        errors["lastName"] = "*Please enter alphabet characters only.";
-      }
-      if (fields["lastName"].length < 3) {
-        formIsValid = false;
-        errors["lastName"] = "Please enter at least 3 character.";
-      }
-    }
-    // Manager Email
-    if (!fields["email"]) {
-      formIsValid = false;
-      errors["email"] = "*Please enter your email-ID.";
-    }
-
-    if (typeof fields["email"] !== "undefined") {
-      //regular expression for email validation
-      var pattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-      );
-      if (!pattern.test(fields["email"])) {
-        formIsValid = false;
-        errors["email"] = "*Please enter valid email-ID.";
-      }
-    }
-    //Manager password
-    if (!fields["password"]) {
-      formIsValid = false;
-      errors["password"] = "*Please enter your password.";
-    }
-
-    if (fields["password"] !== fields["password2"]) {
-      formIsValid = false;
-      errors["password"] = "*The password is not matching";
-    }
-    if (fields["password"].length < 5) {
-      formIsValid = false;
-      errors["password"] = "*Password need to at least has 8 character";
-    }
+  if (password !== password2) {
+    formIsValid = false;
+    errors["password"] = "*The password is not matching";
+  }
+  if (password.length < 8) {
+    formIsValid = false;
+    errors["password"] = "*Password need to at least has 8 character";
+  }
     this.setState({
       errors: errors
     });
@@ -114,8 +125,16 @@ class SignUp extends Component {
     if (this.validateForm()) {
       // Send request to server
       axios
-        .post("https://localhost:5443/managers/signup", {
-          fields: this.state.fields
+        .post("/managers/signup", {
+          resName : this.state.restName,
+          resAdress : this.state.resAdress,
+          capacity : this.state.capacity,
+          description : this.state.description,
+          firstName : this.state.firstName,
+          lastName : this.state.lastName,
+          email : this.state.email,
+          password : this.state.password,
+          password2 : this.state.password2
         })
         .then(res => {
           // TODO: handle server response codes 200, 409, 401
@@ -124,18 +143,16 @@ class SignUp extends Component {
         .catch(console.error);
       
       // Reset all text fields
-      let fields = {
-        resName: '',
-        resAdress: '',
-        capacity: '',
-        description: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        password2: ''
-      };
-      this.setState({ fields: fields });
+    
+      this.setState({ resName: '',
+      resAdress: '',
+      capacity: '',
+      description: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      password2: '' });
     }
   };
 
@@ -155,8 +172,10 @@ class SignUp extends Component {
                 <h2>Get started with Us</h2>
                 <p>Tell us a little about you and your restaurant, and we’ll contact you via phone or email to provide information about WDC products and services.</p>
               </div>
-              <form className="form-validate" method="post" onSubmit={this.normalSignUp}>
-      
+              <form className="form-validate"
+                method="post" 
+                onSubmit={this.normalSignUp}
+              >
                 {/* Restaurant Name */}
                 <div className="form-group">
                   <label htmlFor="resName" class="form-label">
@@ -167,7 +186,7 @@ class SignUp extends Component {
                     id="resName"
                     type="text"
                     placeholder="Restaurant Name"
-                    value={this.state.fields.resName}
+                    value={this.state.resName}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -186,7 +205,7 @@ class SignUp extends Component {
                     id="resAdress"
                     type="text"
                     placeholder="Restaurant Location"
-                    value={this.state.fields.resAdress}
+                    value={this.state.resAdress}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -206,7 +225,7 @@ class SignUp extends Component {
                     type="number"
                     min="0"
                     placeholder="How many customer can you Restaurant hold"
-                    value={this.state.fields.capacity}
+                    value={this.state.capacity}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -224,7 +243,7 @@ class SignUp extends Component {
                     name="description"
                     id="description"
                     placeholder="Tell us about your Restaurant"
-                    value={this.state.fields.description}
+                    value={this.state.description}
                     onChange={this.handleChange}
                     type="text"
                     data-msg="Please  enter your description"
@@ -241,7 +260,7 @@ class SignUp extends Component {
                     id="firstName"
                     type="text"
                     placeholder="First Name"
-                    value={this.state.fields.firstName}
+                    value={this.state.firstName}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -260,7 +279,7 @@ class SignUp extends Component {
                     id="lastName"
                     type="text"
                     placeholder="Last Name"
-                    value={this.state.fields.lastName}
+                    value={this.state.lastName}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -279,7 +298,7 @@ class SignUp extends Component {
                     id="email"
                     type="email"
                     placeholder="name@address.com"
-                    value={this.state.fields.email}
+                    value={this.state.email}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -298,7 +317,7 @@ class SignUp extends Component {
                     name="password"
                     id="password"
                     placeholder="Password"
-                    value={this.state.fields.password}
+                    value={this.state.password}
                     onChange={this.handleChange}
                     type="password"
                     required
@@ -318,7 +337,7 @@ class SignUp extends Component {
                     placeholder="Password"
                     type="password"
                     required
-                    value={this.state.fields.password2}
+                    value={this.state.password2}
                     onChange={this.handleChange}
                     data-msg="Please enter your password"
                     class="form-control"
