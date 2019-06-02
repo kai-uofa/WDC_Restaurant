@@ -106,6 +106,20 @@ const Managers = {
     } else {
       res.sendStatus(401); // Unauthorized
     }
+  },
+
+  managerValidation(decoded) {
+    if (decoded !== undefined) {
+      db.query('SELECT email FROM Managers WHERE email = ?', [decoded.email])
+        .then(results => {
+          if (results.length > 0) {
+            return true;
+          }
+          return false;
+        }).catch(console.error);
+    } else {
+      return false;
+    }
   }
 };
 

@@ -25,7 +25,7 @@ class Detailrest extends Component {
           lng: res.data[0].restaurant_longitude
         });
       })
-      .catch(err => console.log(err));
+      .catch(console.error);
   }
 
   // componentDidMount() {

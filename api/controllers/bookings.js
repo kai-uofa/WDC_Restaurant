@@ -3,27 +3,25 @@ const db = require('../models/dbconnection');
 
 const Bookings = {
   async getActiveBookings(req, res) {
+    const email = 'test1@test.com';
     const resId = await db
-      .query('SELECT restaurant_id FROM Managers WHERE email = ?', [
-        req.session.email,
-      ])
+      .query('SELECT restaurant_id FROM Managers WHERE email = ?', [email])
       .catch(console.error);
     // get all ACTIVE bookings from database
     if (resId.length > 0) {
       const query =
         'SELECT \
-          Customers.customer_id, \
-          Customers.first_name, \
-          Customers.last_name, \
-          Bookings.no_of_people, \
-          Bookings.start_time, \
-          Bookings.restaurant_id, \
-        FROM Customers \
-        INNER JOIN Bookings ON Customers.customer_id = Bookings.customer_id \
-        WHERE Bookings.restaurant_id = ? AND Bookings.status = 1';
-      db.query(query, [resId[0]])
+Customers.customer_id, \
+Customers.first_name, \
+Customers.last_name, \
+Bookings.no_of_people, \
+Bookings.start_time, \
+Bookings.restaurant_id \
+FROM Customers \
+INNER JOIN Bookings ON Customers.customer_id = Bookings.customer_id \
+WHERE Bookings.restaurant_id = ? AND Bookings.status = 1';
+      db.query(query, [resId[0].restaurant_id])
         .then(results => {
-          // TODO: set end time before response. default: 2 hours
           res.json(results);
         })
         .catch(console.error);
@@ -33,22 +31,27 @@ const Bookings = {
   },
 
   async updateBookingStatus(req, res) {
-    // TODO: double check request body format
+    // FIXME: this need to be fix to make sure it update Bookings & Availability tables correctly
     if (req.body !== undefined) {
       db.query(
-        'UPDATE Bookings SET status = ? WHERE customer_id = ? AND start_time = ?',
-        [status, customer_id, start_time]
+        'UPDATE Bookings SET status = ? WHERE customer_id = ? AND restaurant_id = ? AND start_time = ?',
+        [
+          req.body.status,
+          req.body.customer_id,
+          req.body.restaurant_id,
+          req.body.start_time,
+        ]
       ).catch(console.error);
 
-      let change = people;
+      let change = req.body.no_of_people;
       if (req.body.status === 1) {
         change = -change;
       }
       // take current time => update remaining tables for all the next time frame of the day
-      db.query(
-        'UPDATE Availability SET remaining_tables = remaining_tables + ? WHERE restaurant_id = ? AND start_timeframe <= ? AND end_timeframe >= ?',
-        [change, currentTime, currentTime]
-      ).catch(console.error);
+      // db.query(
+      //   'UPDATE Availability SET remaining_tables = (remaining_tables + ?) WHERE restaurant_id = ? AND start_timeframe <= ? AND end_timeframe >= ?',
+      //   [change, currentTime, currentTime]
+      // ).catch(console.error);
       res.sendStatus(200);
     } else {
       res.sendStatus(400); // Bad Request

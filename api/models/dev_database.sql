@@ -42,7 +42,9 @@ DROP TABLE IF EXISTS `Bookings`;
 CREATE TABLE `Bookings` (
   `customer_id` int(11) NOT NULL,
   `restaurant_id` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
   `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
   `no_of_people` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   KEY `fk_bookings_to_customers` (`customer_id`),
