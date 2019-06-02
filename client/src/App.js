@@ -16,7 +16,7 @@ import Detailrest from "./components/tracks/Detailrest";
 import Restlist from "./components/tracks/Restlist";
 import MSignUp from "./components/managers/MSignup";
 import MSignIn from "./components/managers/MSignin";
-// import MIndex from "./components/managers/MIndex";
+import MIndex from "./components/managers/MIndex";
 
 class App extends Component {
   constructor(props) {
@@ -120,7 +120,7 @@ class App extends Component {
             />
             <Route path="/managers/signup" component={MSignUp} />
             <Route path="/managers/signin" component={MSignIn} />
-            {/* <Route path="/managers" component={MIndex} /> */}
+            <Route path="/managers" component={MIndex} />
           </Switch>
         </React.Fragment>
       </Router>

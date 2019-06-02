@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-const { OAuth2Client } = require("google-auth-library");
-const jwt = require("jsonwebtoken");
-const config = require("../configAPIs");
-const db = require("../models/dbconnection");
+const { OAuth2Client } = require('google-auth-library');
+const jwt = require('jsonwebtoken');
+const config = require('../configAPIs');
+const db = require('../models/dbconnection');
 
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
@@ -21,13 +21,13 @@ const Customers = {
 
     // check if email existed in database
     const googleAccExist = await db
-      .query("SELECT email FROM Customers WHERE email = ?", [req.body.email])
+      .query('SELECT email FROM Customers WHERE email = ?', [req.body.email])
       .catch(console.error);
 
     if (googleAccExist.length < 1) {
       // add this email, name & google ID to server
       const queryG =
-        "INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)";
+        'INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)';
       db.query(queryG, [
         req.body.firstName,
         req.body.lastName,
@@ -36,7 +36,7 @@ const Customers = {
       ]).catch(console.error);
     } else {
       // link google account
-      db.query("UPDATE Customers SET google_id = ? WHERE email = ?", [
+      db.query('UPDATE Customers SET google_id = ? WHERE email = ?', [
         googleID,
         req.body.email
       ]).catch(console.error);
@@ -61,7 +61,7 @@ const Customers = {
       req.body.fields !== undefined
     ) {
       const existedEmail = await db
-        .query("SELECT email FROM Customers WHERE email = ?", [
+        .query('SELECT email FROM Customers WHERE email = ?', [
           req.body.fields.email
         ])
         .catch(console.error);
@@ -69,7 +69,7 @@ const Customers = {
       if (existedEmail.length < 1) {
         // Add customer to database
         const query =
-          "INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)";
+          'INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)';
         db.query(query, [
           req.body.fields.firstName,
           req.body.fields.lastName,
@@ -140,7 +140,7 @@ const Customers = {
       const { password } = req.body.fields;
       const results = await db
         .query(
-          "SELECT email FROM Customers WHERE email = ? AND password = ? ",
+          'SELECT email FROM Customers WHERE email = ? AND password = ? ',
           [email, password]
         )
         .catch(console.error);

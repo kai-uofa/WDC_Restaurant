@@ -42,7 +42,9 @@ DROP TABLE IF EXISTS `Bookings`;
 CREATE TABLE `Bookings` (
   `customer_id` int(11) NOT NULL,
   `restaurant_id` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
   `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
   `no_of_people` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   KEY `fk_bookings_to_customers` (`customer_id`),
@@ -127,7 +129,7 @@ DROP TABLE IF EXISTS `Availability`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Availability` (
   `restaurant_id` int(11) NOT NULL,
-  `day_of_week` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
   `start_timeframe` time DEFAULT NULL,
   `end_timeframe` time DEFAULT NULL,
   `remaining_tables` int(11) DEFAULT NULL,
@@ -143,6 +145,32 @@ CREATE TABLE `Availability` (
 LOCK TABLES `Availability` WRITE;
 /*!40000 ALTER TABLE `Availability` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Availability` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OpenHours`
+--
+
+DROP TABLE IF EXISTS `OpenHours`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `OpenHours` (
+  `restaurant_id` int(11) NOT NULL,
+  `day_of_week` int(11) NOT NULL,
+  `open_time` time DEFAULT NULL,
+  `close_time` time DEFAULT NULL,
+  KEY `fk_openhours_to_restaurants` (`restaurant_id`),
+  CONSTRAINT `fk_openhours_to_restaurants` FOREIGN KEY (`restaurant_id`) REFERENCES `Restaurants` (`restaurant_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OpenHours`
+--
+
+LOCK TABLES `OpenHours` WRITE;
+/*!40000 ALTER TABLE `OpenHours` DISABLE KEYS */;
+/*!40000 ALTER TABLE `OpenHours` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

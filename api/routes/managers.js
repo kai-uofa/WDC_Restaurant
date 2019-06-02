@@ -13,28 +13,26 @@ router.post('/signup', function(req, res, next) {
   Managers.signUp(req, res);
 });
 
-router.post('/signout', function(req, res, next) {
-  Managers.signOut(req, res);
-});
-
 router.get('/', function(req, res, next) {
-  if (req.decoded !== undefined) {
-    Bookings.getActiveBookings(req, res);
-  } else {
-    res.sendStatus(403); // Forbidden
-  }
+  Bookings.getActiveBookings(req, res);
+  // if (Managers.managerValidation(req.decoded)) {
+  //   Bookings.getActiveBookings(req, res);
+  // } else {
+  //   res.sendStatus(403); // Forbidden
+  // }
 });
 
 router.post('/status', function(req, res, next) {
-  if (req.decoded !== undefined) {
-    Bookings.updateBookingStatus(req, res);
-  } else {
-    res.sendStatus(403); // Forbidden
-  }
+  Bookings.updateBookingStatus(req, res);
+  // if (Managers.managerValidation(req.decoded)) {
+  //   Bookings.updateBookingStatus(req, res);
+  // } else {
+  //   res.sendStatus(403); // Forbidden
+  // }
 });
 
 router.post('/start', function(req, res, next) {
-  if (req.decoded !== undefined) {
+  if (Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingTime(req, res);
   } else {
     res.sendStatus(403); // Forbidden
@@ -42,7 +40,7 @@ router.post('/start', function(req, res, next) {
 });
 
 router.post('/people', function(req, res, next) {
-  if (req.decoded !== undefined) {
+  if (Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingPeople(req, res);
   } else {
     res.sendStatus(403); // Forbidden
