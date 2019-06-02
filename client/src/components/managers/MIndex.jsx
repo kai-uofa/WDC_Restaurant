@@ -14,8 +14,9 @@ class MIndex extends Component {
       .post('/managers/status', {
         customer_id: booking.customer_id,
         restaurant_id: booking.restaurant_id,
-        no_of_people: booking.no_of_people,
+        date: booking.date,
         start_time: booking.start_time,
+        no_of_people: booking.no_of_people,
         status: parseInt(event.target.value)
       })
       .then(res => {
@@ -55,6 +56,7 @@ class MIndex extends Component {
                 <div>{booking.first_name}</div>
                 <div>{booking.last_name}</div>
                 <div>{booking.no_of_people}</div>
+                <div>{booking.date}</div>
                 <div>{booking.start_time}</div>
                 <select 
                   name='status'
