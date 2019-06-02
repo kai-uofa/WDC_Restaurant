@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import NavBar from "./components/layout/Navbar";
@@ -75,6 +80,7 @@ class App extends Component {
   }
 
   render() {
+    const { user } = this.state;
     return (
       <Router>
         <React.Fragment>
@@ -98,12 +104,19 @@ class App extends Component {
               )}
             />
             <Route path="/logout" component={Logout} />
-            <Route path="/signin" component={SignIn} />
+            <Route
+              path="/signin"
+              render={props => {
+                if (user) return <Redirect to="/" />;
+                return <SignIn {...props} />;
+              }}
+            />
             <Route
               path="/signup"
-              render={props => (
-                <SignUp {...props} isSignIn={this.state.isSignIn} />
-              )}
+              render={props => {
+                if (user) return <Redirect to="/" />;
+                return <SignUp {...props} />;
+              }}
             />
             <Route path="/managers/signup" component={MSignUp} />
             <Route path="/managers/signin" component={MSignIn} />
