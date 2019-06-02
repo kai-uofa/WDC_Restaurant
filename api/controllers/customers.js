@@ -132,31 +132,29 @@ const Customers = {
 
       // If login details present, attempt login
     } else if (
-      // req.body.fields.email !== undefined &&
-      req.body.fields !== undefined
+      req.body.email !== undefined &&
+      req.body.password !== undefined
     ) {
-      const { email } = req.body.fields;
-      const { password } = req.body.fields;
       const results = await db
         .query(
           'SELECT email FROM Customers WHERE email = ? AND password = ? ',
-          [email, password]
+          [req.body.email, req.body.password]
         )
         .catch(console.error);
 
       if (results.length > 0) {
         token = await jwt.sign(
           {
-            firstName: req.body.fields.firstName,
-            lastName: req.body.fields.lastName,
-            email: req.body.fields.email
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email
           },
           config.JWT_SECRET_KEY,
           {
             expiresIn: 1440
           }
         );
-        customer = req.body.fields.email;
+        customer = req.body.email;
       }
       // If google login token present
     } else if (req.body.token !== undefined) {

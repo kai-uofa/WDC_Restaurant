@@ -11,7 +11,7 @@ class SignUp extends Component {
       password: "",
       password2: "",
       resName: "",
-      resAdress: "",
+      resAddress: "",
       capacity: "",
       description: "",
       errors: {} // collect errors for validateForm
@@ -37,8 +37,8 @@ class SignUp extends Component {
     if (e.target.name === "resName") {
       this.setState({ resName: e.target.value });
     }
-    if (e.target.name === "resAdress") {
-      this.setState({ resAdress: e.target.value });
+    if (e.target.name === "resAddress") {
+      this.setState({ resAddress: e.target.value });
     }
     if (e.target.name === "capacity") {
       this.setState({ capacity: e.target.value });
@@ -55,7 +55,7 @@ class SignUp extends Component {
     let password = this.state.password;
     let password2 = this.state.password2;
     let resName = this.state.resName;
-    let resAdress = this.state.resAdress;
+    let resAddress = this.state.resAddress;
     let errors = {};
     let formIsValid = true;
     // Restaurant Name validation
@@ -68,14 +68,14 @@ class SignUp extends Component {
       errors["resName"] = "Please enter at least 3 character.";
     }
     // Restaurant adress validation
-    if (resAdress === "") {
+    if (resAddress === "") {
       formIsValid = false;
-      errors["resAdress"] = "*Please enter your Restaurant Location.";
+      errors["resAddress"] = "*Please enter your Restaurant Location.";
     }
 
-    if (resAdress.length < 3) {
+    if (resAddress.length < 3) {
       formIsValid = false;
-      errors["resAdress"] = "Please enter at least 3 character.";
+      errors["resAddress"] = "Please enter at least 3 character.";
     }
     // Manger firstName
     if (!firstName.match(/^[a-zA-Z ]*$/)) {
@@ -133,15 +133,14 @@ class SignUp extends Component {
       // Send request to server
       axios
         .post("/managers/signup", {
-          resName: this.state.restName,
-          resAdress: this.state.resAdress,
+          resName: this.state.resName,
+          resAddress: this.state.resAddress,
           capacity: this.state.capacity,
           description: this.state.description,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
           email: this.state.email,
-          password: this.state.password,
-          password2: this.state.password2
+          password: this.state.password
         })
         .then(res => {
           // TODO: handle server response codes 200, 409, 401
@@ -153,7 +152,7 @@ class SignUp extends Component {
 
       this.setState({
         resName: "",
-        resAdress: "",
+        resAddress: "",
         capacity: "",
         description: "",
         firstName: "",
@@ -168,9 +167,9 @@ class SignUp extends Component {
   render() {
     // TODO: handle server response codes 200, 409, 401
     // TODO: handle user session login (req.session.email)
-    if (this.state.redirect || sessionStorage.getItem("userData")) {
-      return <Redirect to={"/"} />;
-    }
+    // if (this.state.redirect || sessionStorage.getItem("userData")) {
+    //   return <Redirect to={"/"} />;
+    // }
 
     return (
       <div className="container-fluid px-3">
@@ -211,15 +210,15 @@ class SignUp extends Component {
                 <div className="errorMsg">{this.state.errors.resName}</div>
                 {/* Restaurant Adress */}
                 <div class="form-group">
-                  <label for="resAdress" class="form-label">
-                    Restaurant Location
+                  <label for="resAddress" class="form-label">
+                    Address
                   </label>
                   <input
-                    name="resAdress"
-                    id="resAdress"
+                    name="resAddress"
+                    id="resAddress"
                     type="text"
                     placeholder="Restaurant Location"
-                    value={this.state.resAdress}
+                    value={this.state.resAddress}
                     onChange={this.handleChange}
                     autoComplete="off"
                     required
@@ -227,7 +226,7 @@ class SignUp extends Component {
                     class="form-control"
                   />
                 </div>
-                <div className="errorMsg">{this.state.errors.resAdress}</div>
+                <div className="errorMsg">{this.state.errors.resAddress}</div>
                 {/* Restaurant Capacity */}
                 <div class="form-group">
                   <label for="capacity" class="form-label">
@@ -360,7 +359,6 @@ class SignUp extends Component {
                 <button type="submit" class="btn btn-lg btn-block btn-primary">
                   Submit Form
                 </button>
-                <hr />
               </form>
             </div>
           </div>
