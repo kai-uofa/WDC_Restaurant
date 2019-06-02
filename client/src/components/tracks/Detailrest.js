@@ -28,28 +28,28 @@ class Detailrest extends Component {
       .catch(err => console.log(err));
   }
 
-  // componentDidMount() {
-  //   try {
-  //     const jwt = localStorage.getItem("token");
-  //     const user = jwtDecode(jwt);
-  //     this.setState({ user });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  componentDidMount() {
+    try {
+      const jwt = localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      this.setState({ user });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   render() {
-    const { detail } = this.state;
+    const { detail, user } = this.state;
     return (
       <React.Fragment>
         <section className="pt-5 detailPage">
           <div className="container detailName">
             <div className="mt-5 mb-lg-0">
-              <h2 className="text-shadow verified font-weight-bolder text-white">
+              <h2 className="text-shadow verified font-weight-bolder text-white display-3">
                 {detail.restaurant_name}
               </h2>
-              <p className="text-white ">
-                <i className="fa-map-marker-alt fas mr-2 text-white" />
+              <p className="text-white display-5">
+                <i className="fa-map-marker-alt fas mr-2 text-white " />
                 {detail.restaurant_address}
               </p>
             </div>
@@ -91,7 +91,7 @@ class Detailrest extends Component {
             </div>
             {/* Make a reservation form  */}
             <div className="col-lg-4">
-              <Reservation />
+              <Reservation detail={detail} user={user} />
             </div>
           </div>
         </div>

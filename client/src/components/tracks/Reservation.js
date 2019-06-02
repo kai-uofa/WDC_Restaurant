@@ -1,19 +1,53 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 class Reservation extends Component {
+  state = {
+    date: null,
+    time: null,
+    guests: null
+  };
+
+  handleOnSubmit = e => {
+    e.preventDefault();
+
+    axios
+      .post("/reservation", {
+        date: this.state.date,
+        time: this.state.time,
+        guests: this.state.guests,
+        email: this.props.user.email,
+        restaurant_id: this.props.detail.restaurant_id
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(console.error);
+
+    // Reset all state
+    // this.setState({ date: null, time: null, guests: null });
+  };
+
   render() {
     return (
       <div className="p-4 shadow ml-lg-4 rounded sticky-top">
-        <h5 className="text-center">Restaurant Name</h5>
+        <h5 className="text-center">{this.props.detail.restaurant_name}</h5>
         <hr className="my-4" />
-        <form id="booking-form" method="" action="#" className="form">
+        <form
+          id="booking-form"
+          method="post"
+          className="form"
+          onSubmit={this.handleOnSubmit}
+        >
           <div className="form-group mb-4">
             <label htmlFor="bookingDate" className="form-label">
-              Choose a date *
+              Choose a date:
             </label>
             <div className="datepicker-container datepicker-container-right">
               <input
-                type="text"
+                name="date"
+                type="date"
+                onChange={event => this.setState({ date: event.target.value })}
                 name="bookingDate"
                 id="bookingDate"
                 placeholder="Choose your dates"
@@ -24,25 +58,27 @@ class Reservation extends Component {
           </div>
           <div className="form-group mb-4">
             <label htmlFor="time" className="form-label">
-              Choose time *
+              Choose time:
             </label>
-            <select name="time" id="time" className="form-control">
-              <option value="1">noon</option>
-              <option value="2">1</option>
-              <option value="3">2</option>
-              <option value="4">3</option>
-            </select>
+            <input
+              onChange={event => this.setState({ time: event.target.value })}
+              type="time"
+              name="time"
+              className="form-control"
+            />
           </div>
           <div className="form-group mb-4">
             <label htmlFor="guests" className="form-label">
-              Guests *
+              Guests:
             </label>
-            <select name="guests" id="guests" className="form-control">
-              <option value="1">1 Guest</option>
-              <option value="2">2 Guests</option>
-              <option value="3">3 Guests</option>
-              <option value="4">4 Guests</option>
-            </select>
+            <input
+              onChange={event =>
+                this.setState({ guests: parseInt(event.target.value) })
+              }
+              type="number"
+              name="guests"
+              className="form-control"
+            />
           </div>
           <div className="form-group text-center">
             <button type="submit" className="btn btn-primary">

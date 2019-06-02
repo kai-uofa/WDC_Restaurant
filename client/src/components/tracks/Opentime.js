@@ -1,7 +1,6 @@
 import React from "react";
 
 const Opentime = props => {
-  const detail = { props };
   return (
     <div className="row">
       <div className="col-md-6 border-right pr-4">
@@ -44,7 +43,7 @@ const Opentime = props => {
             <i className="fas fa-map-marker-alt fa-2x mr-4" />
             <span className="text-sm">Address</span>
           </li>
-          <p className="mb-4">{detail.restaurant_address}</p>
+          <p className="mb-4">{props.detail.restaurant_address}</p>
           <li className="d-flex">
             <i className="fas fa-phone-square fa-2x mr-3" />
             <span>+61870731231</span>
