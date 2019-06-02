@@ -26,7 +26,7 @@ class MIndex extends Component {
       .catch(console.error);
   };
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get('/managers')
       .then(res => {
