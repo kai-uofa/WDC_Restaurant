@@ -143,8 +143,8 @@ class SignUp extends Component {
           password: this.state.password
         })
         .then(res => {
-          // TODO: handle server response codes 200, 409, 401
-          console.log(res);
+          localStorage.setItem('token', res.data);
+          window.location = '/managers';
         })
         .catch(console.error);
 

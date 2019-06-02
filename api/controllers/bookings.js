@@ -3,9 +3,10 @@ const db = require('../models/dbconnection');
 
 const Bookings = {
   async getActiveBookings(req, res) {
-    const email = 'test@test.com';
     const resId = await db
-      .query('SELECT restaurant_id FROM Managers WHERE email = ?', [email])
+      .query('SELECT restaurant_id FROM Managers WHERE email = ?', [
+        req.decoded.email,
+      ])
       .catch(console.error);
     // get all ACTIVE bookings from database
     if (resId.length > 0) {

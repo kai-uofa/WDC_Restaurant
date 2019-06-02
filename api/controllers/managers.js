@@ -32,40 +32,39 @@ const Managers = {
       const existedEmail = await db.query('SELECT email FROM Managers WHERE email = ?', [req.body.email]);
       
       if (existedEmail.length < 1) {
+        // create new restaurant
         const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity) VALUES (?,?,?)';
-        db.query(queryRes, [req.body.resName, req.body.resAddress, req.body.capacity])
-          .then(() => {
-            if(req.body.description !== '') {
-              console.log('add description to database');
-            }
-            // get new restaurant id
-            db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
-              .then(_resId => {
-                
-                // create new manager account
-                const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
-                db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, req.body.password])
-                  .then(() => {
-                    token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
-                      expiresIn: 1440,
-                    });
-                    manager = req.body.email;
-                  }).catch(console.error);
+        await db.query(queryRes, [req.body.resName, req.body.resAddress, parseInt(req.body.capacity)])
+          .catch(console.error);
+        
+        // get new restaurant id
+        const _resId = await db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
+          .catch(console.error);
 
-                // call google API
-                googleMapsService.geocode({ address: req.body.resAddress })
-                  .asPromise()
-                  .then(response => {
+        // create new manager account
+        const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
+        await db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, req.body.password])
+          .catch(console.error);
+        
+        token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
+          expiresIn: 1440,
+        });
+        manager = req.body.email;
 
-                    const queryLL = 'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
-                    db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, _resId[0].restaurant_id])
-                      .catch(console.error);
+        // call google API
+        googleMapsService.geocode({ address: req.body.resAddress })
+          .asPromise()
+          .then(response => {
 
-                  }).catch(console.error);
-
-              }).catch(console.error);
+            const queryLL = 'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
+            db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, _resId[0].restaurant_id])
+              .catch(console.error);
 
           }).catch(console.error);
+        // //////////////
+        if (req.body.description !== '') {
+          console.log('add description to database');
+        }
       } else {
         conflict = true;
       }
@@ -107,18 +106,17 @@ const Managers = {
     }
   },
 
-  managerValidation(decoded) {
+  async managerValidation(decoded) {
     if (decoded !== undefined) {
-      db.query('SELECT email FROM Managers WHERE email = ?', [decoded.email])
-        .then(results => {
-          if (results.length > 0) {
-            return true;
-          }
-          return false;
-        }).catch(console.error);
-    } else {
+      const results = await db.query('SELECT email FROM Managers WHERE email = ?', [decoded.email])
+        .catch(console.error);
+      if (results.length > 0) {
+        return true;
+      }
       return false;
-    }
+    } 
+    return false;
+    
   }
 };
 
