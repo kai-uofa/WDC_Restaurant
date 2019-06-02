@@ -54,14 +54,14 @@ const Customers = {
 
       // check if signup details presents
     } else if (
-      // req.body.fields.firstName !== undefined &&
-      // req.body.fields.lastName !== undefined &&
-      // req.body.fields.email !== undefined &&
-      req.body.fields !== undefined
+      req.body.firstName !== undefined &&
+      req.body.lastName !== undefined &&
+      req.body.email !== undefined &&
+      req.body.password !== undefined
     ) {
       const existedEmail = await db
         .query('SELECT email FROM Customers WHERE email = ?', [
-          req.body.fields.email
+          req.body.email
         ])
         .catch(console.error);
 
@@ -70,24 +70,24 @@ const Customers = {
         const query =
           'INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)';
         db.query(query, [
-          req.body.fields.firstName,
-          req.body.fields.lastName,
-          req.body.fields.email,
-          req.body.fields.password
+          req.body.firstName,
+          req.body.lastName,
+          req.body.email,
+          req.body.password
         ]).catch(console.error);
         // sign-in for customer
         token = await jwt.sign(
           {
-            firstName: req.body.fields.firstName,
-            lastName: req.body.fields.lastName,
-            email: req.body.fields.email
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email
           },
           config.JWT_SECRET_KEY,
           {
             expiresIn: 1440
           }
         );
-        customer = req.body.fields.email;
+        customer = req.body.email;
       } else {
         conflictEmail = true;
       }

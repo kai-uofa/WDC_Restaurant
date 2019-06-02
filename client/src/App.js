@@ -18,6 +18,16 @@ import MSignUp from "./components/managers/MSignup";
 import MSignIn from "./components/managers/MSignin";
 import MIndex from "./components/managers/MIndex";
 
+// self-executable function that attach Authorization header for all axios requests
+(function () {
+  let jwt = localStorage.getItem("token");
+  if (jwt) {
+    axios.defaults.headers.common['Authorization'] = jwt;
+  } else {
+      delete axios.defaults.headers.common['Authorization'];
+  }
+})();
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -54,9 +64,10 @@ class App extends Component {
     if (e.target.value === undefined) {
       this.setState({ searchText: "" });
     }
+    // FIXME: there is a hardcode lat/lng
     axios
       .get(
-        `https://localhost:5443/search?search=${
+        `/search?search=${
           this.state.searchText
         }&lat=-34.92866&lng=138.59863`
       )

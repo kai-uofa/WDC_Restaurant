@@ -6,85 +6,84 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: {},
+      firstName:'',
+      lastName:'',
+      email:'',
+      password:'',
+      password2:'',
       errors: {}
     };
   }
 
   handleChange = e => {
-    let fields = this.state.fields;
-    fields[e.target.name] = e.target.value;
-    this.setState({
-      fields
-    });
+    if (e.target.name === "firstName") {
+      this.setState({ firstName: e.target.value });
+    }
+    if (e.target.name === "lastName") {
+      this.setState({ lastName: e.target.value });
+    }
+    if (e.target.name === "email") {
+      this.setState({ email: e.target.value });
+    }
+    if (e.target.name === "password") {
+      this.setState({ password: e.target.value });
+    }
+    if (e.target.name === "password2") {
+      this.setState({ password2: e.target.value });
+    }
   };
+
   validateForm() {
-    let fields = this.state.fields;
+    let firstName = this.state.firstName;
+    let lastName = this.state.lastName;
+    let email = this.state.email;
+    let password = this.state.password;
+    let password2 = this.state.password2;
     let errors = {};
     let formIsValid = true;
 
-    if (!fields["firstName"]) {
+    // Check firstName
+    if (!firstName.match(/^[a-zA-Z ]*$/)) {
       formIsValid = false;
-      errors["firstName"] = "*Please enter your First Name.";
+      errors["firstName"] = "*Please enter alphabet characters only.";
     }
 
-    if (typeof fields["firstName"] !== "undefined") {
-      if (!fields["firstName"].match(/^[a-zA-Z ]*$/)) {
-        formIsValid = false;
-        errors["firstName"] = "*Please enter alphabet characters only.";
-      }
-    }
-    if (fields["firstName"].length < 3) {
+    if (firstName.length < 2) {
       formIsValid = false;
-      errors["firstName"] = "Please enter at least 3 character.";
-    }
-    if (!fields["lastName"]) {
-      formIsValid = false;
-      errors["lastName"] = "*Please enter your Last Name.";
+      errors["firstName"] = "Please enter at least 2 character.";
     }
 
-    if (typeof fields["lastName"] !== "undefined") {
-      if (!fields["lastName"].match(/^[a-zA-Z ]*$/)) {
-        formIsValid = false;
-        errors["lastName"] = "*Please enter alphabet characters only.";
-      }
-      if (fields["lastName"].length < 3) {
-        formIsValid = false;
-        errors["lastName"] = "Please enter at least 3 character.";
-      }
-    }
-    if (!fields["email"]) {
+    // Check last name
+    if (!lastName.match(/^[a-zA-Z ]*$/)) {
       formIsValid = false;
-      errors["email"] = "*Please enter your email-ID.";
+      errors["lastName"] = "*Please enter alphabet characters only.";
+    }
+    if (lastName.length < 2) {
+      formIsValid = false;
+      errors["lastName"] = "Please enter at least 2 character.";
     }
 
-    if (typeof fields["email"] !== "undefined") {
-      //regular expression for email validation
-      var pattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-      );
-      if (!pattern.test(fields["email"])) {
-        formIsValid = false;
-        errors["email"] = "*Please enter valid email-ID.";
-      }
+    // check email
+    var pattern = new RegExp(
+      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+    );
+    if (!pattern.test(email)) {
+      formIsValid = false;
+      errors["email"] = "*Please enter valid email-ID.";
     }
 
-    if (!fields["password"]) {
-      formIsValid = false;
-      errors["password"] = "*Please enter your password.";
-    }
-
-    if (fields["password"] !== fields["password2"]) {
-      formIsValid = false;
-      errors["password"] = "*The password is not matching";
-    }
-    if (fields["password"].length < 5) {
+    if (password.length < 8) {
       formIsValid = false;
       errors["password"] = "*Password need to at least has 8 character";
     }
 
+    if (password !== password2) {
+      formIsValid = false;
+      errors["password"] = "*The password is not matching";
+    }
+
     // if (typeof fields["password"] !== "undefined") {
-    //   if (!fields["password"].match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
+    //   if (!password.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
     //     formIsValid = false;
     //     errors["password"] = "*Please enter secure and strong password.";
     //   }
@@ -102,12 +101,10 @@ class SignUp extends Component {
       // Send request to server
       axios
         .post("/signup", {
-          // fields: this.state.fields
           firstName: this.state.firstName,
           lastName: this.state.lastName,
           email: this.state.email,
-          password: this.state.password,
-          password2: this.state.password2
+          password: this.state.password
         })
         .then(res => {
           localStorage.setItem("token", res.data);
