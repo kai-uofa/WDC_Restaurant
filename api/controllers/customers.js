@@ -48,9 +48,8 @@ const Customers = {
     let conflictEmail = false;
     let token;
 
-    // TODO: change to JWT
-    if (req.session.email !== undefined) {
-      customer = req.session.email;
+    if (req.decoded !== undefined) {
+      customer = req.decoded.email;
       console.log(customer);
 
       // check if signup details presents
@@ -127,9 +126,9 @@ const Customers = {
     let token;
 
     // If valid customer session
-    if (req.session.email !== undefined) {
+    if (req.decoded !== undefined) {
       // eslint-disable-next-line prefer-destructuring
-      customer = req.session.email;
+      customer = req.decoded.email;
 
       // If login details present, attempt login
     } else if (

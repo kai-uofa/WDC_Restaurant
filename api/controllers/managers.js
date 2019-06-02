@@ -18,8 +18,8 @@ const Managers = {
     let token;
     
     // TODO: change to JWT
-    if (req.session.email !== undefined) {
-      manager = req.session.email;
+    if (req.decoded !== undefined) {
+      manager = req.decoded.email;
     } else if (
       // req.body.fields.firstName !== undefined && 
       // req.body.fields.lastName !== undefined && 
@@ -84,9 +84,9 @@ const Managers = {
     let token;
 
     // check valid manager session
-    if (req.session.email !== undefined) {
+    if (req.decoded !== undefined) {
       // eslint-disable-next-line prefer-destructuring
-      manager = req.session.email;
+      manager = req.decoded.email;
     } else if (req.body.fields.email !== undefined && req.body.fields.password !== undefined) {
       const { email } = req.body.fields;
       const { password } = req.body.fields;
