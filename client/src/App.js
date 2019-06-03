@@ -19,12 +19,12 @@ import MSignIn from "./components/managers/MSignin";
 import MIndex from "./components/managers/MIndex";
 
 // self-executable function that attach Authorization header for all axios requests
-(function () {
+(function() {
   let jwt = localStorage.getItem("token");
   if (jwt) {
-    axios.defaults.headers.common['Authorization'] = jwt;
+    axios.defaults.headers.common["Authorization"] = jwt;
   } else {
-      delete axios.defaults.headers.common['Authorization'];
+    delete axios.defaults.headers.common["Authorization"];
   }
 })();
 
@@ -67,9 +67,7 @@ class App extends Component {
     // FIXME: there is a hardcode lat/lng
     axios
       .get(
-        `/search?search=${
-          this.state.searchText
-        }&lat=-34.92866&lng=138.59863`
+        `/search?search=${this.state.searchText}&lat=-34.92866&lng=138.59863`
       )
       .then(res => {
         this.setState({ rest_list: res.data });
@@ -115,7 +113,22 @@ class App extends Component {
               )}
             />
             <Route path="/logout" component={Logout} />
-            <Route
+            <Route path="/signup" component={SignUp} />
+            <Route path="/signin" component={SignIn} />
+
+            <Route path="/managers/signup" component={MSignUp} />
+            <Route path="/managers/signin" component={MSignIn} />
+            <Route path="/managers" component={MIndex} />
+          </Switch>
+        </React.Fragment>
+      </Router>
+    );
+  }
+}
+
+export default App;
+// {
+/* <Route
               path="/signin"
               render={props => {
                 if (user) return <Redirect to="/" />;
@@ -128,15 +141,5 @@ class App extends Component {
                 if (user) return <Redirect to="/" />;
                 return <SignUp {...props} />;
               }}
-            />
-            <Route path="/managers/signup" component={MSignUp} />
-            <Route path="/managers/signin" component={MSignIn} />
-            <Route path="/managers" component={MIndex} />
-          </Switch>
-        </React.Fragment>
-      </Router>
-    );
-  }
-}
-
-export default App;
+            /> */
+// }

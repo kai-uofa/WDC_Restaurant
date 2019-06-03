@@ -11,9 +11,10 @@ class Reservation extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    console.log(this.props.user);
     if (this.props.user === undefined) {
-      return <Redirect to="/signin" />;
+      // window.location = "/signin";
+      this.props.history.push("/signin");
+      // return <Redirect push to="/" />;
     } else {
       axios
         .post("/reservation", {
@@ -31,7 +32,6 @@ class Reservation extends Component {
   };
 
   render() {
-    const { user } = this.props;
     return (
       <div className="p-4 shadow ml-lg-4 rounded sticky-top">
         <h5 className="text-center">{this.props.detail.restaurant_name}</h5>

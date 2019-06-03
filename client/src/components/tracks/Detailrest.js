@@ -90,7 +90,11 @@ class Detailrest extends Component {
             </div>
             {/* Make a reservation form  */}
             <div className="col-lg-4">
-              <Reservation detail={detail} user={user} />
+              <Reservation
+                detail={detail}
+                user={user}
+                history={this.props.history}
+              />
             </div>
           </div>
         </div>
