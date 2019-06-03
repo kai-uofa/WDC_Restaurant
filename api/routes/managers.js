@@ -21,24 +21,24 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-router.post('/status', function(req, res, next) {
-  if (Managers.managerValidation(req.decoded)) {
+router.post('/status', async function(req, res, next) {
+  if (await Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingStatus(req, res);
   } else {
     res.sendStatus(403); // Forbidden
   }
 });
 
-router.post('/start', function(req, res, next) {
-  if (Managers.managerValidation(req.decoded)) {
+router.post('/start', async function(req, res, next) {
+  if (await Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingTime(req, res);
   } else {
     res.sendStatus(403); // Forbidden
   }
 });
 
-router.post('/people', function(req, res, next) {
-  if (Managers.managerValidation(req.decoded)) {
+router.post('/people', async function(req, res, next) {
+  if (await Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingPeople(req, res);
   } else {
     res.sendStatus(403); // Forbidden

@@ -10,7 +10,7 @@ class Reservation extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-
+    
     axios
       .post("/reservation", {
         date: this.state.date,
