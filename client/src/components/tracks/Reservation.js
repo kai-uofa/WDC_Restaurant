@@ -26,8 +26,7 @@ class Reservation extends Component {
           restaurant_id: this.props.detail.restaurant_id
         })
         .then(res => {
-          console.log(res);
-          alert(res.data);
+          this.props.history.push("/profile");
         })
         .catch(console.error);
     }
