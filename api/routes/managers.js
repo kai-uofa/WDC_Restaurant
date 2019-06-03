@@ -13,22 +13,20 @@ router.post('/signup', function(req, res, next) {
   Managers.signUp(req, res);
 });
 
-router.get('/', function(req, res, next) {
-  Bookings.getActiveBookings(req, res);
-  // if (Managers.managerValidation(req.decoded)) {
-  //   Bookings.getActiveBookings(req, res);
-  // } else {
-  //   res.sendStatus(403); // Forbidden
-  // }
+router.get('/', async function(req, res, next) {
+  if (await Managers.managerValidation(req.decoded)) {
+    Bookings.getActiveBookings(req, res);
+  } else {
+    res.sendStatus(403); // Forbidden
+  }
 });
 
 router.post('/status', function(req, res, next) {
-  Bookings.updateBookingStatus(req, res);
-  // if (Managers.managerValidation(req.decoded)) {
-  //   Bookings.updateBookingStatus(req, res);
-  // } else {
-  //   res.sendStatus(403); // Forbidden
-  // }
+  if (Managers.managerValidation(req.decoded)) {
+    Bookings.updateBookingStatus(req, res);
+  } else {
+    res.sendStatus(403); // Forbidden
+  }
 });
 
 router.post('/start', function(req, res, next) {
