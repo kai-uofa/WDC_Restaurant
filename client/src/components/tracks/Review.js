@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
 class Review extends Component {
-  state = {};
-
+  state = {
+    email: "",
+    firstName: ""
+  };
   handleOnClick = e => {
     if (this.props.user === undefined) {
       this.props.history.push({
@@ -10,6 +12,10 @@ class Review extends Component {
         state: { from: this.props.history.location }
       });
     }
+    this.setState({
+      email: this.props.user.email,
+      firstName: this.props.user.firstName
+    });
   };
 
   render() {
@@ -58,7 +64,7 @@ class Review extends Component {
                       type="text"
                       name="name"
                       id="name"
-                      placeholder="Enter your name"
+                      value={this.state.firstName}
                       required="required"
                       className="form-control"
                     />
@@ -90,8 +96,9 @@ class Review extends Component {
                 <input
                   type="email"
                   name="email"
+                  value={this.state.email}
                   id="email"
-                  placeholder="Enter your  email"
+                  placeholder="email"
                   required="required"
                   className="form-control"
                 />
