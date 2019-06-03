@@ -58,7 +58,8 @@ class SignIn extends Component {
         })
         .then(res => {
           localStorage.setItem("token", res.data);
-          window.location = "/";
+          const { state } = this.props.location;
+          window.location = state ? state.from.pathname : "/";
         })
         .catch(console.error);
 
@@ -78,7 +79,8 @@ class SignIn extends Component {
       .then(res => {
         console.log(res);
         localStorage.setItem("token", res.data);
-        window.location = "/";
+        const { state } = this.props.location;
+        window.location = state ? state.from.pathname : "/";
       })
       .catch(console.error);
   };

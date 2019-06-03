@@ -12,9 +12,10 @@ class Reservation extends Component {
   handleOnSubmit = e => {
     e.preventDefault();
     if (this.props.user === undefined) {
-      // window.location = "/signin";
-      this.props.history.push("/signin");
-      // return <Redirect push to="/" />;
+      this.props.history.push({
+        pathname: "/signin",
+        state: { from: this.props.history.location }
+      });
     } else {
       axios
         .post("/reservation", {
@@ -26,6 +27,7 @@ class Reservation extends Component {
         })
         .then(res => {
           console.log(res);
+          alert(res.data);
         })
         .catch(console.error);
     }
@@ -51,7 +53,6 @@ class Reservation extends Component {
                 name="date"
                 type="date"
                 onChange={event => this.setState({ date: event.target.value })}
-                name="bookingDate"
                 id="bookingDate"
                 placeholder="Choose your dates"
                 required="required"

@@ -6,11 +6,11 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName:'',
-      lastName:'',
-      email:'',
-      password:'',
-      password2:'',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      password2: "",
       errors: {}
     };
   }
@@ -81,13 +81,6 @@ class SignUp extends Component {
       formIsValid = false;
       errors["password"] = "*The password is not matching";
     }
-
-    // if (typeof fields["password"] !== "undefined") {
-    //   if (!password.match(/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/)) {
-    //     formIsValid = false;
-    //     errors["password"] = "*Please enter secure and strong password.";
-    //   }
-    // }
 
     this.setState({
       errors: errors
