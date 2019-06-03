@@ -12,10 +12,14 @@ class Review extends Component {
         state: { from: this.props.history.location }
       });
     }
-    this.setState({
-      email: this.props.user.email,
-      firstName: this.props.user.firstName
-    });
+    try {
+      this.setState({
+        email: this.props.user.email,
+        firstName: this.props.user.firstName
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
