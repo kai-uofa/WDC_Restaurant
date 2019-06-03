@@ -7,6 +7,6 @@ router.get("/", function(req, res, next) {
   res.send("hello");
 });
 
-// TODO: this is fo handling user profile management
+// TODO: handle and update profile users
 
 module.exports = router;

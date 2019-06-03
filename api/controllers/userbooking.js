@@ -1,6 +1,7 @@
 const db = require("../models/dbconnection");
 
 const UserBooking = {
+  // TODO: Added info to database
   async postBooking(req, res) {
     const existedId = await db.query(
       "SELECT customer_id FROM Customers WHERE email = ?",

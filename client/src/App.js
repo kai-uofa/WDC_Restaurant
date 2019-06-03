@@ -14,6 +14,7 @@ import Logout from "./components/layout/Logout";
 import Index from "./components/layout/Index";
 import Detailrest from "./components/tracks/Detailrest";
 import Restlist from "./components/tracks/Restlist";
+import Profile from "./components/tracks/Profile";
 import MSignUp from "./components/managers/MSignup";
 import MSignIn from "./components/managers/MSignin";
 import MIndex from "./components/managers/MIndex";
@@ -101,6 +102,13 @@ class App extends Component {
               render={() => <Restlist restList={this.state.rest_list} />}
             />
             <Route
+              path="/profile"
+              render={props => {
+                if (!user) return <Redirect to="/" />;
+                return <Profile {...props} />;
+              }}
+            />
+            <Route
               exact
               path="/"
               render={props => (
@@ -113,22 +121,7 @@ class App extends Component {
               )}
             />
             <Route path="/logout" component={Logout} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/signin" component={SignIn} />
-
-            <Route path="/managers/signup" component={MSignUp} />
-            <Route path="/managers/signin" component={MSignIn} />
-            <Route path="/managers" component={MIndex} />
-          </Switch>
-        </React.Fragment>
-      </Router>
-    );
-  }
-}
-
-export default App;
-// {
-/* <Route
+            <Route
               path="/signin"
               render={props => {
                 if (user) return <Redirect to="/" />;
@@ -141,5 +134,18 @@ export default App;
                 if (user) return <Redirect to="/" />;
                 return <SignUp {...props} />;
               }}
-            /> */
-// }
+            />
+            <Route path="/managers/signup" component={MSignUp} />
+            <Route path="/managers/signin" component={MSignIn} />
+            <Route path="/managers" component={MIndex} />
+          </Switch>
+        </React.Fragment>
+      </Router>
+    );
+  }
+}
+
+export default App;
+
+/* <Route path="/signup" component={SignUp} />
+            <Route path="/signin" component={SignIn} /> */
