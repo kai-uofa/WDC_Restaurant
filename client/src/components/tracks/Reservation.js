@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 class Reservation extends Component {
   state = {
@@ -10,25 +11,27 @@ class Reservation extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-
-    axios
-      .post("/reservation", {
-        date: this.state.date,
-        time: this.state.time,
-        guests: this.state.guests,
-        email: this.props.user.email,
-        restaurant_id: this.props.detail.restaurant_id
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(console.error);
-
-    // Reset all state
-    // this.setState({ date: null, time: null, guests: null });
+    console.log(this.props.user);
+    if (this.props.user === undefined) {
+      return <Redirect to="/signin" />;
+    } else {
+      axios
+        .post("/reservation", {
+          date: this.state.date,
+          time: this.state.time,
+          guests: this.state.guests,
+          email: this.props.user.email,
+          restaurant_id: this.props.detail.restaurant_id
+        })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(console.error);
+    }
   };
 
   render() {
+    const { user } = this.props;
     return (
       <div className="p-4 shadow ml-lg-4 rounded sticky-top">
         <h5 className="text-center">{this.props.detail.restaurant_name}</h5>

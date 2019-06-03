@@ -16,7 +16,7 @@ const RestList = props => {
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div>
-      <section class="py-5 bg-light-100 shadow">
+      <section className="py-5 bg-light-100 shadow">
         <div className="container pt-5">
           <h1 className="mb-4">Adelaide</h1>
           <p className="lead mb-5">

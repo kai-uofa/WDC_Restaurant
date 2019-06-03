@@ -80,7 +80,6 @@ class Detailrest extends Component {
                   mapElement={<div style={{ height: `100%` }} />}
                 />
               </div>
-
               {/* Opening time, address and phone number */}
               <div className="text-block py-3">
                 <Opentime detail={detail} />
