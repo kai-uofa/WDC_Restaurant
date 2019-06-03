@@ -86,7 +86,11 @@ class Detailrest extends Component {
               </div>
               {/* <!-- reviews --> */}
               <hr className="my-4" />
-              <Review />
+              <Review
+                user={user}
+                history={this.props.history}
+                detail={detail}
+              />
             </div>
             {/* Make a reservation form  */}
             <div className="col-lg-4">
