@@ -11,7 +11,7 @@ const Member = () => {
             <br />
             Join our WDC family!
           </h3>
-          <Link className="btn btn-outline-light btn-lg" to="/manager/signup">
+          <Link className="btn btn-outline-light btn-lg" to="/managers/signup">
             Get Started
           </Link>
         </div>
