@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 class Review extends Component {
   state = {
     email: "",
-    firstName: ""
+    firstName: "",
+    rating: 5,
+    review: ""
   };
-  handleOnClick = e => {
+  handleOnClick = async e => {
+    console.log(this.props.user)
     if (this.props.user === undefined) {
       this.props.history.push({
         pathname: "/signin",
@@ -20,6 +24,24 @@ class Review extends Component {
     } catch (error) {
       console.log(error);
     }
+    
+  };
+ 
+  handleSubmit = e => {
+    e.preventDefault();
+    axios
+    .post("/users/review", {
+       firstName : this.state.firstName,
+       email : this.props.user.email,
+       rating : this.state.rating,
+       review : this.state.review,
+       rating :this.state.rating,
+       restaurant_id: this.props.detail.restaurant_id
+    })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(console.error);
   };
 
   render() {
@@ -57,7 +79,7 @@ class Review extends Component {
           </button>
           <div id="leaveReview" className="collapse mt-4">
             <h5 className="mb-4">Leave a review</h5>
-            <form id="contact-form" method="get" action="#" className="form">
+            <form id="contact-form" method="post" onSubmit={this.handleSubmit} className="form">
               <div className="row">
                 <div className="col-sm-6">
                   <div className="form-group">
@@ -83,6 +105,7 @@ class Review extends Component {
                       name="rating"
                       id="rating"
                       className="custom-select focus-shadow-0"
+                      onChange={event => this.setState({ rating: event.target.value })}
                     >
                       <option value="5">★★★★★ (5/5)</option>
                       <option value="4">★★★★☆ (4/5)</option>
@@ -115,6 +138,7 @@ class Review extends Component {
                   rows="4"
                   name="review"
                   id="review"
+                  onChange={event => this.setState({ review: event.target.value })}
                   placeholder="Enter your review"
                   required="required"
                   className="form-control"
