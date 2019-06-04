@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-const { OAuth2Client } = require('google-auth-library');
-const jwt = require('jsonwebtoken');
-const config = require('../configAPIs');
-const db = require('../models/dbconnection');
+const { OAuth2Client } = require("google-auth-library");
+const jwt = require("jsonwebtoken");
+const config = require("../configAPIs");
+const db = require("../models/dbconnection");
 
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
@@ -21,13 +21,13 @@ const Customers = {
 
     // check if email existed in database
     const googleAccExist = await db
-      .query('SELECT email FROM Customers WHERE email = ?', [req.body.email])
+      .query("SELECT email FROM Customers WHERE email = ?", [req.body.email])
       .catch(console.error);
 
     if (googleAccExist.length < 1) {
       // add this email, name & google ID to server
       const queryG =
-        'INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)';
+        "INSERT INTO Customers (first_name, last_name, email, google_id) VALUES (?, ?, ?, ?)";
       db.query(queryG, [
         req.body.firstName,
         req.body.lastName,
@@ -36,7 +36,7 @@ const Customers = {
       ]).catch(console.error);
     } else {
       // link google account
-      db.query('UPDATE Customers SET google_id = ? WHERE email = ?', [
+      db.query("UPDATE Customers SET google_id = ? WHERE email = ?", [
         googleID,
         req.body.email
       ]).catch(console.error);
@@ -60,15 +60,13 @@ const Customers = {
       req.body.password !== undefined
     ) {
       const existedEmail = await db
-        .query('SELECT email FROM Customers WHERE email = ?', [
-          req.body.email
-        ])
+        .query("SELECT email FROM Customers WHERE email = ?", [req.body.email])
         .catch(console.error);
 
       if (existedEmail.length < 1) {
         // Add customer to database
         const query =
-          'INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)';
+          "INSERT INTO Customers (first_name, last_name, email, password) VALUES (?,?,?,?)";
         db.query(query, [
           req.body.firstName,
           req.body.lastName,
@@ -137,7 +135,7 @@ const Customers = {
     ) {
       const results = await db
         .query(
-          'SELECT email FROM Customers WHERE email = ? AND password = ? ',
+          "SELECT email FROM Customers WHERE email = ? AND password = ? ",
           [req.body.email, req.body.password]
         )
         .catch(console.error);
@@ -182,27 +180,47 @@ const Customers = {
       res.sendStatus(401); // Unauthorized
     }
   },
-  
+
   async postReview(req, res) {
-    const existedId = await db.query(
-        "SELECT customer_id FROM Customers WHERE email = ?",
-        [req.body.email]
-      ).catch(console.error);
+    const existedId = await db
+      .query("SELECT customer_id FROM Customers WHERE email = ?", [
+        req.body.email
+      ])
+      .catch(console.error);
 
     if (existedId.length > 0) {
-        const query = "INSERT INTO Reviews (customer_id, restaurant_id, rating, content) VALUES (?,?,?,?)";
-        await db.query(query, [
-            existedId[0].customer_id,
-            req.body.restaurant_id,
-            req.body.rating,
-            req.body.review
-        ]).catch(console.error);
-        res.sendStatus(200);
+      const query =
+        "INSERT INTO Reviews (customer_id, restaurant_id, rating, content) VALUES (?,?,?,?)";
+      await db
+        .query(query, [
+          existedId[0].customer_id,
+          req.body.restaurant_id,
+          req.body.rating,
+          req.body.review
+        ])
+        .catch(console.error);
+      res.sendStatus(200);
     } else {
-        res.sendStatus(403) // Forbidden
+      res.sendStatus(403); // Forbidden
     }
+  },
+
+  async postBooking(req, res) {
+    const existedId = await db.query(
+      "SELECT customer_id FROM Customers WHERE email = ?",
+      [req.body.email]
+    );
+    const query =
+      "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
+    db.query(query, [
+      existedId[0].customer_id,
+      req.body.restaurant_id,
+      req.body.date,
+      req.body.guests,
+      req.body.time
+    ]).catch(console.error);
+    res.sendStatus(200);
   }
 };
-
 
 module.exports = Customers;

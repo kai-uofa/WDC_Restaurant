@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Reviewcontent from "./Reviewcontent";
 
 class Review extends Component {
   state = {
@@ -8,8 +9,7 @@ class Review extends Component {
     rating: 5,
     review: ""
   };
-  handleOnClick = async e => {
-    console.log(this.props.user)
+  handleOnClick = e => {
     if (this.props.user === undefined) {
       this.props.history.push({
         pathname: "/signin",
@@ -24,47 +24,31 @@ class Review extends Component {
     } catch (error) {
       console.log(error);
     }
-    
   };
- 
+
   handleSubmit = e => {
     e.preventDefault();
     axios
-    .post("/users/review", {
-       firstName : this.state.firstName,
-       email : this.props.user.email,
-       rating : this.state.rating,
-       review : this.state.review,
-       rating :this.state.rating,
-       restaurant_id: this.props.detail.restaurant_id
-    })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(console.error);
+      .post("/users/review", {
+        firstName: this.state.firstName,
+        email: this.props.user.email,
+        rating: this.state.rating,
+        review: this.state.review,
+        rating: this.state.rating,
+        restaurant_id: this.props.detail.restaurant_id
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(console.error);
   };
 
   render() {
     return (
       <div className="text-block pt-3">
         <h5 className="subtitle text-sm">Reviews</h5>
-        <div className="media d-block d-sm-flex review">
-          <div className="media-body">
-            <h6 className="mt-2 mb-1">Princess Leia</h6>
-            <div className="mb-2">
-              <i className="fa fa-xs fa-star text-primary" />
-              <i className="fa fa-xs fa-star text-primary" />
-              <i className="fa fa-xs fa-star text-primary" />
-              <i className="fa fa-xs fa-star text-gray-200" />
-              <i className="fa fa-xs fa-star text-gray-200" />
-            </div>
-            <p className="text-muted text-sm">
-              We had an engagement party here and the staff and service was
-              amazing. They were so profesional and kept everybody happy. I'm so
-              grateful. We will be returning some day!
-            </p>
-          </div>
-        </div>
+        <Reviewcontent />
+
         <div className="py-5">
           <button
             type="button"
@@ -79,7 +63,12 @@ class Review extends Component {
           </button>
           <div id="leaveReview" className="collapse mt-4">
             <h5 className="mb-4">Leave a review</h5>
-            <form id="contact-form" method="post" onSubmit={this.handleSubmit} className="form">
+            <form
+              id="contact-form"
+              method="post"
+              onSubmit={this.handleSubmit}
+              className="form"
+            >
               <div className="row">
                 <div className="col-sm-6">
                   <div className="form-group">
@@ -105,7 +94,9 @@ class Review extends Component {
                       name="rating"
                       id="rating"
                       className="custom-select focus-shadow-0"
-                      onChange={event => this.setState({ rating: event.target.value })}
+                      onChange={event =>
+                        this.setState({ rating: event.target.value })
+                      }
                     >
                       <option value="5">★★★★★ (5/5)</option>
                       <option value="4">★★★★☆ (4/5)</option>
@@ -138,7 +129,9 @@ class Review extends Component {
                   rows="4"
                   name="review"
                   id="review"
-                  onChange={event => this.setState({ review: event.target.value })}
+                  onChange={event =>
+                    this.setState({ review: event.target.value })
+                  }
                   placeholder="Enter your review"
                   required="required"
                   className="form-control"

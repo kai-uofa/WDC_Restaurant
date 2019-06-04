@@ -1,5 +1,5 @@
 const express = require("express");
-const Customers = require('../controllers/customers');
+const Customers = require("../controllers/customers");
 
 const router = express.Router();
 
@@ -12,6 +12,9 @@ router.post("/review", function(req, res, next) {
   Customers.postReview(req, res);
 });
 
+router.post("/reservation", function(req, res, next) {
+  Customers.postBooking(req, res);
+});
 
 // TODO: handle and update profile users
 

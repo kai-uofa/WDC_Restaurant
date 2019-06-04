@@ -18,7 +18,7 @@ class Reservation extends Component {
       });
     } else {
       axios
-        .post("/reservation", {
+        .post("/users/reservation", {
           date: this.state.date,
           time: this.state.time,
           guests: this.state.guests,
