@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 class SignUp extends Component {
   constructor(props) {
@@ -120,7 +119,7 @@ class SignUp extends Component {
     //     errors["password"] = "*Please enter secure and strong password.";
     //   }
     // }
-    
+
     this.setState({
       errors: errors
     });
@@ -143,8 +142,8 @@ class SignUp extends Component {
           password: this.state.password
         })
         .then(res => {
-          localStorage.setItem('token', res.data);
-          window.location = '/managers';
+          localStorage.setItem("token", res.data);
+          window.location = "/managers";
         })
         .catch(console.error);
 

@@ -6,7 +6,6 @@ class Review extends Component {
   state = {
     email: "",
     firstName: "",
-    rating: 5,
     review: ""
   };
   handleOnClick = e => {
@@ -34,7 +33,6 @@ class Review extends Component {
         email: this.props.user.email,
         rating: this.state.rating,
         review: this.state.review,
-        rating: this.state.rating,
         restaurant_id: this.props.detail.restaurant_id
       })
       .then(res => {

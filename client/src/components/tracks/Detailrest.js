@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import detail from "../../images/detail.jpg";
+
 import MyMap from "./MyMap";
 import Opentime from "./Opentime";
 import Review from "./Review";

@@ -82,7 +82,7 @@ const Customers = {
           },
           config.JWT_SECRET_KEY,
           {
-            expiresIn: 1440
+            expiresIn: 90000
           }
         );
         customer = req.body.email;
@@ -104,7 +104,7 @@ const Customers = {
         },
         config.JWT_SECRET_KEY,
         {
-          expiresIn: 1440
+          expiresIn: 90000
         }
       );
       customer = req.body.email;
@@ -149,7 +149,7 @@ const Customers = {
           },
           config.JWT_SECRET_KEY,
           {
-            expiresIn: 1440
+            expiresIn: 90000
           }
         );
         customer = req.body.email;
@@ -168,7 +168,7 @@ const Customers = {
         },
         config.JWT_SECRET_KEY,
         {
-          expiresIn: 1440
+          expiresIn: 90000
         }
       );
       customer = req.body.email;
@@ -220,6 +220,24 @@ const Customers = {
       req.body.time
     ]).catch(console.error);
     res.sendStatus(200);
+  },
+
+  async getProfile(req, res) {
+    const existedId = await db
+      .query("SELECT customer_id FROM Customers WHERE email = ?", [
+        req.body.email
+      ])
+      .catch(console.error);
+    //TODO: query to get restaurant name
+    if (existedId.length > 0) {
+      const query = "SELECT * FROM Bookings WHERE customer_id=?";
+      const results = await db
+        .query(query, [existedId[0].customer_id])
+        .catch(console.error);
+      res.json(results);
+    } else {
+      res.sendStatus(403); // Forbidden
+    }
   }
 };
 
