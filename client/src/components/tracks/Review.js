@@ -3,12 +3,22 @@ import axios from "axios";
 import Reviewcontent from "./Reviewcontent";
 
 class Review extends Component {
-  state = {
-    email: "",
-    firstName: "",
-    rating: 5,
-    review: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      firstName: "",
+      rating: 5,
+      review: ""
+    };
+  }
+
+  // state = {
+  //   email: "",
+  //   firstName: "",
+  //   rating: 5,
+  //   review: ""
+  // };
 
   handleOnClick = e => {
     if (this.props.user === undefined) {
@@ -41,6 +51,8 @@ class Review extends Component {
         console.log(res);
       })
       .catch(console.error);
+
+    this.gettingReview();
   };
 
   gettingReview() {
@@ -52,9 +64,6 @@ class Review extends Component {
         console.log(res);
       })
       .catch(console.error);
-  }
-  componentDidMount() {
-    this.gettingReview();
   }
 
   render() {
