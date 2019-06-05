@@ -62,11 +62,11 @@ WHERE Bookings.restaurant_id = ? AND Bookings.status = 1';
   },
 
   async updateBookingTime(req, res) {
-    //
+    // TODO
   },
 
   async updateBookingPeople(req, res) {
-    //
+    // TODO
   },
 };
 

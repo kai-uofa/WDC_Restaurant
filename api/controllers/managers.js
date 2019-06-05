@@ -79,7 +79,7 @@ const Managers = {
     }
   },
 
-  signIn(req, res) {
+  async signIn(req, res) {
     let manager = null;
     let token;
 
@@ -88,15 +88,15 @@ const Managers = {
       // eslint-disable-next-line prefer-destructuring
       manager = req.decoded.email;
     } else if (req.body.email !== undefined && req.body.password !== undefined) {
-      db.query('SELECT * FROM Managers WHERE email = ? AND password = ? ', [req.body.email, req.body.password])
-        .then( results => {
-          if(results.length > 0) {
-            token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
-              expiresIn: 1440,
-            });
-            manager = req.body.email;
-          }
-        }).catch(console.error);
+      const results = await db.query('SELECT * FROM Managers WHERE email = ? AND password = ? ', [req.body.email, req.body.password])
+        .catch(console.error);
+      // FIXME: fix this sending firstName
+      if(results.length > 0) {
+        token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
+          expiresIn: 1440,
+        });
+        manager = req.body.email;
+      }
     }
     
     if (manager !== null) {

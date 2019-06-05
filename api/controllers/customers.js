@@ -141,7 +141,7 @@ const Customers = {
           [req.body.email, req.body.password]
         )
         .catch(console.error);
-      // FIXME: fix this sending first Name
+      // FIXME: fix this sending firstName
       if (results.length > 0) {
         token = await jwt.sign(
           {
@@ -185,12 +185,12 @@ const Customers = {
   
   async postReview(req, res) {
     const existedId = await db.query(
-        "SELECT customer_id FROM Customers WHERE email = ?",
+        'SELECT customer_id FROM Customers WHERE email = ?',
         [req.body.email]
       ).catch(console.error);
 
     if (existedId.length > 0) {
-        const query = "INSERT INTO Reviews (customer_id, restaurant_id, rating, content) VALUES (?,?,?,?)";
+        const query = 'INSERT INTO Reviews (customer_id, restaurant_id, rating, content) VALUES (?,?,?,?)';
         await db.query(query, [
             existedId[0].customer_id,
             req.body.restaurant_id,
@@ -199,7 +199,7 @@ const Customers = {
         ]).catch(console.error);
         res.sendStatus(200);
     } else {
-        res.sendStatus(403) // Forbidden
+        res.sendStatus(403); // Forbidden
     }
   }
 };
