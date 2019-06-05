@@ -1,15 +1,20 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Reviewcontent from "./Reviewcontent";
 
 class Review extends Component {
-  state = {
-    email: "",
-    firstName: "",
-    rating: 5,
-    review: ""
-  };
-  handleOnClick = async e => {
-    console.log(this.props.user)
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      firstName: "",
+      rating: 5,
+      review: "",
+      list_reviews: []
+    };
+  }
+
+  handleOnClick = e => {
     if (this.props.user === undefined) {
       this.props.history.push({
         pathname: "/signin",
@@ -24,47 +29,51 @@ class Review extends Component {
     } catch (error) {
       console.log(error);
     }
-    
-  };
- 
-  handleSubmit = e => {
-    e.preventDefault();
-    axios
-    .post("/users/review", {
-       firstName : this.state.firstName,
-       email : this.props.user.email,
-       rating : this.state.rating,
-       review : this.state.review,
-       rating :this.state.rating,
-       restaurant_id: this.props.detail.restaurant_id
-    })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(console.error);
   };
 
+  handleSubmit = async e => {
+    e.preventDefault();
+    //send info reviews to database
+    await axios
+      .post("/users/review", {
+        firstName: this.state.firstName,
+        email: this.props.user.email,
+        rating: this.state.rating,
+        review: this.state.review,
+        restaurant_id: this.props.detail.restaurant_id
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(console.error);
+    //get all reviews from database
+    this.gettingReview();
+  };
+
+  gettingReview() {
+    axios
+      .post("/restaurant/reviews", {
+        restaurant_id: this.props.detail.restaurant_id
+      })
+      .then(res => {
+        this.setState({ list_reviews: res.data });
+        console.log(this.state.list_reviews);
+      })
+      .catch(console.error);
+  }
+
   render() {
+    const { list_reviews } = this.state;
     return (
       <div className="text-block pt-3">
         <h5 className="subtitle text-sm">Reviews</h5>
-        <div className="media d-block d-sm-flex review">
-          <div className="media-body">
-            <h6 className="mt-2 mb-1">Princess Leia</h6>
-            <div className="mb-2">
-              <i className="fa fa-xs fa-star text-primary" />
-              <i className="fa fa-xs fa-star text-primary" />
-              <i className="fa fa-xs fa-star text-primary" />
-              <i className="fa fa-xs fa-star text-gray-200" />
-              <i className="fa fa-xs fa-star text-gray-200" />
-            </div>
-            <p className="text-muted text-sm">
-              We had an engagement party here and the staff and service was
-              amazing. They were so profesional and kept everybody happy. I'm so
-              grateful. We will be returning some day!
-            </p>
-          </div>
-        </div>
+        {list_reviews
+          .slice(0)
+          .reverse()
+          .map(review => (
+            <Reviewcontent key={list_reviews.review_id} review={review} />
+          ))}
+
         <div className="py-5">
           <button
             type="button"
@@ -79,7 +88,12 @@ class Review extends Component {
           </button>
           <div id="leaveReview" className="collapse mt-4">
             <h5 className="mb-4">Leave a review</h5>
-            <form id="contact-form" method="post" onSubmit={this.handleSubmit} className="form">
+            <form
+              id="contact-form"
+              method="post"
+              onSubmit={this.handleSubmit}
+              className="form"
+            >
               <div className="row">
                 <div className="col-sm-6">
                   <div className="form-group">
@@ -105,7 +119,9 @@ class Review extends Component {
                       name="rating"
                       id="rating"
                       className="custom-select focus-shadow-0"
-                      onChange={event => this.setState({ rating: event.target.value })}
+                      onChange={event =>
+                        this.setState({ rating: event.target.value })
+                      }
                     >
                       <option value="5">★★★★★ (5/5)</option>
                       <option value="4">★★★★☆ (4/5)</option>
@@ -138,7 +154,9 @@ class Review extends Component {
                   rows="4"
                   name="review"
                   id="review"
-                  onChange={event => this.setState({ review: event.target.value })}
+                  onChange={event =>
+                    this.setState({ review: event.target.value })
+                  }
                   placeholder="Enter your review"
                   required="required"
                   className="form-control"

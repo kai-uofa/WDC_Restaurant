@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
 class Reservation extends Component {
   state = {
@@ -18,7 +17,7 @@ class Reservation extends Component {
       });
     } else {
       axios
-        .post("/reservation", {
+        .post("/users/reservation", {
           date: this.state.date,
           time: this.state.time,
           guests: this.state.guests,

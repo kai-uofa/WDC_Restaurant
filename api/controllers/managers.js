@@ -16,27 +16,27 @@ const Managers = {
     let manager = null;
     let conflict = false;
     let token;
-    
+
     // TODO: change to JWT
     if (req.decoded !== undefined) {
       manager = req.decoded.email;
     } else if (
-      req.body.firstName !== undefined && 
-      req.body.lastName !== undefined && 
-      req.body.email !== undefined && 
-      req.body.password !== undefined && 
-      req.body.resName !== undefined && 
+      req.body.firstName !== undefined &&
+      req.body.lastName !== undefined &&
+      req.body.email !== undefined &&
+      req.body.password !== undefined &&
+      req.body.resName !== undefined &&
       req.body.resAddress !== undefined &&
       req.body.capacity !== undefined
-      ) {
+    ) {
       const existedEmail = await db.query('SELECT email FROM Managers WHERE email = ?', [req.body.email]);
-      
+
       if (existedEmail.length < 1) {
         // create new restaurant
-        const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity) VALUES (?,?,?)';
+        const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity,) VALUES (?,?,?)';
         await db.query(queryRes, [req.body.resName, req.body.resAddress, parseInt(req.body.capacity)])
           .catch(console.error);
-        
+
         // get new restaurant id
         const _resId = await db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
           .catch(console.error);
@@ -45,7 +45,7 @@ const Managers = {
         const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
         await db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, req.body.password])
           .catch(console.error);
-        
+
         token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
           expiresIn: 1440,
         });
@@ -61,7 +61,7 @@ const Managers = {
               .catch(console.error);
 
           }).catch(console.error);
-        // //////////////
+        // FIXME: add description
         if (req.body.description !== '') {
           console.log('add description to database');
         }
@@ -70,7 +70,7 @@ const Managers = {
       }
     }
 
-    if( conflict === true ) {
+    if (conflict === true) {
       res.sendStatus(409); // Conflict
     } else if (manager === null) {
       res.sendStatus(401); // Unauthorized
@@ -98,7 +98,7 @@ const Managers = {
         manager = req.body.email;
       }
     }
-    
+
     if (manager !== null) {
       res.send(token);
     } else {
@@ -114,9 +114,9 @@ const Managers = {
         return true;
       }
       return false;
-    } 
+    }
     return false;
-    
+
   }
 };
 

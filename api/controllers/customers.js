@@ -60,9 +60,7 @@ const Customers = {
       req.body.password !== undefined
     ) {
       const existedEmail = await db
-        .query('SELECT email FROM Customers WHERE email = ?', [
-          req.body.email
-        ])
+        .query('SELECT email FROM Customers WHERE email = ?', [req.body.email])
         .catch(console.error);
 
       if (existedEmail.length < 1) {
@@ -84,7 +82,7 @@ const Customers = {
           },
           config.JWT_SECRET_KEY,
           {
-            expiresIn: 1440
+            expiresIn: 90000
           }
         );
         customer = req.body.email;
@@ -106,7 +104,7 @@ const Customers = {
         },
         config.JWT_SECRET_KEY,
         {
-          expiresIn: 1440
+          expiresIn: 90000
         }
       );
       customer = req.body.email;
@@ -151,7 +149,7 @@ const Customers = {
           },
           config.JWT_SECRET_KEY,
           {
-            expiresIn: 1440
+            expiresIn: 90000
           }
         );
         customer = req.body.email;
@@ -170,7 +168,7 @@ const Customers = {
         },
         config.JWT_SECRET_KEY,
         {
-          expiresIn: 1440
+          expiresIn: 90000
         }
       );
       customer = req.body.email;
@@ -182,27 +180,67 @@ const Customers = {
       res.sendStatus(401); // Unauthorized
     }
   },
-  
+
   async postReview(req, res) {
-    const existedId = await db.query(
-        'SELECT customer_id FROM Customers WHERE email = ?',
-        [req.body.email]
-      ).catch(console.error);
+    const existedId = await db
+      .query('SELECT customer_id FROM Customers WHERE email = ?', [
+        req.body.email
+      ])
+      .catch(console.error);
 
     if (existedId.length > 0) {
-        const query = 'INSERT INTO Reviews (customer_id, restaurant_id, rating, content) VALUES (?,?,?,?)';
-        await db.query(query, [
-            existedId[0].customer_id,
-            req.body.restaurant_id,
-            req.body.rating,
-            req.body.review
-        ]).catch(console.error);
-        res.sendStatus(200);
+      const query =
+        'INSERT INTO Reviews (customer_id, restaurant_id, rating, content) VALUES (?,?,?,?)';
+      await db
+        .query(query, [
+          existedId[0].customer_id,
+          req.body.restaurant_id,
+          req.body.rating,
+          req.body.review
+        ])
+        .catch(console.error);
+      res.sendStatus(200);
     } else {
-        res.sendStatus(403); // Forbidden
+      res.sendStatus(403); // Forbidden
+    }
+  },
+
+  async postBooking(req, res) {
+    const existedId = await db.query(
+      'SELECT customer_id FROM Customers WHERE email = ?',
+      [req.body.email]
+    );
+    // const date = req.body.date;
+    // console.log(date);
+    const query =
+      'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
+    db.query(query, [
+      existedId[0].customer_id,
+      req.body.restaurant_id,
+      req.body.date,
+      req.body.guests,
+      req.body.time
+    ]).catch(console.error);
+    res.sendStatus(200);
+  },
+
+  async getProfile(req, res) {
+    const existedId = await db
+      .query('SELECT customer_id FROM Customers WHERE email = ?', [
+        req.body.email
+      ])
+      .catch(console.error);
+    // TODO: query to get restaurant name
+    if (existedId.length > 0) {
+      const query = 'SELECT * FROM Bookings WHERE customer_id=?';
+      const results = await db
+        .query(query, [existedId[0].customer_id])
+        .catch(console.error);
+      res.json(results);
+    } else {
+      res.sendStatus(403); // Forbidden
     }
   }
 };
-
 
 module.exports = Customers;

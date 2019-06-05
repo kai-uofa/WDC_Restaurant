@@ -1,4 +1,3 @@
-// TODO: add multiple infowindow
 import React from "react";
 import {
   withScriptjs,
