@@ -6,8 +6,10 @@ class Review extends Component {
   state = {
     email: "",
     firstName: "",
+    rating: 5,
     review: ""
   };
+
   handleOnClick = e => {
     if (this.props.user === undefined) {
       this.props.history.push({
@@ -40,6 +42,20 @@ class Review extends Component {
       })
       .catch(console.error);
   };
+
+  gettingReview() {
+    axios
+      .post("/restaurant/reviews", {
+        restaurant_id: this.props.detail.restaurant_id
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(console.error);
+  }
+  componentDidMount() {
+    this.gettingReview();
+  }
 
   render() {
     return (
