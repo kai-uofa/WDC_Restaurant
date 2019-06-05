@@ -63,8 +63,10 @@ const Restaurants = {
 
   //function to get restaurant reviews
   async getReviews(req, res) {
-    console.log(req.body);
-    res.send("up to controller");
+    const restID =
+      "SELECT Customers.first_name, Reviews.content,Reviews.rating, Reviews.review_id FROM Reviews INNER JOIN Customers ON Reviews.customer_id=Customers.customer_id WHERE Reviews.restaurant_id= ?";
+    const results = await db.query(restID, [req.body.restaurant_id]);
+    res.json(results);
   }
 };
 

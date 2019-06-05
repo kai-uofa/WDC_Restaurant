@@ -210,6 +210,8 @@ const Customers = {
       "SELECT customer_id FROM Customers WHERE email = ?",
       [req.body.email]
     );
+    // const date = req.body.date;
+    // console.log(date);
     const query =
       "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
     db.query(query, [

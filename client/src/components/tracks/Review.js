@@ -9,16 +9,10 @@ class Review extends Component {
       email: "",
       firstName: "",
       rating: 5,
-      review: ""
+      review: "",
+      list_reviews: []
     };
   }
-
-  // state = {
-  //   email: "",
-  //   firstName: "",
-  //   rating: 5,
-  //   review: ""
-  // };
 
   handleOnClick = e => {
     if (this.props.user === undefined) {
@@ -37,9 +31,10 @@ class Review extends Component {
     }
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    axios
+    //send info reviews to database
+    await axios
       .post("/users/review", {
         firstName: this.state.firstName,
         email: this.props.user.email,
@@ -51,7 +46,7 @@ class Review extends Component {
         console.log(res);
       })
       .catch(console.error);
-
+    //get all reviews from database
     this.gettingReview();
   };
 
@@ -61,16 +56,23 @@ class Review extends Component {
         restaurant_id: this.props.detail.restaurant_id
       })
       .then(res => {
-        console.log(res);
+        this.setState({ list_reviews: res.data });
+        console.log(this.state.list_reviews);
       })
       .catch(console.error);
   }
 
   render() {
+    const { list_reviews } = this.state;
     return (
       <div className="text-block pt-3">
         <h5 className="subtitle text-sm">Reviews</h5>
-        <Reviewcontent />
+        {list_reviews
+          .slice(0)
+          .reverse()
+          .map(review => (
+            <Reviewcontent key={list_reviews.review_id} review={review} />
+          ))}
 
         <div className="py-5">
           <button
