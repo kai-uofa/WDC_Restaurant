@@ -62,9 +62,9 @@ class SignUp extends Component {
       formIsValid = false;
       errors["resName"] = "*Please enter your Restaurant Name.";
     }
-    if (resName.length < 3) {
+    if (resName.length < 2) {
       formIsValid = false;
-      errors["resName"] = "Please enter at least 3 character.";
+      errors["resName"] = "Please enter at least 2 character.";
     }
     // Restaurant adress validation
     if (resAddress === "") {
@@ -72,9 +72,9 @@ class SignUp extends Component {
       errors["resAddress"] = "*Please enter your Restaurant Location.";
     }
 
-    if (resAddress.length < 3) {
+    if (resAddress.length < 2) {
       formIsValid = false;
-      errors["resAddress"] = "Please enter at least 3 character.";
+      errors["resAddress"] = "Please enter at least 2 character.";
     }
     // Manger firstName
     if (!firstName.match(/^[a-zA-Z ]*$/)) {
@@ -130,6 +130,7 @@ class SignUp extends Component {
     e.preventDefault();
     if (this.validateForm()) {
       // Send request to server
+      console.log(this.state.description)
       axios
         .post("/managers/signup", {
           resName: this.state.resName,
@@ -171,199 +172,221 @@ class SignUp extends Component {
     // }
 
     return (
-      <div className="container-fluid px-3">
-        <div className="row min-vh-100">
-          <div className="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
-            <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
-              <div className="mb-4">
-                <h2>Get started with Us</h2>
-                <p>
-                  Tell us a little about you and your restaurant, and we’ll
-                  contact you via phone or email to provide information about
-                  WDC products and services.
+      <div>
+        <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
+          <div>
+            <br></br>
+            <br></br>
+            <h2>Get started with Us</h2>
+            <p>
+              Tell us a little about you and your restaurant, and we’ll
+              contact you via phone or email to provide information about
+              WDC products and services.
                 </p>
-              </div>
-              <form
-                className="form-validate"
-                method="post"
-                onSubmit={this.normalSignUp}
-              >
-                {/* Restaurant Name */}
-                <div className="form-group">
-                  <label htmlFor="resName" class="form-label">
-                    Restaurant Name
+          </div>
+          {/* <div class="container py-5"> */}
+          <div class="row">
+            <div class="col-md-10 mx-auto">
+              <div class="container py-5">
+                <div class="row">
+                  <div class="col-md-10 mx-auto">
+                    <form
+                      className="form-validate"
+                      method="post"
+                      onSubmit={this.normalSignUp}>
+                      <div class="form-group row">
+                        <div class="col-sm-6">
+                          <label htmlFor="resName">
+                            Restaurant Name
                   </label>
-                  <input
-                    name="resName"
-                    id="resName"
-                    type="text"
-                    placeholder="Restaurant Name"
-                    value={this.state.resName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
-                    data-msg="Please enter your Restaurant Name"
-                    class="form-control"
-                  />
-                </div>
-                <div className="errorMsg">{this.state.errors.resName}</div>
-                {/* Restaurant Adress */}
-                <div class="form-group">
-                  <label for="resAddress" class="form-label">
-                    Address
+                          <input
+                            name="resName"
+                            id="resName"
+                            type="text"
+                            placeholder="Restaurant Name"
+                            value={this.state.resName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            required
+                            data-msg="Please enter your Restaurant Name"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.resName}</div>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <label htmlFor="firstName" class="form-label">
+                            Manager First Name
                   </label>
-                  <input
-                    name="resAddress"
-                    id="resAddress"
-                    type="text"
-                    placeholder="Restaurant Location"
-                    value={this.state.resAddress}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
-                    data-msg="Please enter your Restaurant Location"
-                    class="form-control"
-                  />
-                </div>
-                <div className="errorMsg">{this.state.errors.resAddress}</div>
-                {/* Restaurant Capacity */}
-                <div class="form-group">
-                  <label for="capacity" class="form-label">
-                    Capacity
+                          <input
+                            name="firstName"
+                            id="firstName"
+                            type="text"
+                            placeholder="First Name"
+                            value={this.state.firstName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            required
+                            data-msg="Please enter your first name"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.firstName}</div>
+                        </div>
+                      </div>
+                      {/* here2 */}
+                      <div class="form-group row">
+                        {/* Restaurant Location */}
+                        <div class="col-sm-6">
+                          <label for="resAddress" class="form-label">
+                            Address
                   </label>
-                  <input
-                    name="capacity"
-                    id="capacity"
-                    type="number"
-                    min="0"
-                    placeholder="How many customer can you Restaurant hold"
-                    value={this.state.capacity}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
-                    data-msg="How many customer can you Restaurant hold"
-                    class="form-control"
-                  />
-                </div>
-                <div className="errorMsg">{this.state.errors.capacity}</div>
-                {/* Restaurant Description */}
-                <div class="form-group">
-                  <label for="password" class="form-label">
-                    Restaurant Description (Optional)
+                          <input
+                            name="resAddress"
+                            id="resAddress"
+                            type="text"
+                            placeholder="Restaurant Location"
+                            value={this.state.resAddress}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            required
+                            data-msg="Please enter your Restaurant Location"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.resAddress}</div>
+                        </div>
+                        {/* Manager Last Name */}
+                        <div class="col-sm-6">
+                          <label for="lastName" class="form-label">
+                            Manager Last Name
                   </label>
-                  <input
-                    name="description"
-                    id="description"
-                    placeholder="Tell us about your Restaurant"
-                    value={this.state.description}
-                    onChange={this.handleChange}
-                    type="text"
-                    data-msg="Please  enter your description"
-                    class="form-control"
-                  />
-                </div>
-                {/* Manager First Name */}
-                <div className="form-group">
-                  <label htmlFor="firstName" class="form-label">
-                    First Name
+                          <input
+                            name="lastName"
+                            id="lastName"
+                            type="text"
+                            placeholder="Last Name"
+                            value={this.state.lastName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            required
+                            data-msg="Please enter your last name"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.lastName}</div>
+                        </div>
+                      </div>
+                      {/* here3 */}
+                      <div class="form-group row">
+                        {/* Capacity */}
+                        <div class="col-sm-6">
+                          <label for="capacity" class="form-label">
+                            Capacity
                   </label>
-                  <input
-                    name="firstName"
-                    id="firstName"
-                    type="text"
-                    placeholder="First Name"
-                    value={this.state.firstName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
-                    data-msg="Please enter your first name"
-                    class="form-control"
-                  />
-                </div>
-                <div className="errorMsg">{this.state.errors.firstName}</div>
-                {/* Manager Last Name */}
-                <div class="form-group">
-                  <label for="lastName" class="form-label">
-                    Last Name
+                          <input
+                            name="capacity"
+                            id="capacity"
+                            type="number"
+                            min="0"
+                            placeholder="How big is your restaurant ??"
+                            value={this.state.capacity}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            required
+                            data-msg="How many customer your Restaurant can hold"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.capacity}</div>
+                        </div>
+                        {/* Manager Email */}
+                        <div class="col-sm-6">
+                          <label for="email" class="form-label">
+                            Email Address
                   </label>
-                  <input
-                    name="lastName"
-                    id="lastName"
-                    type="text"
-                    placeholder="Last Name"
-                    value={this.state.lastName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
-                    data-msg="Please enter your last name"
-                    class="form-control"
-                  />
-                </div>
-                <div className="errorMsg">{this.state.errors.lastName}</div>
-                {/* Mangaer Email */}
-                <div class="form-group">
-                  <label for="email" class="form-label">
-                    Email Address
+                          <input
+                            name="email"
+                            id="email"
+                            type="email"
+                            placeholder="name@address.com"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            required
+                            data-msg="Please enter your email"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.email}</div>
+                        </div>
+                      </div>
+                      {/* here4 */}
+                      <div class="form-group row">
+                        {/* Restaurant description */}
+                        <div class="col-sm-6">
+                          <label for="password" class="form-label">
+                            Restaurant Description (Optional)
                   </label>
-                  <input
-                    name="email"
-                    id="email"
-                    type="email"
-                    placeholder="name@address.com"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    required
-                    data-msg="Please enter your email"
-                    class="form-control"
-                  />
-                </div>
-                <div className="errorMsg">{this.state.errors.email}</div>
-                {/* Manger Password */}
-                <div class="form-group">
-                  <label for="password" class="form-label">
-                    {" "}
-                    Password
-                  </label>
-                  <input
-                    name="password"
-                    id="password"
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                    type="password"
-                    required
-                    data-msg="Please enter your password"
-                    class="form-control"
-                  />
-                  <div className="errorMsg">{this.state.errors.password}</div>
-                </div>
-                {/* Confirm password */}
-                <div class="form-group mb-4">
-                  <label for="password2" class="form-label">
-                    Confirm your password
-                  </label>
-                  <input
-                    name="password2"
-                    id="password2"
-                    placeholder="Password"
-                    type="password"
-                    required
-                    value={this.state.password2}
-                    onChange={this.handleChange}
-                    data-msg="Please enter your password"
-                    class="form-control"
-                  />
-                </div>
-                <button type="submit" class="btn btn-lg btn-block btn-primary">
-                  Submit Form
+                          <textarea
+                            name="description"
+                            id="description"
+                            style={{ height: '110px' }}
+                            placeholder="Tell us about your Restaurant"
+                            value={this.state.description}
+                            onChange={this.handleChange}
+                            type="text"
+                            data-msg="Please  enter your description"
+                            class="form-control"
+
+                          />
+                        </div>
+                        {/* Password */}
+                        <div class="col-sm-6">
+                          <label for="password" class="form-label">
+                            {" "}
+                            Password
+                      </label>
+                          <input
+                            name="password"
+                            id="password"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                            type="password"
+                            required
+                            data-msg="Please enter your password"
+                            class="form-control"
+                          />
+                          <div className="errorMsg">{this.state.errors.password}</div>
+                          {/* Password2 */}
+
+                          <label for="password2" class="form-label">
+                            Confirm your password
+                        </label>
+                          <input
+                            name="password2"
+                            id="password2"
+                            placeholder="Password"
+                            type="password"
+                            required
+                            value={this.state.password2}
+                            onChange={this.handleChange}
+                            data-msg="Please enter your password"
+                            class="form-control"
+                          />
+
+                        </div>
+                      </div>
+
+                      <button type="submit" class="btn btn-lg btn-block btn-primary">
+                        Submit Form
                 </button>
-              </form>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
-            <div class="background-signin bg-cover h-100 mr-n3" />
-          </div>
+        </div>
+
+        <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
+          <div class="background-signin bg-cover h-100 mr-n3" />
         </div>
       </div>
     );

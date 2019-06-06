@@ -9,6 +9,7 @@ class SignIn extends Component {
       email: "",
       password: "",
       errors: {}, // collect errors for validateForm
+      wrong: "",
       loginError: ""
     };
   }
@@ -61,7 +62,7 @@ class SignIn extends Component {
           const { state } = this.props.location;
           window.location = state ? state.from.pathname : "/";
         })
-        .catch(console.error);
+        .catch(this.setState({ wrong: "Your email and password don't match. Please try again." }));
 
       // Reset all text fields
       this.setState({ email: "", password: " " });
@@ -97,7 +98,9 @@ class SignIn extends Component {
             <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
               <div className="mb-6 pb-5">
                 <h2>Welcome Back</h2>
+                <div style={{ color: 'red' }}>{this.state.wrong}</div>
               </div>
+
               <div className="bg-gradient-warning">{this.state.loginError}</div>
               <form
                 className="form-validate"

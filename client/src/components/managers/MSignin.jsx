@@ -85,7 +85,7 @@ class MSignIn extends Component {
                     Email Address
                   </label>
                   <input
-                    name="loginUsername"
+                    name="email"
                     id="loginUsername"
                     type="email"
                     placeholder="name@address.com"
@@ -104,7 +104,7 @@ class MSignIn extends Component {
                     Password
                   </label>
                   <input
-                    name="loginPassword"
+                    name="password"
                     id="loginPassword"
                     placeholder="Password"
                     type="password"
