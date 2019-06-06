@@ -9,27 +9,24 @@ class Profile extends Component {
   };
 
   componentDidMount() {
-    const jwt = localStorage.getItem("token");
-    const user = jwtDecode(jwt);
     axios
-      .post("users/profile", {
-        email: user.email
-      })
+      .get("users/profile")
       .then(res => {
         this.setState({ reviews: res.data });
-        console.log(this.state.reviews);
       })
       .catch(console.error);
   }
   render() {
-    const { reviews } = this.state;
     return (
-      <div className="card mt-5 pt-5">
-        <h5 className="card-header"> Hello Name</h5>
-        {reviews.map(review => (
-          <Profilecontent key={review.date} />
-        ))}
-        {/* <Profilecontent /> */}
+      <div className="container">
+        <div class="row userCard">
+          {this.state.reviews
+            .slice(0)
+            .reverse()
+            .map(review => (
+              <Profilecontent key={review.date} review={review} />
+            ))}
+        </div>
       </div>
     );
   }

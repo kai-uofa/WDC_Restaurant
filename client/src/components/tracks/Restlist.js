@@ -41,6 +41,7 @@ const RestList = props => {
             </p>
           </div>
         </div>
+
         <div className="row">
           {props.restList.map(item => (
             <Rests key={item.restaurant_id} rest={item} />

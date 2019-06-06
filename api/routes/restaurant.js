@@ -6,7 +6,7 @@ router.get("/", function(req, res, next) {
   Restaurants.getRestaurantDetails(req, res);
 });
 
-router.post("/reviews", function(req, res, next) {
+router.get("/reviews", function(req, res, next) {
   Restaurants.getReviews(req, res);
 });
 

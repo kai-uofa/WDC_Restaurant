@@ -87,6 +87,10 @@ body {
   margin-top: 13rem;
 }
 
+.userCard {
+  margin-top: 8rem;
+}
+
 @media (max-width: 770px) {
   .member .content {
     padding-top: 3em;

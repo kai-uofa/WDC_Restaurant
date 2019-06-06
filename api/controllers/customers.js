@@ -210,14 +210,14 @@ const Customers = {
       "SELECT customer_id FROM Customers WHERE email = ?",
       [req.body.email]
     );
-    // const date = req.body.date;
-    // console.log(date);
+    const date = req.body.date.slice(0, 10);
+    console.log(date);
     const query =
       "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
     db.query(query, [
       existedId[0].customer_id,
       req.body.restaurant_id,
-      req.body.date,
+      date,
       req.body.guests,
       req.body.time
     ]).catch(console.error);
@@ -225,20 +225,24 @@ const Customers = {
   },
 
   async getProfile(req, res) {
-    const existedId = await db
-      .query("SELECT customer_id FROM Customers WHERE email = ?", [
-        req.body.email
-      ])
-      .catch(console.error);
-    //TODO: query to get restaurant name
-    if (existedId.length > 0) {
-      const query = "SELECT * FROM Bookings WHERE customer_id=?";
-      const results = await db
-        .query(query, [existedId[0].customer_id])
+    if (req.decoded !== undefined) {
+      const existedId = await db
+        .query("SELECT customer_id FROM Customers WHERE email = ?", [
+          req.decoded.email
+        ])
         .catch(console.error);
-      res.json(results);
+
+      const userBookings = await db.query(
+        "SELECT  Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
+        FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
+        INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
+        WHERE Customers.customer_id=?",
+        [existedId[0].customer_id]
+      );
+
+      res.send(userBookings);
     } else {
-      res.sendStatus(403); // Forbidden
+      res.send(401);
     }
   }
 };

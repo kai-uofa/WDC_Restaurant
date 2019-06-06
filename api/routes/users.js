@@ -16,7 +16,7 @@ router.post("/reservation", function(req, res, next) {
   Customers.postBooking(req, res);
 });
 
-router.post("/profile", function(req, res, next) {
+router.get("/profile", function(req, res, next) {
   Customers.getProfile(req, res);
 });
 // TODO: handle and update profile users
