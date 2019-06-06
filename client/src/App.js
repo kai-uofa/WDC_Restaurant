@@ -54,7 +54,6 @@ class App extends Component {
     );
   }
 
-  //tracking the input changes
   onSearchChange = e => {
     this.setState({ searchText: e.target.value });
   };
@@ -65,7 +64,6 @@ class App extends Component {
     if (e.target.value === undefined) {
       this.setState({ searchText: "" });
     }
-    // FIXME: there is a hardcode lat/lng
     axios
       .get(
         `/search?search=${this.state.searchText}&lat=-34.92866&lng=138.59863`
@@ -77,6 +75,25 @@ class App extends Component {
       })
       .catch(err => console.log(err));
     e.currentTarget.reset();
+  };
+
+  handleOnQuickBooking = e => {
+    e.preventDefault();
+    axios
+      .post("/search/quickbooking", {
+        lat: -34.92866,
+        lng: 138.59863,
+        no_of_people: 2,
+        email: this.state.user.email,
+        firstName: this.state.user.firstName,
+        lastName: this.state.user.lastName,
+        date: new Date(),
+        start_time: new Date().toLocaleTimeString()
+      })
+      .then(res => {
+        window.location = "/profile";
+      })
+      .catch(console.error);
   };
 
   componentDidMount() {
@@ -91,10 +108,15 @@ class App extends Component {
 
   render() {
     const { user } = this.state;
+    console.log(this.state.location.lat);
+    console.log(this.state.location.lng);
     return (
       <Router>
         <React.Fragment>
-          <NavBar user={this.state.user} />
+          <NavBar
+            user={this.state.user}
+            onQuickBooking={this.handleOnQuickBooking}
+          />
           <Switch>
             <Route path="/search/restaurants/:id" component={Detailrest} />
             <Route
@@ -104,7 +126,6 @@ class App extends Component {
             <Route
               path="/profile"
               render={props => {
-                if (!user) return <Redirect to="/" />;
                 return <Profile {...props} />;
               }}
             />
