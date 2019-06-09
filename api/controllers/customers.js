@@ -1,9 +1,10 @@
+/* eslint-disable no-multi-str */
 /* eslint-disable prettier/prettier */
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
-const geolib = require("geolib");
-const config = require("../configAPIs");
-const db = require("../models/dbconnection");
+const geolib = require('geolib');
+const config = require('../configAPIs');
+const db = require('../models/dbconnection');
 
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
@@ -211,18 +212,25 @@ const Customers = {
       'SELECT customer_id FROM Customers WHERE email = ?',
       [req.body.email]
     );
-    const date = req.body.date.slice(0, 10);
-    console.log(req.body.time);
-    const query =
-      'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
-    db.query(query, [
-      existedId[0].customer_id,
-      req.body.restaurant_id,
-      date,
-      req.body.guests,
-      req.body.time
-    ]).catch(console.error);
-    res.sendStatus(200);
+
+    if(existedId.length > 0) {
+      const date = req.body.date.slice(0, 10);
+      console.log(req.body.time);
+      const query =
+        'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
+      db.query(query, [
+        existedId[0].customer_id,
+        req.body.restaurant_id,
+        date,
+        req.body.guests,
+        req.body.time
+      ])
+      .then( () => {
+        res.sendStatus(200);
+      }).catch(console.error);  
+    } else {
+      res.sendStatus(403); // Forbidden
+    }
   },
 
   async getProfile(req, res) {
