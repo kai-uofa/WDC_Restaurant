@@ -209,19 +209,23 @@ const Customers = {
     const existedId = await db.query(
       'SELECT customer_id FROM Customers WHERE email = ?',
       [req.body.email]
-    );
+    ).catch(console.error);
     // const date = req.body.date;
     // console.log(date);
-    const query =
-      'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
-    db.query(query, [
-      existedId[0].customer_id,
-      req.body.restaurant_id,
-      req.body.date,
-      req.body.guests,
-      req.body.time
-    ]).catch(console.error);
-    res.sendStatus(200);
+    if(existedId.length > 0) {
+      const query =
+        'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
+      await db.query(query, [
+        existedId[0].customer_id,
+        req.body.restaurant_id,
+        req.body.date,
+        req.body.guests,
+        req.body.time
+      ]).catch(console.error);
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(403); // Forbidden
+    }
   },
 
   async getProfile(req, res) {
