@@ -15,15 +15,30 @@ class Profile extends Component {
       })
       .catch(console.error);
   }
+
+  handleOnDelete = review => {
+    axios
+      .post("/users/deletebooking", {
+        booking_id: review.booking_id
+      })
+      .then(res => {
+        this.setState({ reviews: res.data });
+      })
+      .catch(console.error);
+  };
   render() {
     return (
       <div className="container">
-        <div class="row userCard">
+        <div className="row userCard">
           {this.state.reviews
             .slice(0)
             .reverse()
             .map(review => (
-              <Profilecontent key={review.date} review={review} />
+              <Profilecontent
+                key={review.booking_id}
+                review={review}
+                handleOnDelete={this.handleOnDelete}
+              />
             ))}
         </div>
       </div>

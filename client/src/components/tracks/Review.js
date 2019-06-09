@@ -62,7 +62,7 @@ class Review extends Component {
   render() {
     const { list_reviews } = this.state;
     return (
-      <div className="text-block pt-3">
+      <div className="text-block mb-5">
         <h3 className="subtitle text-sm">Reviews</h3>
         {list_reviews
           .slice(0)

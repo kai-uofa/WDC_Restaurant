@@ -20,13 +20,19 @@ const Profilecontent = props => {
 
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
-            {moment(props.review.date).format("MM/DD/YYYY")}
+            Date: {moment(props.review.date).format("MM/DD/YYYY")}
+          </li>
+          <li className="list-group-item">Start: {props.review.start_time}</li>
+          <li className="list-group-item">
+            Number of people: {props.review.no_of_people} people
           </li>
           <li className="list-group-item">
-            Start at: {props.review.start_time}
-          </li>
-          <li className="list-group-item">
-            with {props.review.no_of_people} people
+            <button
+              className="btn btn-outline-danger btnDelete"
+              onClick={() => props.handleOnDelete(props.review)}
+            >
+              Delete
+            </button>
           </li>
         </ul>
       </div>

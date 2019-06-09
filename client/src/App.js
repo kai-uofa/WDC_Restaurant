@@ -5,6 +5,7 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
+import moment from "moment";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import NavBar from "./components/layout/Navbar";
@@ -18,6 +19,7 @@ import Profile from "./components/tracks/Profile";
 import MSignUp from "./components/managers/MSignup";
 import MSignIn from "./components/managers/MSignin";
 import MIndex from "./components/managers/MIndex";
+import Notfound from "./components/layout/Notfound";
 
 // self-executable function that attach Authorization header for all axios requests
 (function() {
@@ -79,6 +81,12 @@ class App extends Component {
 
   handleOnQuickBooking = e => {
     e.preventDefault();
+    const time = new Date();
+    const start_time = moment(time)
+      .add(1, "hours")
+      .format("YYYY-MM-DD HH:MM:SS")
+      .toLocaleString("en-GB");
+
     axios
       .post("/search/quickbooking", {
         lat: -34.92866,
@@ -88,7 +96,7 @@ class App extends Component {
         firstName: this.state.user.firstName,
         lastName: this.state.user.lastName,
         date: new Date(),
-        start_time: new Date().toLocaleTimeString()
+        start_time
       })
       .then(res => {
         window.location = "/profile";
@@ -159,6 +167,7 @@ class App extends Component {
             <Route path="/managers/signup" component={MSignUp} />
             <Route path="/managers/signin" component={MSignIn} />
             <Route path="/managers" component={MIndex} />
+            <Route path="*" component={Notfound} />
           </Switch>
         </React.Fragment>
       </Router>

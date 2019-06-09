@@ -92,10 +92,17 @@ body {
   height: 30em;
 }
 
+.btnDelete {
+  margin-left: 13em;
+}
+
 .detailName {
   margin-top: 13rem;
 }
-
+.notfound {
+  margin-top: 10rem;
+  text-align: center;
+}
 .userCard {
   margin-top: 8rem;
 }

@@ -212,7 +212,6 @@ const Customers = {
       [req.body.email]
     );
     const date = req.body.date.slice(0, 10);
-    console.log(req.body.time);
     const query =
       "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
     db.query(query, [
@@ -234,7 +233,7 @@ const Customers = {
         .catch(console.error);
 
       const userBookings = await db.query(
-        "SELECT  Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
+        "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
         FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
         INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
         WHERE Customers.customer_id=?",
@@ -279,8 +278,7 @@ const Customers = {
 
       //insert booking to database
       const date = req.body.date.slice(0, 10);
-      const time = req.body.start_time.slice(0, 5);
-
+      const time = req.body.start_time.slice(12, 16);
       const query =
         "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
       db.query(query, [
@@ -291,6 +289,30 @@ const Customers = {
         time
       ]).catch(console.error);
       res.send(200);
+    } else {
+      res.send(401);
+    }
+  },
+
+  async deleteBooking(req, res) {
+    if (req.decoded !== undefined) {
+      const query = "DELETE FROM Bookings WHERE booking_id=? ";
+      await db.query(query, [req.body.booking_id]);
+      const existedId = await db
+        .query("SELECT customer_id FROM Customers WHERE email = ?", [
+          req.decoded.email
+        ])
+        .catch(console.error);
+
+      const userBookings = await db.query(
+        "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
+        FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
+        INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
+        WHERE Customers.customer_id=?",
+        [existedId[0].customer_id]
+      );
+
+      res.send(userBookings);
     } else {
       res.send(401);
     }

@@ -66,7 +66,7 @@ class Detailrest extends Component {
               </div>
 
               {/* Location */}
-              <hr className="my-4" />
+              <hr className="mb-4" />
               <div className="text-block py-3">
                 <h3 className="mb-4">Location</h3>
                 <MyMap
