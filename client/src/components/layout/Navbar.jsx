@@ -40,6 +40,17 @@ const NavBar = props => {
                 </Link>
               </li>
               {user && (
+                <li className="nav-item ">
+                  <button
+                    type="submit"
+                    className="nav-link btn btn-light mr-4"
+                    onClick={props.onQuickBooking}
+                  >
+                    Quick Booking
+                  </button>
+                </li>
+              )}
+              {user && (
                 <li className="nav-item">
                   <Link className="nav-link btn btn-light " to="/logout">
                     Log out

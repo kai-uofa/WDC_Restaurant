@@ -52,12 +52,9 @@ class Review extends Component {
 
   gettingReview() {
     axios
-      .post("/restaurant/reviews", {
-        restaurant_id: this.props.detail.restaurant_id
-      })
+      .get(`/restaurant/reviews?restID=${this.props.detail.restaurant_id}`)
       .then(res => {
         this.setState({ list_reviews: res.data });
-        console.log(this.state.list_reviews);
       })
       .catch(console.error);
   }
@@ -66,7 +63,7 @@ class Review extends Component {
     const { list_reviews } = this.state;
     return (
       <div className="text-block pt-3">
-        <h5 className="subtitle text-sm">Reviews</h5>
+        <h3 className="subtitle text-sm">Reviews</h3>
         {list_reviews
           .slice(0)
           .reverse()

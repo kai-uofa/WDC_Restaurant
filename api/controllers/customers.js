@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
-const config = require('../configAPIs');
-const db = require('../models/dbconnection');
+const geolib = require("geolib");
+const config = require("../configAPIs");
+const db = require("../models/dbconnection");
 
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
@@ -209,42 +210,104 @@ const Customers = {
     const existedId = await db.query(
       'SELECT customer_id FROM Customers WHERE email = ?',
       [req.body.email]
-    ).catch(console.error);
-    // const date = req.body.date;
-    // console.log(date);
-    if(existedId.length > 0) {
-      const query =
-        'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
-      await db.query(query, [
-        existedId[0].customer_id,
-        req.body.restaurant_id,
-        req.body.date,
-        req.body.guests,
-        req.body.time
-      ]).catch(console.error);
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(403); // Forbidden
-    }
+    );
+    const date = req.body.date.slice(0, 10);
+    console.log(req.body.time);
+    const query =
+      'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
+    db.query(query, [
+      existedId[0].customer_id,
+      req.body.restaurant_id,
+      date,
+      req.body.guests,
+      req.body.time
+    ]).catch(console.error);
+    res.sendStatus(200);
   },
 
   async getProfile(req, res) {
-    const existedId = await db
-      .query('SELECT customer_id FROM Customers WHERE email = ?', [
-        req.body.email
-      ])
-      .catch(console.error);
-    // TODO: query to get restaurant name
-    if (existedId.length > 0) {
-      const query = 'SELECT * FROM Bookings WHERE customer_id=?';
-      const results = await db
-        .query(query, [existedId[0].customer_id])
+    if (req.decoded !== undefined) {
+      const existedId = await db
+        .query('SELECT customer_id FROM Customers WHERE email = ?', [
+          req.decoded.email
+        ])
         .catch(console.error);
-      res.json(results);
+
+      const userBookings = await db.query(
+        'SELECT  Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
+        FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
+        INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
+        WHERE Customers.customer_id=?',
+        [existedId[0].customer_id]
+      );
+
+      res.send(userBookings);
     } else {
-      res.sendStatus(403); // Forbidden
+      res.send(401);
+    }
+  },
+
+  async postQuickBooking(req, res) {
+    if (req.decoded !== undefined) {
+      const existedId = await db.query(
+        'SELECT customer_id FROM Customers WHERE email = ?',
+        [req.body.email]
+      );
+      // query all restaurants
+      const rests = 'SELECT * FROM Restaurants';
+      const _dbrests = await db.query(rests);
+      const restsID = [];
+      // check nearby restaurant
+      for (let i = 0; i < _dbrests.length; i++) {
+        if (
+          geolib.isPointWithinRadius(
+            {
+              latitude: _dbrests[i].restaurant_latitude,
+              longitude: _dbrests[i].restaurant_longitude
+            },
+            { latitude: req.body.lat, longitude: req.body.lng },
+            500
+          )
+        ) {
+          restsID.push(_dbrests[i].restaurant_id);
+        }
+      }
+      const randomID = await restsID[
+        Math.floor(Math.random() * restsID.length)
+      ];
+      // TODO: booking based on rating and open time
+
+      // insert booking to database
+      const date = req.body.date.slice(0, 10);
+      const time = req.body.start_time.slice(0, 5);
+
+      const query =
+        'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)';
+      db.query(query, [
+        existedId[0].customer_id,
+        randomID,
+        date,
+        req.body.no_of_people,
+        time
+      ]).catch(console.error);
+      res.send(200);
+    } else {
+      res.send(401);
     }
   }
 };
 
 module.exports = Customers;
+// if (restsID.length > 0) {
+//   //check rating
+//   let query = "SELECT rating FROM Reviews WHERE restaurant_id=?";
+//   for (let i = 0; i < restsID.length; i++) {
+//     let r = await db.query(query, [restsID[i]]);
+//     r.push({ restID: restsID[i] });
+//     ratingResult.push(r);
+//   }
+// } else {
+//   //check all restaurant with high rating
+// }
+// console.log(ratingResult);
+// res.send(ratingResult);

@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const Rests = props => {
   const { rest } = props;
   return (
-    <div className="col-xl-3 col-lg-6 col-md-12 mb-5">
-      <div className="card h-100">
+    <div className="col-xl-3 col-lg-4 col-md-12 mb-5">
+      <div className="card ">
         <img
           src={rest.restaurant_image}
           className="card-img-top overflow-hidden dark-overlay bg-cover"
