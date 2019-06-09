@@ -86,7 +86,6 @@ class App extends Component {
       .add(1, "hours")
       .format("YYYY-MM-DD HH:MM:SS")
       .toLocaleString("en-GB");
-
     axios
       .post("/search/quickbooking", {
         lat: -34.92866,

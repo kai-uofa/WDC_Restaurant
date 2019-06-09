@@ -315,7 +315,7 @@ const Customers = {
       }
       // insert booking to database
       const date = req.body.date.slice(0, 10);
-      const time = req.body.start_time.slice(12, 16);
+      const time = req.body.start_time.slice(11, 16);
       const query =
         "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
       db.query(query, [
