@@ -277,14 +277,42 @@ const Customers = {
             500
           )
         ) {
-          restsID.push(_dbrests[i].restaurant_id);
+          restsID.push({ restaurant_id: _dbrests[i].restaurant_id });
         }
       }
-      const randomID = await restsID[
-        Math.floor(Math.random() * restsID.length)
-      ];
-      // TODO: booking based on rating and open time
-
+      //booking based on rating
+      // check rating
+      const queryRating =
+        "SELECT restaurant_id, AVG(rating) as rating FROM Reviews GROUP BY restaurant_id";
+      const resultRating = await db.query(queryRating);
+      const resultMatching = [];
+      for (let x = 0; x < restsID.length; x++) {
+        for (let i = 0; i < resultRating.length; i++) {
+          if (restsID[x].restaurant_id == resultRating[i].restaurant_id) {
+            resultMatching.push(resultRating[i]);
+          }
+        }
+      }
+      // console.log(restsID);
+      //check if resultMatich.length>0 or <0
+      // >0; return high rating
+      //<0: return random restID
+      const finalResult = [];
+      if (resultMatching.length > 0) {
+        let high = resultMatching[0].rating;
+        for (let i = 0; i < resultMatching.length; i++) {
+          if (resultMatching[i].rating > high) {
+            high = resultMatching[i].rating;
+          }
+        }
+        for (let i = 0; i < resultMatching.length; i++) {
+          if (resultMatching[i].rating == high) {
+            finalResult.push(resultMatching[i]);
+          }
+        }
+      } else {
+        finalResult.push(restsID[Math.floor(Math.random() * restsID.length)]);
+      }
       // insert booking to database
       const date = req.body.date.slice(0, 10);
       const time = req.body.start_time.slice(12, 16);
@@ -292,7 +320,7 @@ const Customers = {
         "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
       db.query(query, [
         existedId[0].customer_id,
-        randomID,
+        finalResult[0].restaurant_id,
         date,
         req.body.no_of_people,
         time

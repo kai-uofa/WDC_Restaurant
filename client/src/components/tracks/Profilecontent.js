@@ -2,11 +2,11 @@ import React from "react";
 import moment from "moment";
 const Profilecontent = props => {
   return (
-    <div className=" col-xl-4 col-lg-6 col-md-12 mb-5 ">
-      <div className="card">
+    <div className=" col-xl-3 col-lg-6 col-md-12 mb-5 ">
+      <div className="card profile">
         <img
           src={props.review.restaurant_image}
-          className="card-img-top"
+          className="card-img-top imageProfile"
           alt={props.review.restaurant_name}
         />
 
