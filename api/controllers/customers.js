@@ -136,7 +136,6 @@ const Customers = {
   async signIn(req, res) {
     let customer = null;
     let token;
-    let hashPass;
 
     // If valid customer session
     if (req.decoded !== undefined) {
