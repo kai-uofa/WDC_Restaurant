@@ -107,7 +107,7 @@ const Managers = {
       if(results.length > 0) {
         const correct = await argon2i.verify(results[0].password, req.body.password).catch(console.error);
         if(correct) {
-          token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
+          token = await jwt.sign({ firstName: results[0].first_name, lastName: results[0].last_name, email: req.body.email }, config.JWT_SECRET_KEY, {
             expiresIn: 1440,
           });
           manager = req.body.email;
