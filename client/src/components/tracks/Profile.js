@@ -25,17 +25,15 @@ class Profile extends Component {
   };
 
   handleOnDelete = review => {
-    console.log('======');
-    console.log(review)
-    // axios
-    //   .post("/users/deletebooking", {
-    //     booking_id: review.booking_id,
-    //     status: 2
-    //   })
-    //   .then(res => {
-    //     this.setState({ reviews: res.data });
-    //   })
-    //   .catch(console.error);
+    axios
+      .post("/users/deletebooking", {
+        booking_id: review.booking_id,
+        status: 2
+      })
+      .then(res => {
+        this.setState({ reviews: res.data });
+      })
+      .catch(console.error);
   };
 
   componentDidMount() {
