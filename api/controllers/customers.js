@@ -157,8 +157,10 @@ const Customers = {
         .catch(console.error);
 
       if (results.length > 0) {
-        if(results[0].password !== undefined) {
-          const correct = await argon2i.verify(results[0].password, req.body.password).catch(console.error);
+        if (results[0].password !== undefined) {
+          const correct = await argon2i
+            .verify(results[0].password, req.body.password)
+            .catch(console.error);
           if (correct) {
             token = await jwt.sign(
               {
