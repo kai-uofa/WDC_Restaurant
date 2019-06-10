@@ -161,8 +161,8 @@ const Customers = {
           if (correct) {
             token = await jwt.sign(
               {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
+                firstName: results[0].first_name,
+                lastName: results[0].last_name,
                 email: req.body.email
               },
               config.JWT_SECRET_KEY,
