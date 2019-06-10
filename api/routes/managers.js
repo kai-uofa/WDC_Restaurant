@@ -15,7 +15,7 @@ router.post('/signup', function(req, res, next) {
 
 router.get('/', async function(req, res, next) {
   if (await Managers.managerValidation(req.decoded)) {
-    Bookings.getActiveBookings(req, res);
+    Bookings.getActiveBookingsM(req, res);
   } else {
     res.sendStatus(403); // Forbidden
   }
@@ -29,17 +29,9 @@ router.post('/status', async function(req, res, next) {
   }
 });
 
-router.post('/start', async function(req, res, next) {
+router.post('/details', async function(req, res, next) {
   if (await Managers.managerValidation(req.decoded)) {
-    Bookings.updateBookingTime(req, res);
-  } else {
-    res.sendStatus(403); // Forbidden
-  }
-});
-
-router.post('/people', async function(req, res, next) {
-  if (await Managers.managerValidation(req.decoded)) {
-    Bookings.updateBookingPeople(req, res);
+    // FIXME: Bookings.updateBookingTime(req, res);
   } else {
     res.sendStatus(403); // Forbidden
   }

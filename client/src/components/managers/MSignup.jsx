@@ -147,7 +147,13 @@ class SignUp extends Component {
           localStorage.setItem("token", res.data);
           window.location = "/managers";
         })
-        .catch(this.setState({ wrong: "This email already exist , please try another one" }));
+        .catch(error => {
+          if (error.response.status === 200) {
+            this.setState({ wrong: "" });
+          } else if (error.response.status === 409) {
+            this.setState({ wrong: "This email has already been used,please try another one" });
+          }
+        });
 
       // Reset all text fields
 

@@ -62,7 +62,13 @@ class SignIn extends Component {
           const { state } = this.props.location;
           window.location = state ? state.from.pathname : "/";
         })
-        .catch(this.setState({ wrong: "Your email and password don't match. Please try again." }));
+        .catch(error => {
+          if (error.response.status === 401) {
+            this.setState({ wrong: "Your email and password don't match. Please try again." });
+          } else if (error.response.status === 200) {
+            this.setState({ wrong: "" });
+          }
+        });
 
       // Reset all text fields
       this.setState({ email: "", password: "" });

@@ -1,75 +1,55 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import Content from "./MIndexContent";
+import axios from "axios";
 
 class MIndex extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeBookings: [],
-    }
-  }
+  state = {
+    bookings: []
+  };
 
-  statusChange(booking, event) {
+  handleStatusChange = (booking, event) => {
     axios
-      .post('/managers/status', {
-        customer_id: booking.customer_id,
-        restaurant_id: booking.restaurant_id,
-        date: booking.date,
-        start_time: booking.start_time,
-        no_of_people: booking.no_of_people,
+      .post("/managers/status", {
+        booking_id: booking.booking_id,
         status: parseInt(event.target.value)
       })
       .then(res => {
-        // TODO: handle server response codes 200, 401
-        console.log(res);
+        this.setState({ bookings: res.data });
       })
       .catch(console.error);
   };
 
+  handleDetailUpdate = (booking, state) => {
+    // check null
+    
+  }
+
   componentDidMount() {
     axios
-      .get('/managers')
+      .get("/managers")
       .then(res => {
-        this.setState({
-          activeBookings: res.data
-        });
+        this.setState({ bookings: res.data });
       })
       .catch(console.error);
   }
 
   render() {
     return (
-      <React.Fragment>
-        <div className="container">
-          <div className="row my-5">
-            <div className="col-sm-8">
-              <p className="subtitle letter-spacing-4 mb-1 mt-5 text-shadow">
-                RESTAURANT NAME
-            </p>
-              <h4>Bookings Management</h4>
-            </div>
-          </div>
-          <div className="col">
-            {this.state.activeBookings.map(booking => (
-              <li>
-                <button>updateInfo</button>
-                <div>{booking.first_name}</div>
-                <div>{booking.last_name}</div>
-                <div>{booking.no_of_people}</div>
-                <div>{booking.date}</div>
-                <div>{booking.start_time}</div>
-                <select 
-                  name='status'
-                  onChange={(event) => this.statusChange(booking, event)}>
-                  <option selected value="1">Active</option>
-                  <option value="2">Finished</option>
-                  <option value="3">Canceled</option>
-                </select>
-              </li>
+      <div className="container">
+        <div className="row userCard">
+          {this.state.bookings
+            .slice(0)
+            .reverse()
+            .map(booking => (
+              <Content
+                key={booking.booking_id}
+                booking={booking}
+                handleStatusChange = {this.handleStatusChange}
+                handleDetailUpdate = {this.handleDetailUpdate}
+              />
             ))}
-          </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

@@ -3,12 +3,29 @@ import moment from "moment";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-class Profilecontent extends Component {
+class MIndexContent extends Component {
   state = {
-    date: "null",
-    time: "null",
-    guests: "null",
+    date: null,
+    time: null,
+    guests: null
   };
+
+  // handleOnSubmit = e => {
+  //   e.preventDefault();
+  //   axios
+  //     .post("/managers/details", {
+  //       date: this.state.date,
+  //       time: this.state.time,
+  //       guests: this.state.guests,
+  //       email: this.state.user.email,
+  //       restaurant_id: this.props.review.restaurant_id
+  //     })
+  //     .then(res => {
+  //       window.location = "/managers";
+  //     })
+  //     .catch(console.error);
+  //   console.log(this.state);
+  // };
 
   componentDidMount() {
     try {
@@ -19,26 +36,6 @@ class Profilecontent extends Component {
       console.log(error);
     }
   }
-  // this.props.review.booking_id
-  handleOnClick = e => {
-    localStorage.setItem("bookingID", this.props.review.booking_id);
-  };
-
-  handleOnSubmit = e => {
-    axios
-      .post("/users/updatebooking", {
-        date: this.state.date,
-        time: this.state.time,
-        guests: this.state.guests,
-        email: this.state.user.email,
-        booking_id: localStorage.getItem("bookingID")
-      })
-      .then(res => {
-        window.location = "/profile";
-      })
-      .catch(console.error);
-  };
-
   render() {
     return (
       <div className=" col-xl-3 col-lg-6 col-md-12 mb-5 ">
@@ -75,7 +72,6 @@ class Profilecontent extends Component {
                 className="btn btn-primary btnUpdate"
                 data-toggle="modal"
                 data-target="#exampleModalCenter"
-                onClick={this.handleOnClick}
               >
                 Update
               </button>
@@ -120,7 +116,7 @@ class Profilecontent extends Component {
                               placeholder="Choose your dates"
                               required="required"
                               className="form-control"
-                              value={this.state.date}
+                              value={this.props.booking.date}
                               onChange={event =>
                                 this.setState({ date: event.target.value })
                               }
@@ -135,7 +131,7 @@ class Profilecontent extends Component {
                             type="time"
                             name="time"
                             className="form-control"
-                            value={this.state.time}
+                            value={this.props.booking.time}
                             onChange={event =>
                               this.setState({ time: event.target.value })
                             }
@@ -149,7 +145,7 @@ class Profilecontent extends Component {
                             type="number"
                             name="guests"
                             className="form-control"
-                            value={this.state.guests}
+                            value={this.props.booking.guests}
                             onChange={event =>
                               this.setState({ guests: event.target.value })
                             }
@@ -168,7 +164,7 @@ class Profilecontent extends Component {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={e => this.handleOnSubmit(e)}
+                        onClick={() => this.props.handleDetailUpdate(this.props.booking, this.state)}
                       >
                         Save changes
                       </button>
@@ -178,12 +174,20 @@ class Profilecontent extends Component {
               </div>
 
               {/* End of updating users */}
-              <button
+              {/* <button
                 className="btn btn-outline-danger btnDelete"
                 onClick={() => this.props.handleOnDelete(this.props.review)}
               >
                 Delete
-              </button>
+              </button> */}
+              <select
+                className='btn btn-outline-danger btnDelete'
+                onChange={event => this.props.handleStatusChange(this.props.booking, event)}
+              >
+                <option selected value="1">Active</option>
+                <option value="2">Finished</option>
+                <option value="3">Canceled</option>
+              </select>
             </li>
           </ul>
         </div>
@@ -192,12 +196,4 @@ class Profilecontent extends Component {
   }
 }
 
-export default Profilecontent;
-
-// const Profilecontent = props => {
-//   return (
-
-//   );
-// };
-
-// export default Profilecontent;
+export default MIndexContent;
