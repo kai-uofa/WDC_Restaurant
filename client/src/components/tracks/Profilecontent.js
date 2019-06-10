@@ -10,21 +10,20 @@ class Profilecontent extends Component {
     guests: null
   };
 
-  handleOnSubmit = e => {
-    e.preventDefault();
-    axios
-      .post("/users/updatebooking", {
-        date: this.state.date,
-        time: this.state.time,
-        guests: this.state.guests,
-        email: this.state.user.email,
-        restaurant_id: this.props.review.restaurant_id
-      })
-      .then(res => {
-        window.location = "/profile";
-      })
-      .catch(console.error);
-    console.log(this.state);
+  handleOnSubmit = review => {
+    console.log(review);
+    // axios
+    //   .post("/users/updatebooking", {
+    //     date: this.state.date,
+    //     time: this.state.time,
+    //     guests: this.state.guests,
+    //     email: this.state.user.email,
+    //     booking_id: this.props.review.booking_id
+    //   })
+    //   .then(res => {
+    //     window.location = "/profile";
+    //   })
+    //   .catch(console.error);
   };
 
   componentDidMount() {
@@ -161,7 +160,7 @@ class Profilecontent extends Component {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={this.handleOnSubmit}
+                        onClick={() => this.handleOnSubmit(this.props.review)}
                       >
                         Save changes
                       </button>
