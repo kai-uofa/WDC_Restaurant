@@ -56,13 +56,13 @@ class MSignIn extends Component {
           password: this.state.password
         })
         .then(res => {
-          // TODO: handle server response codes 200, 401
-          console.log(res);
+          localStorage.setItem("token", res.data);
+          window.location = "/managers";
         })
         .catch(console.error);
 
       // Reset all text fields
-      this.setState({ email: "", password: " " });
+      this.setState({ email: "", password: "" });
     }
   };
 

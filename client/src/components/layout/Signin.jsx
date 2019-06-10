@@ -65,7 +65,7 @@ class SignIn extends Component {
         .catch(this.setState({ wrong: "Your email and password don't match. Please try again." }));
 
       // Reset all text fields
-      this.setState({ email: "", password: " " });
+      this.setState({ email: "", password: "" });
     }
   };
 
