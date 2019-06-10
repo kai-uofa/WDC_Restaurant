@@ -8,7 +8,6 @@ class Profilecontent extends Component {
     date: "null",
     time: "null",
     guests: "null",
-    id: "null"
   };
 
   async componentDidMount() {
