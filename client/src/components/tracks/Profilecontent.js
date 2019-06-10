@@ -5,9 +5,9 @@ import jwtDecode from "jwt-decode";
 
 class Profilecontent extends Component {
   state = {
-    date: "null",
-    time: "null",
-    guests: "null",
+    date: "",
+    time: "",
+    guests: "",
   };
 
   componentDidMount() {
@@ -19,17 +19,36 @@ class Profilecontent extends Component {
       console.log(error);
     }
   }
-  // this.props.review.booking_id
+  
   handleOnClick = e => {
     localStorage.setItem("bookingID", this.props.review.booking_id);
+    localStorage.setItem("bookingDate", moment(this.props.review.date).format("YYYY-MM-DD"));
+    localStorage.setItem("bookingTime", this.props.review.start_time);
+    localStorage.setItem("bookingGuests", this.props.review.no_of_people);
   };
 
   handleOnSubmit = e => {
+    let date, time, guests;
+    if (this.state.date === '') {
+      date = localStorage.getItem('bookingDate');
+    } else {
+      date = this.state.date;
+    }
+    if (this.state.time === '') {
+      time = localStorage.getItem('bookingTime');
+    } else {
+      time = this.state.time;
+    }
+    if (this.state.guests === '') {
+      guests = localStorage.getItem('bookingGuests');
+    } else {
+      guests = this.state.guests;
+    }
     axios
       .post("/users/updatebooking", {
-        date: this.state.date,
-        time: this.state.time,
-        guests: this.state.guests,
+        date: date,
+        time: time,
+        guests: guests,
         email: this.state.user.email,
         booking_id: localStorage.getItem("bookingID")
       })
@@ -95,7 +114,7 @@ class Profilecontent extends Component {
                   <div className="modal-content">
                     <div className="modal-header">
                       <h5 className="modal-title" id="exampleModalCenterTitle">
-                        Update Profile
+                        Update Booking
                       </h5>
                       <button
                         type="button"
@@ -120,7 +139,6 @@ class Profilecontent extends Component {
                               placeholder="Choose your dates"
                               required="required"
                               className="form-control"
-                              value={this.state.date}
                               onChange={event =>
                                 this.setState({ date: event.target.value })
                               }
@@ -135,7 +153,6 @@ class Profilecontent extends Component {
                             type="time"
                             name="time"
                             className="form-control"
-                            value={this.state.time}
                             onChange={event =>
                               this.setState({ time: event.target.value })
                             }
@@ -149,7 +166,7 @@ class Profilecontent extends Component {
                             type="number"
                             name="guests"
                             className="form-control"
-                            value={this.state.guests}
+                            // value={localStorage.getItem('bookingGuests')}
                             onChange={event =>
                               this.setState({ guests: event.target.value })
                             }

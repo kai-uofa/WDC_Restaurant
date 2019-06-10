@@ -149,21 +149,10 @@ const Customers = {
       req.body.email !== undefined &&
       req.body.password !== undefined
     ) {
-      const salt = await new Promise((resolve, reject) => {
-        crypto.randomBytes(16, function(err, buffer) {
-          if (err) reject(err);
-          resolve(buffer);
-        });
-      });
-
-      hashPass = await argon2i
-        .hash(req.body.password, salt)
-        .catch(console.error);
-
       const results = await db
         .query(
-          'SELECT email, first_name, last_name FROM Customers WHERE email = ? AND password = ? ',
-          [req.body.email, hashPass]
+          'SELECT first_name, last_name, email, password FROM Customers WHERE email = ? ',
+          [req.body.email]
         )
         .catch(console.error);
 
@@ -363,33 +352,18 @@ const Customers = {
     }
   },
 
-  async updateBooking(req, res) {
-    if (req.decoded !== undefined) {
-      const existedId = await db.query(
-        'SELECT customer_id FROM Customers WHERE email = ?',
-        [req.body.email]
-      );
-      console.log(req.body);
-      res.send(200);
-      const updateInfo =
-      'UPDATE Bookings \
-      SET date = ?, no_of_people= ?, start_time=? \
-      WHERE booking_id = ?';
-
-      db.query(updateInfo, [
-        req.body.date,
-        req.body.guests,
-        req.body.time,
-        req.body.booking_id
-      ])
-        .then(() => {
-          res.sendStatus(200);
-        })
+  async userValidation(decoded) {
+    if (decoded !== undefined) {
+      const results = await db.query('SELECT email FROM Customers WHERE email = ?', [decoded.email])
         .catch(console.error);
-    } else {
-      res.send(401);
+      if (results.length > 0) {
+        return true;
+      }
+      return false;
     }
+    return false;
   }
+
 };
 
 module.exports = Customers;

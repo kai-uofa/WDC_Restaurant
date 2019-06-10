@@ -31,7 +31,7 @@ router.post('/status', async function(req, res, next) {
 
 router.post('/details', async function(req, res, next) {
   if (await Managers.managerValidation(req.decoded)) {
-    // FIXME: Bookings.updateBookingTime(req, res);
+    Bookings.updateBookingDetails(req, res);
   } else {
     res.sendStatus(403); // Forbidden
   }

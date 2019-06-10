@@ -7,10 +7,10 @@ class MIndex extends Component {
     bookings: []
   };
 
-  handleStatusChange = (booking, event) => {
+  handleStatusChange = (booking_id, event) => {
     axios
       .post("/managers/status", {
-        booking_id: booking.booking_id,
+        booking_id: booking_id,
         status: parseInt(event.target.value)
       })
       .then(res => {
@@ -18,11 +18,6 @@ class MIndex extends Component {
       })
       .catch(console.error);
   };
-
-  handleDetailUpdate = (booking, state) => {
-    // check null
-    
-  }
 
   componentDidMount() {
     axios
@@ -43,9 +38,8 @@ class MIndex extends Component {
             .map(booking => (
               <Content
                 key={booking.booking_id}
-                booking={booking}
+                review={booking}
                 handleStatusChange = {this.handleStatusChange}
-                handleDetailUpdate = {this.handleDetailUpdate}
               />
             ))}
         </div>
