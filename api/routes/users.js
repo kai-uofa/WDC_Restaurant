@@ -1,5 +1,6 @@
 const express = require("express");
 const Customers = require("../controllers/customers");
+const Bookings = require("../controllers/bookings");
 
 const router = express.Router();
 
@@ -17,10 +18,10 @@ router.post("/reservation", function(req, res, next) {
 });
 
 router.get("/profile", function(req, res, next) {
-  Customers.getProfile(req, res);
+  Bookings.getActiveBookings(req, res);
 });
 router.post("/deletebooking", function(req, res, next) {
-  Customers.deleteBooking(req, res);
+  Bookings.updateBookingStatus(req, res);
 });
 router.post("/updatebooking", function(req, res, next) {
   Customers.updateBooking(req, res);
