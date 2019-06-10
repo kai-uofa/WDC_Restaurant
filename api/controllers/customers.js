@@ -357,16 +357,3 @@ const Customers = {
 };
 
 module.exports = Customers;
-// if (restsID.length > 0) {
-//   //check rating
-//   let query = "SELECT rating FROM Reviews WHERE restaurant_id=?";
-//   for (let i = 0; i < restsID.length; i++) {
-//     let r = await db.query(query, [restsID[i]]);
-//     r.push({ restID: restsID[i] });
-//     ratingResult.push(r);
-//   }
-// } else {
-//   //check all restaurant with high rating
-// }
-// console.log(ratingResult);
-// res.send(ratingResult);
