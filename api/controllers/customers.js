@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-multi-str */
 /* eslint-disable prettier/prettier */
 const { OAuth2Client } = require('google-auth-library');
@@ -309,7 +310,7 @@ const Customers = {
       const resultMatching = [];
       for (let x = 0; x < restsID.length; x++) {
         for (let i = 0; i < resultRating.length; i++) {
-          if (restsID[x].restaurant_id == resultRating[i].restaurant_id) {
+          if (restsID[x].restaurant_id === resultRating[i].restaurant_id) {
             resultMatching.push(resultRating[i]);
           }
         }
@@ -327,7 +328,7 @@ const Customers = {
           }
         }
         for (let i = 0; i < resultMatching.length; i++) {
-          if (resultMatching[i].rating == high) {
+          if (resultMatching[i].rating === high) {
             finalResult.push(resultMatching[i]);
           }
         }

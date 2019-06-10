@@ -35,7 +35,7 @@ const Managers = {
 
       if (existedEmail.length < 1) {
         // create new restaurant
-        const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity,) VALUES (?,?,?)';
+        const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity) VALUES (?,?,?)';
         await db.query(queryRes, [req.body.resName, req.body.resAddress, parseInt(req.body.capacity)])
           .catch(console.error);
 
