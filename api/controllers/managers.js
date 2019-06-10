@@ -19,6 +19,7 @@ const Managers = {
     let conflict = false;
     let token;
     let hashPass;
+    let resId;
 
     if (req.decoded !== undefined) {
       manager = req.decoded.email;
@@ -40,7 +41,7 @@ const Managers = {
           .catch(console.error);
 
         // get new restaurant id
-        const _resId = await db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
+        resId = await db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
           .catch(console.error);
 
         // create new manager account
@@ -54,7 +55,7 @@ const Managers = {
         hashPass = await argon2i.hash(req.body.password, salt).catch(console.error);
 
         const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
-        await db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, hashPass])
+        await db.query(queryMan, [resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, hashPass])
           .catch(console.error);
 
         token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
@@ -68,13 +69,14 @@ const Managers = {
           .then(response => {
 
             const queryLL = 'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
-            db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, _resId[0].restaurant_id])
+            db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, resId[0].restaurant_id])
               .catch(console.error);
 
           }).catch(console.error);
         // FIXME: add description
         if (req.body.description !== '') {
-          console.log('add description to database');
+          db.query('UPDATE Restaurants SET restaurant_description = ? WHERE restaurant_id = ?', [req.body.description, resId[0]])
+            .catch(console.error);
         }
       } else {
         conflict = true;

@@ -2,7 +2,7 @@
 const db = require('../models/dbconnection');
 
 const Bookings = {
-  async getActiveBookings(req, res) {
+  async getActiveBookingsM(req, res) {
     const resId = await db
       .query('SELECT restaurant_id FROM Managers WHERE email = ?', [
         req.decoded.email,
