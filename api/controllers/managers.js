@@ -73,7 +73,7 @@ const Managers = {
               .catch(console.error);
 
           }).catch(console.error);
-        // FIXME: add description
+
         if (req.body.description !== '') {
           db.query('UPDATE Restaurants SET restaurant_description = ? WHERE restaurant_id = ?', [req.body.description, resId[0]])
             .catch(console.error);

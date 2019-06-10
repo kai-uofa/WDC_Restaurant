@@ -12,20 +12,36 @@ router.post('/review', async function(req, res, next) {
   }
 });
 
-router.post('/reservation', function(req, res, next) {
-  Customers.postBooking(req, res);
+router.post('/reservation', async function(req, res, next) {
+  if (await Customers.userValidation(req.decoded)) {
+    Customers.postBooking(req, res);
+  } else {
+    res.sendStatus(403); // Forbidden
+  }
 });
 
-router.get('/profile', function(req, res, next) {
-  Bookings.getActiveBookings(req, res);
+router.get('/profile', async function(req, res, next) {
+  if (await Customers.userValidation(req.decoded)) {
+    Bookings.getActiveBookings(req, res);
+  } else {
+    res.sendStatus(403); // Forbidden
+  }
 });
 
-router.post('/deletebooking', function(req, res, next) {
-  Bookings.updateBookingStatus(req, res);
+router.post('/deletebooking', async function(req, res, next) {
+  if (await Customers.userValidation(req.decoded)) {
+    Bookings.updateBookingStatus(req, res);
+  } else {
+    res.sendStatus(403); // Forbidden
+  }
 });
 
-router.post('/updatebooking', function(req, res, next) {
-  Bookings.updateBookingDetails(req, res);
+router.post('/updatebooking', async function(req, res, next) {
+  if (await Customers.userValidation(req.decoded)) {
+    Bookings.updateBookingDetails(req, res);
+  } else {
+    res.sendStatus(403); // Forbidden
+  }
 });
 // TODO: handle and update profile users
 
