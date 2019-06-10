@@ -2,6 +2,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable object-shorthand */
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { argon2i } = require('argon2-ffi');
 const config = require('../configAPIs');
 const db = require('../models/dbconnection');
 const googleMapsService = require('@google/maps').createClient({
@@ -16,8 +18,8 @@ const Managers = {
     let manager = null;
     let conflict = false;
     let token;
+    let hashPass;
 
-    // TODO: change to JWT
     if (req.decoded !== undefined) {
       manager = req.decoded.email;
     } else if (
@@ -33,7 +35,7 @@ const Managers = {
 
       if (existedEmail.length < 1) {
         // create new restaurant
-        const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity,) VALUES (?,?,?)';
+        const queryRes = 'INSERT INTO Restaurants (restaurant_name, restaurant_address, restaurant_capacity) VALUES (?,?,?)';
         await db.query(queryRes, [req.body.resName, req.body.resAddress, parseInt(req.body.capacity)])
           .catch(console.error);
 
@@ -42,8 +44,17 @@ const Managers = {
           .catch(console.error);
 
         // create new manager account
+        const salt = await new Promise((resolve, reject) => {
+          crypto.randomBytes(16, function (err, buffer) {
+            if (err) reject(err);
+            resolve(buffer);
+          });
+        });
+
+        hashPass = await argon2i.hash(req.body.password, salt).catch(console.error);
+
         const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
-        await db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, req.body.password])
+        await db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, hashPass])
           .catch(console.error);
 
         token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
@@ -82,15 +93,25 @@ const Managers = {
   async signIn(req, res) {
     let manager = null;
     let token;
+    let hashPass;
 
     // check valid manager session
     if (req.decoded !== undefined) {
       // eslint-disable-next-line prefer-destructuring
       manager = req.decoded.email;
     } else if (req.body.email !== undefined && req.body.password !== undefined) {
-      const results = await db.query('SELECT * FROM Managers WHERE email = ? AND password = ? ', [req.body.email, req.body.password])
+      const salt = await new Promise((resolve, reject) => {
+        crypto.randomBytes(16, function (err, buffer) {
+          if (err) reject(err);
+          resolve(buffer);
+        });
+      });
+
+      hashPass = await argon2i.hash(req.body.password, salt).catch(console.error);
+
+      const results = await db.query('SELECT email, first_name, last_name FROM Managers WHERE email = ? AND password = ? ', [req.body.email, hashPass])
         .catch(console.error);
-      // FIXME: fix this sending firstName
+
       if(results.length > 0) {
         token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
           expiresIn: 1440,
