@@ -19,6 +19,7 @@ const Managers = {
     let conflict = false;
     let token;
     let hashPass;
+    let resId;
 
     if (req.decoded !== undefined) {
       manager = req.decoded.email;
@@ -40,7 +41,7 @@ const Managers = {
           .catch(console.error);
 
         // get new restaurant id
-        const _resId = await db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
+        resId = await db.query('SELECT restaurant_id FROM Restaurants ORDER BY restaurant_id DESC LIMIT 1')
           .catch(console.error);
 
         // create new manager account
@@ -54,7 +55,7 @@ const Managers = {
         hashPass = await argon2i.hash(req.body.password, salt).catch(console.error);
 
         const queryMan = 'INSERT INTO Managers (restaurant_id, first_name, last_name, email, password) VALUES (?,?,?,?,?)';
-        await db.query(queryMan, [_resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, hashPass])
+        await db.query(queryMan, [resId[0].restaurant_id, req.body.firstName, req.body.lastName, req.body.email, hashPass])
           .catch(console.error);
 
         token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
@@ -68,13 +69,14 @@ const Managers = {
           .then(response => {
 
             const queryLL = 'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
-            db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, _resId[0].restaurant_id])
+            db.query(queryLL, [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng, resId[0].restaurant_id])
               .catch(console.error);
 
           }).catch(console.error);
         // FIXME: add description
         if (req.body.description !== '') {
-          console.log('add description to database');
+          db.query('UPDATE Restaurants SET restaurant_description = ? WHERE restaurant_id = ?', [req.body.description, resId[0]])
+            .catch(console.error);
         }
       } else {
         conflict = true;
@@ -93,30 +95,23 @@ const Managers = {
   async signIn(req, res) {
     let manager = null;
     let token;
-    let hashPass;
 
     // check valid manager session
     if (req.decoded !== undefined) {
       // eslint-disable-next-line prefer-destructuring
       manager = req.decoded.email;
     } else if (req.body.email !== undefined && req.body.password !== undefined) {
-      const salt = await new Promise((resolve, reject) => {
-        crypto.randomBytes(16, function (err, buffer) {
-          if (err) reject(err);
-          resolve(buffer);
-        });
-      });
-
-      hashPass = await argon2i.hash(req.body.password, salt).catch(console.error);
-
-      const results = await db.query('SELECT email, first_name, last_name FROM Managers WHERE email = ? AND password = ? ', [req.body.email, hashPass])
+      const results = await db.query('SELECT first_name, last_name, email, password FROM Managers WHERE email = ?', [req.body.email])
         .catch(console.error);
 
       if(results.length > 0) {
-        token = await jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email }, config.JWT_SECRET_KEY, {
-          expiresIn: 1440,
-        });
-        manager = req.body.email;
+        const correct = await argon2i.verify(results[0].password, req.body.password).catch(console.error);
+        if(correct) {
+          token = await jwt.sign({ firstName: results[0].first_name, lastName: results[0].last_name, email: req.body.email }, config.JWT_SECRET_KEY, {
+            expiresIn: 1440,
+          });
+          manager = req.body.email;
+        }
       }
     }
 

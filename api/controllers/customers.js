@@ -138,7 +138,6 @@ const Customers = {
   async signIn(req, res) {
     let customer = null;
     let token;
-    let hashPass;
 
     // If valid customer session
     if (req.decoded !== undefined) {
@@ -169,18 +168,23 @@ const Customers = {
         .catch(console.error);
 
       if (results.length > 0) {
-        token = await jwt.sign(
-          {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email
-          },
-          config.JWT_SECRET_KEY,
-          {
-            expiresIn: 90000
+        if(results[0].password !== undefined) {
+          const correct = await argon2i.verify(results[0].password, req.body.password).catch(console.error);
+          if (correct) {
+            token = await jwt.sign(
+              {
+                firstName: results[0].first_name,
+                lastName: results[0].last_name,
+                email: req.body.email
+              },
+              config.JWT_SECRET_KEY,
+              {
+                expiresIn: 90000
+              }
+            );
+            customer = req.body.email;
           }
-        );
-        customer = req.body.email;
+        }
       }
       // If google login token present
     } else if (req.body.token !== undefined) {
@@ -344,7 +348,7 @@ const Customers = {
       const date = req.body.date.slice(0, 10);
       const time = req.body.start_time.slice(11, 16);
       const query =
-        "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time, status) VALUES (?,?,?, ?,?,?)";
+        'INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time, status) VALUES (?,?,?, ?,?,?)';
       db.query(query, [
         existedId[0].customer_id,
         finalResult[0].restaurant_id,
@@ -359,43 +363,16 @@ const Customers = {
     }
   },
 
-  // async deleteBooking(req, res) {
-  //   if (req.decoded !== undefined) {
-  //     "UPDATE Bookings\
-  //     SET date = ?, no_of_people= ?, start_time=?\
-  //     WHERE restaurant_id = ? ";
-  //     const query = "UPDATE Bookings SET status=? WHERE ";
-  //     await db.query(query, [req.body.booking_id]);
-  //     const existedId = await db
-  //       .query("SELECT customer_id FROM Customers WHERE email = ?", [
-  //         req.decoded.email
-  //       ])
-  //       .catch(console.error);
-
-  //     const userBookings = await db.query(
-  //       "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
-  //       FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
-  //       INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
-  //       WHERE Customers.customer_id=?",
-  //       [existedId[0].customer_id]
-  //     );
-
-  //     res.send(userBookings);
-  //   } else {
-  //     res.send(401);
-  //   }
-  // },
-
   async updateBooking(req, res) {
     if (req.decoded !== undefined) {
       const existedId = await db.query(
-        "SELECT customer_id FROM Customers WHERE email = ?",
+        'SELECT customer_id FROM Customers WHERE email = ?',
         [req.body.email]
       );
       console.log(req.body);
       res.send(200);
       const updateInfo =
-        "UPDATE Bookings\
+        'UPDATE Bookings\
       SET date = ?, no_of_people= ?, start_time=?\
       WHERE booking_id = ? ";
 
