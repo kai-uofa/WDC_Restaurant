@@ -3,9 +3,9 @@ import axios from "axios";
 
 class Reservation extends Component {
   state = {
-    date: null,
-    time: null,
-    guests: null
+    date: localStorage.getItem("date") || null,
+    time: localStorage.getItem("time") || null,
+    guests: localStorage.getItem("guests") || null
   };
 
   handleOnSubmit = e => {
@@ -28,6 +28,9 @@ class Reservation extends Component {
           this.props.history.push("/profile");
         })
         .catch(console.error);
+      localStorage.removeItem("date");
+      localStorage.removeItem("time");
+      localStorage.removeItem("guests");
     }
   };
 
@@ -50,9 +53,14 @@ class Reservation extends Component {
               <input
                 name="date"
                 type="date"
-                onChange={event => this.setState({ date: event.target.value })}
+                onChange={event => {
+                  const date = event.target.value;
+                  localStorage.setItem("date", date);
+                  this.setState({ date });
+                }}
                 id="bookingDate"
                 placeholder="Choose your dates"
+                value={this.state.date}
                 required="required"
                 className="form-control"
               />
@@ -63,7 +71,12 @@ class Reservation extends Component {
               Choose time:
             </label>
             <input
-              onChange={event => this.setState({ time: event.target.value })}
+              onChange={event => {
+                const time = event.target.value;
+                localStorage.setItem("time", time);
+                this.setState({ time });
+              }}
+              value={this.state.time}
               type="time"
               name="time"
               className="form-control"
@@ -74,11 +87,14 @@ class Reservation extends Component {
               Guests:
             </label>
             <input
-              onChange={event =>
-                this.setState({ guests: parseInt(event.target.value) })
-              }
+              onChange={event => {
+                const guests = parseInt(event.target.value);
+                localStorage.setItem("guests", guests);
+                this.setState({ guests });
+              }}
               type="number"
               name="guests"
+              value={this.state.guests}
               className="form-control"
             />
           </div>
