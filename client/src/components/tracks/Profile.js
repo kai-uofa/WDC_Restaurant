@@ -26,7 +26,9 @@ class Profile extends Component {
       .then(res => {
         this.setState({ reviews: res.data });
       })
-      .catch(console.error);
+      .catch(() => {
+        window.location = "/signin";
+      });
   }
 
   render() {
@@ -41,7 +43,6 @@ class Profile extends Component {
                 key={review.booking_id}
                 review={review}
                 handleOnDelete={this.handleOnDelete}
-                handleOnSubmit={this.handleOnSubmit}
               />
             ))}
         </div>
