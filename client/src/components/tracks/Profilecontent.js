@@ -10,22 +10,6 @@ class Profilecontent extends Component {
     guests: null
   };
 
-  handleOnSubmit = review => {
-    console.log(review);
-    // axios
-    //   .post("/users/updatebooking", {
-    //     date: this.state.date,
-    //     time: this.state.time,
-    //     guests: this.state.guests,
-    //     email: this.state.user.email,
-    //     booking_id: this.props.review.booking_id
-    //   })
-    //   .then(res => {
-    //     window.location = "/profile";
-    //   })
-    //   .catch(console.error);
-  };
-
   componentDidMount() {
     try {
       const jwt = localStorage.getItem("token");
@@ -35,6 +19,26 @@ class Profilecontent extends Component {
       console.log(error);
     }
   }
+  // this.props.review.booking_id
+  handleOnClick = e => {
+    localStorage.setItem("bookingID", this.props.review.booking_id);
+  };
+
+  handleOnSubmit = e => {
+    axios
+      .post("/users/updatebooking", {
+        date: this.state.date,
+        time: this.state.time,
+        guests: this.state.guests,
+        email: this.state.user.email,
+        booking_id: localStorage.getItem("bookingID")
+      })
+      .then(res => {
+        window.location = "/profile";
+      })
+      .catch(console.error);
+  };
+
   render() {
     return (
       <div className=" col-xl-3 col-lg-6 col-md-12 mb-5 ">
@@ -71,6 +75,7 @@ class Profilecontent extends Component {
                 className="btn btn-primary btnUpdate"
                 data-toggle="modal"
                 data-target="#exampleModalCenter"
+                onClick={this.handleOnClick}
               >
                 Update
               </button>
@@ -160,7 +165,7 @@ class Profilecontent extends Component {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={() => this.handleOnSubmit(this.props.review)}
+                        onClick={e => this.handleOnSubmit(e)}
                       >
                         Save changes
                       </button>
