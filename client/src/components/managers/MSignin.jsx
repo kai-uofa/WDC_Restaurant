@@ -59,7 +59,13 @@ class MSignIn extends Component {
           localStorage.setItem("token", res.data);
           window.location = "/managers";
         })
-        .catch(console.error);
+        .catch(error => {
+          if (error.response.status === 401) {
+            this.setState({ wrong: "Your email and password don't match. Please try again." });
+          } else if (error.response.status === 200) {
+            this.setState({ wrong: "" });
+          }
+        });
 
       // Reset all text fields
       this.setState({ email: "", password: "" });
