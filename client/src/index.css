@@ -92,10 +92,6 @@ body {
   height: 30em;
 }
 
-.btnDelete {
-  margin-left: 7em;
-}
-
 .detailName {
   margin-top: 13rem;
 }
@@ -109,6 +105,9 @@ body {
 
 .imageProfile {
   width: 15.8rem;
+}
+.btnDU {
+  justify-content: space-around;
 }
 @media (max-width: 770px) {
   .member .content {

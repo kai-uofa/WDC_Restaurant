@@ -214,15 +214,16 @@ const Customers = {
     );
     if (existedId.length > 0) {
       const date = req.body.date.slice(0, 10);
-      console.log(req.body.time);
+      console.log(req.body);
       const query =
-        "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
+        "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time, status) VALUES (?,?, ?,?,?,?)";
       db.query(query, [
         existedId[0].customer_id,
         req.body.restaurant_id,
         date,
         req.body.guests,
-        req.body.time
+        req.body.time,
+        req.body.status
       ])
         .then(() => {
           res.sendStatus(200);
@@ -242,7 +243,7 @@ const Customers = {
         .catch(console.error);
 
       const userBookings = await db.query(
-        "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
+        "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_id,Restaurants.restaurant_image ,Customers.first_name\
         FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
         INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
         WHERE Customers.customer_id=?",
@@ -317,13 +318,14 @@ const Customers = {
       const date = req.body.date.slice(0, 10);
       const time = req.body.start_time.slice(11, 16);
       const query =
-        "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time) VALUES (?,?, ?,?,?)";
+        "INSERT INTO Bookings (customer_id, restaurant_id, date, no_of_people, start_time, status) VALUES (?,?,?, ?,?,?)";
       db.query(query, [
         existedId[0].customer_id,
         finalResult[0].restaurant_id,
         date,
         req.body.no_of_people,
-        time
+        time,
+        req.body.status
       ]).catch(console.error);
       res.send(200);
     } else {
@@ -331,25 +333,56 @@ const Customers = {
     }
   },
 
-  async deleteBooking(req, res) {
+  // async deleteBooking(req, res) {
+  //   if (req.decoded !== undefined) {
+  //     "UPDATE Bookings\
+  //     SET date = ?, no_of_people= ?, start_time=?\
+  //     WHERE restaurant_id = ? ";
+  //     const query = "UPDATE Bookings SET status=? WHERE ";
+  //     await db.query(query, [req.body.booking_id]);
+  //     const existedId = await db
+  //       .query("SELECT customer_id FROM Customers WHERE email = ?", [
+  //         req.decoded.email
+  //       ])
+  //       .catch(console.error);
+
+  //     const userBookings = await db.query(
+  //       "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
+  //       FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
+  //       INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
+  //       WHERE Customers.customer_id=?",
+  //       [existedId[0].customer_id]
+  //     );
+
+  //     res.send(userBookings);
+  //   } else {
+  //     res.send(401);
+  //   }
+  // },
+
+  async updateBooking(req, res) {
     if (req.decoded !== undefined) {
-      const query = "DELETE FROM Bookings WHERE booking_id=? ";
-      await db.query(query, [req.body.booking_id]);
-      const existedId = await db
-        .query("SELECT customer_id FROM Customers WHERE email = ?", [
-          req.decoded.email
-        ])
-        .catch(console.error);
-
-      const userBookings = await db.query(
-        "SELECT  Bookings.booking_id, Bookings.date, Bookings.start_time, Bookings.no_of_people, Restaurants.restaurant_name,Restaurants.restaurant_image ,Customers.first_name\
-        FROM ((Restaurants INNER JOIN Bookings ON Restaurants.restaurant_id=Bookings.restaurant_id)\
-        INNER JOIN Customers ON Customers.customer_id=Bookings.customer_id)\
-        WHERE Customers.customer_id=?",
-        [existedId[0].customer_id]
+      const existedId = await db.query(
+        "SELECT customer_id FROM Customers WHERE email = ?",
+        [req.body.email]
       );
+      console.log(req.body);
+      res.send(200);
+      const updateInfo =
+        "UPDATE Bookings\
+      SET date = ?, no_of_people= ?, start_time=?\
+      WHERE restaurant_id = ? ";
 
-      res.send(userBookings);
+      db.query(updateInfo, [
+        req.body.date,
+        req.body.guests,
+        req.body.time,
+        req.body.restaurant_id
+      ])
+        .then(() => {
+          res.sendStatus(200);
+        })
+        .catch(console.error);
     } else {
       res.send(401);
     }

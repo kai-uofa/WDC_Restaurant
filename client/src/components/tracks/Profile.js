@@ -19,7 +19,8 @@ class Profile extends Component {
   handleOnDelete = review => {
     axios
       .post("/users/deletebooking", {
-        booking_id: review.booking_id
+        booking_id: review.booking_id,
+        status: 2
       })
       .then(res => {
         this.setState({ reviews: res.data });

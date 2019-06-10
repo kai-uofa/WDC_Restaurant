@@ -22,10 +22,13 @@ class Reservation extends Component {
           time: this.state.time,
           guests: this.state.guests,
           email: this.props.user.email,
-          restaurant_id: this.props.detail.restaurant_id
+          restaurant_id: this.props.detail.restaurant_id,
+          status: 1
         })
         .then(res => {
-          this.props.history.push("/profile");
+          this.props.history.push({
+            pathname: "/profile"
+          });
         })
         .catch(console.error);
       localStorage.removeItem("date");

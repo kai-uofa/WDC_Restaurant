@@ -22,6 +22,9 @@ router.get("/profile", function(req, res, next) {
 router.post("/deletebooking", function(req, res, next) {
   Customers.deleteBooking(req, res);
 });
+router.post("/updatebooking", function(req, res, next) {
+  Customers.updateBooking(req, res);
+});
 // TODO: handle and update profile users
 
 module.exports = router;

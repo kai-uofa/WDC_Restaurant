@@ -95,7 +95,8 @@ class App extends Component {
         firstName: this.state.user.firstName,
         lastName: this.state.user.lastName,
         date: new Date(),
-        start_time
+        start_time,
+        status: 1
       })
       .then(res => {
         window.location = "/profile";
