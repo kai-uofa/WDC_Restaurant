@@ -5,28 +5,13 @@ import jwtDecode from "jwt-decode";
 
 class Profilecontent extends Component {
   state = {
-    date: null,
-    time: null,
-    guests: null
+    date: "null",
+    time: "null",
+    guests: "null",
+    id: "null"
   };
 
-  handleOnSubmit = review => {
-    console.log(review);
-    // axios
-    //   .post("/users/updatebooking", {
-    //     date: this.state.date,
-    //     time: this.state.time,
-    //     guests: this.state.guests,
-    //     email: this.state.user.email,
-    //     booking_id: this.props.review.booking_id
-    //   })
-    //   .then(res => {
-    //     window.location = "/profile";
-    //   })
-    //   .catch(console.error);
-  };
-
-  componentDidMount() {
+  async componentDidMount() {
     try {
       const jwt = localStorage.getItem("token");
       const user = jwtDecode(jwt);
@@ -35,6 +20,7 @@ class Profilecontent extends Component {
       console.log(error);
     }
   }
+
   render() {
     return (
       <div className=" col-xl-3 col-lg-6 col-md-12 mb-5 ">
@@ -115,6 +101,7 @@ class Profilecontent extends Component {
                               placeholder="Choose your dates"
                               required="required"
                               className="form-control"
+                              value={this.state.date}
                               onChange={event =>
                                 this.setState({ date: event.target.value })
                               }
@@ -129,6 +116,7 @@ class Profilecontent extends Component {
                             type="time"
                             name="time"
                             className="form-control"
+                            value={this.state.time}
                             onChange={event =>
                               this.setState({ time: event.target.value })
                             }
@@ -142,6 +130,7 @@ class Profilecontent extends Component {
                             type="number"
                             name="guests"
                             className="form-control"
+                            value={this.state.guests}
                             onChange={event =>
                               this.setState({ guests: event.target.value })
                             }
@@ -160,7 +149,7 @@ class Profilecontent extends Component {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={() => this.handleOnSubmit(this.props.review)}
+                        onClick={() => this.props.handleOnSubmit(this.props.review, this.state)}
                       >
                         Save changes
                       </button>

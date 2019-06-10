@@ -10,22 +10,22 @@ class MIndexContent extends Component {
     guests: null
   };
 
-  handleOnSubmit = e => {
-    e.preventDefault();
-    axios
-      .post("/managers/details", {
-        date: this.state.date,
-        time: this.state.time,
-        guests: this.state.guests,
-        email: this.state.user.email,
-        restaurant_id: this.props.review.restaurant_id
-      })
-      .then(res => {
-        window.location = "/managers";
-      })
-      .catch(console.error);
-    console.log(this.state);
-  };
+  // handleOnSubmit = e => {
+  //   e.preventDefault();
+  //   axios
+  //     .post("/managers/details", {
+  //       date: this.state.date,
+  //       time: this.state.time,
+  //       guests: this.state.guests,
+  //       email: this.state.user.email,
+  //       restaurant_id: this.props.review.restaurant_id
+  //     })
+  //     .then(res => {
+  //       window.location = "/managers";
+  //     })
+  //     .catch(console.error);
+  //   console.log(this.state);
+  // };
 
   componentDidMount() {
     try {
@@ -116,6 +116,7 @@ class MIndexContent extends Component {
                               placeholder="Choose your dates"
                               required="required"
                               className="form-control"
+                              value={this.props.booking.date}
                               onChange={event =>
                                 this.setState({ date: event.target.value })
                               }
@@ -130,6 +131,7 @@ class MIndexContent extends Component {
                             type="time"
                             name="time"
                             className="form-control"
+                            value={this.props.booking.time}
                             onChange={event =>
                               this.setState({ time: event.target.value })
                             }
@@ -143,6 +145,7 @@ class MIndexContent extends Component {
                             type="number"
                             name="guests"
                             className="form-control"
+                            value={this.props.booking.guests}
                             onChange={event =>
                               this.setState({ guests: event.target.value })
                             }
@@ -161,7 +164,7 @@ class MIndexContent extends Component {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={this.handleOnSubmit}
+                        onClick={() => this.props.handleDetailUpdate(this.props.booking, this.state)}
                       >
                         Save changes
                       </button>
@@ -171,12 +174,20 @@ class MIndexContent extends Component {
               </div>
 
               {/* End of updating users */}
-              <button
+              {/* <button
                 className="btn btn-outline-danger btnDelete"
                 onClick={() => this.props.handleOnDelete(this.props.review)}
               >
                 Delete
-              </button>
+              </button> */}
+              <select
+                className='btn btn-outline-danger btnDelete'
+                onChange={event => this.props.handleStatusChange(this.props.booking, event)}
+              >
+                <option selected value="1">Active</option>
+                <option value="2">Finished</option>
+                <option value="3">Canceled</option>
+              </select>
             </li>
           </ul>
         </div>
