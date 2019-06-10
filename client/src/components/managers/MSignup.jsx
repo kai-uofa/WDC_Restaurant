@@ -13,6 +13,7 @@ class SignUp extends Component {
       resAddress: "",
       capacity: "",
       description: "",
+      wrong: "",
       errors: {} // collect errors for validateForm
     };
   }
@@ -146,7 +147,7 @@ class SignUp extends Component {
           localStorage.setItem("token", res.data);
           window.location = "/managers";
         })
-        .catch(console.error);
+        .catch(this.setState({ wrong: "This email already exist , please try another one" }));
 
       // Reset all text fields
 
@@ -185,6 +186,7 @@ class SignUp extends Component {
                 </p>
           </div>
           {/* <div class="container py-5"> */}
+          <div style={{ color: 'red' }}>{this.state.wrong}</div>
           <div class="row">
             <div class="col-md-10 mx-auto">
               <div class="container py-5">

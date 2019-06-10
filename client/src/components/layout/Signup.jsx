@@ -11,6 +11,7 @@ class SignUp extends Component {
       email: "",
       password: "",
       password2: "",
+      wrong: "",
       errors: {}
     };
   }
@@ -103,7 +104,7 @@ class SignUp extends Component {
           localStorage.setItem("token", res.data);
           window.location = "/";
         })
-        .catch(console.error);
+        .catch(this.setState({ wrong: "This email already exist , please try another one" }));
 
       // Reset all text fields
       this.setState({
@@ -143,6 +144,7 @@ class SignUp extends Component {
             <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
               <div className="mb-4">
                 <h2>Sign up</h2>
+                <div style={{ color: 'red' }}>{this.state.wrong}</div>
               </div>
               <form
                 className="form-validate"
@@ -260,7 +262,7 @@ class SignUp extends Component {
             <div className="background-signin bg-cover h-100 mr-n3" />
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
