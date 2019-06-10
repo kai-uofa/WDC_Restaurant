@@ -7,7 +7,7 @@ class Profilecontent extends Component {
   state = {
     date: "null",
     time: "null",
-    guests: "null",
+    guests: "null"
   };
 
   componentDidMount() {
@@ -95,7 +95,7 @@ class Profilecontent extends Component {
                   <div className="modal-content">
                     <div className="modal-header">
                       <h5 className="modal-title" id="exampleModalCenterTitle">
-                        Update Profile
+                        Update Booking
                       </h5>
                       <button
                         type="button"

@@ -1,27 +1,10 @@
 import React, { Component } from "react";
 import Profilecontent from "./Profilecontent";
 import axios from "axios";
-
+import jwtDecode from "jwt-decode";
 class Profile extends Component {
   state = {
     reviews: []
-  };
-
-  handleOnSubmit = (review, state) => {
-    console.log(state);
-    console.log(review);
-    // axios
-    //   .post("/users/updatebooking", {
-    //     date: this.state.date,
-    //     time: this.state.time,
-    //     guests: this.state.guests,
-    //     email: this.state.user.email,
-    //     booking_id: review.booking_id
-    //   })
-    //   .then(res => {
-    //     window.location = "/profile";
-    //   })
-    //   .catch(console.error);
   };
 
   handleOnDelete = review => {
@@ -34,6 +17,7 @@ class Profile extends Component {
         this.setState({ reviews: res.data });
       })
       .catch(console.error);
+    localStorage.removeItem("bookingID");
   };
 
   componentDidMount() {
@@ -47,7 +31,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container editProfile">
         <div className="row userCard">
           {this.state.reviews
             .slice(0)
