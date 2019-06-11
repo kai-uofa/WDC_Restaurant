@@ -5,9 +5,9 @@ import jwtDecode from "jwt-decode";
 
 class Profilecontent extends Component {
   state = {
-    date: "null",
-    time: "null",
-    guests: "null"
+    date: null,
+    time: null,
+    guests: null
   };
 
   componentDidMount() {
@@ -50,9 +50,9 @@ class Profilecontent extends Component {
 
     axios
       .post("/users/updatebooking", {
-        date: date,
-        time: time,
-        guests: guests,
+        date: this.state.date,
+        time: this.state.time,
+        guests: this.state.guests,
         email: this.state.user.email,
         booking_id: localStorage.getItem("bookingID")
       })

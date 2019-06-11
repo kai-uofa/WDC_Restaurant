@@ -9,8 +9,8 @@ class MIndexContent extends Component {
     this.state = {
       date: moment(this.props.review.date).format("YYYY-MM-DD"),
       time: this.props.review.start_time,
-      guests: this.props.review.no_of_people,
-    }
+      guests: this.props.review.no_of_people
+    };
   }
 
   handleOnClick = () => {
@@ -23,11 +23,11 @@ class MIndexContent extends Component {
         booking_id: this.props.review.booking_id
       })
       .then(res => {
-        window.location = "/profile";
+        window.location = "/managers";
       })
       .catch(console.error);
-  }
-  
+  };
+
   componentDidMount() {
     try {
       const jwt = localStorage.getItem("token");
@@ -49,7 +49,9 @@ class MIndexContent extends Component {
           />
 
           <div className="card-body">
-            <h5 className="card-title">{this.props.review.first_name} {this.props.review.last_name}</h5>
+            <h5 className="card-title">
+              {this.props.review.first_name} {this.props.review.last_name}
+            </h5>
           </div>
 
           <ul className="list-group list-group-flush">
@@ -81,9 +83,7 @@ class MIndexContent extends Component {
                 name="time"
                 className="form-control"
                 value={this.state.time}
-                onChange={event =>
-                  this.setState({ time: event.target.value })
-                }
+                onChange={event => this.setState({ time: event.target.value })}
               />
             </li>
             <li className="list-group-item">
@@ -113,9 +113,17 @@ class MIndexContent extends Component {
                 Update
               </button>
               <select
-                name='status'
-                onChange={(event) => this.props.handleStatusChange(this.props.review.booking_id, event)}>
-                <option selected value="1">Active</option>
+                name="status"
+                onChange={event =>
+                  this.props.handleStatusChange(
+                    this.props.review.booking_id,
+                    event
+                  )
+                }
+              >
+                <option selected value="1">
+                  Active
+                </option>
                 <option value="2">Finished</option>
                 <option value="3">Canceled</option>
               </select>
@@ -124,26 +132,7 @@ class MIndexContent extends Component {
         </div>
       </div>
     );
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     return (
       <div className="card mb-3">
         <div className="row no-gutters">
@@ -168,7 +157,9 @@ class MIndexContent extends Component {
                       placeholder="Choose your dates"
                       required="required"
                       className="form-control"
-                      value={moment(this.props.booking.date).format("YYYY-MM-DD")}
+                      value={moment(this.props.booking.date).format(
+                        "YYYY-MM-DD"
+                      )}
                       onChange={event =>
                         this.setState({ date: event.target.value })
                       }
@@ -178,7 +169,7 @@ class MIndexContent extends Component {
                 <li className="list-group-item">
                   <label htmlFor="time" className="form-label">
                     Booking time:
-              </label>
+                  </label>
                   <input
                     type="time"
                     name="time"
@@ -190,9 +181,9 @@ class MIndexContent extends Component {
                   />
                 </li>
                 <li className="list-group-item">
-              <label htmlFor="guests" className="form-label">
+                  <label htmlFor="guests" className="form-label">
                     Number of guests:
-              </label>
+                  </label>
                   <input
                     type="number"
                     name="guests"
@@ -201,12 +192,17 @@ class MIndexContent extends Component {
                     onChange={event =>
                       this.setState({ guests: event.target.value })
                     }
-                  /> people
+                  />{" "}
+                  people
                 </li>
                 <select
-                  onChange={event => this.props.handleStatusChange(this.props.booking, event)}
+                  onChange={event =>
+                    this.props.handleStatusChange(this.props.booking, event)
+                  }
                 >
-                  <option selected value="1">Active</option>
+                  <option selected value="1">
+                    Active
+                  </option>
                   <option value="2">Finished</option>
                   <option value="3">Canceled</option>
                 </select>

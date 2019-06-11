@@ -1,7 +1,7 @@
 import React from "react";
 import Search from "../tracks/Search";
 import Feature from "./Feature";
-import Recommend from "./Recommend";
+// import Recommend from "./Recommend";
 import Member from "./Member";
 
 const Index = props => {
@@ -14,7 +14,7 @@ const Index = props => {
         restList={props.restList}
       />
       <Feature />
-      <Recommend />
+      {/* <Recommend /> */}
       <Member />
     </React.Fragment>
   );

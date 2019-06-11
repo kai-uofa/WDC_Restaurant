@@ -25,7 +25,9 @@ class MIndex extends Component {
       .then(res => {
         this.setState({ bookings: res.data });
       })
-      .catch(console.error);
+      .catch(err => {
+        window.location = "/managers/signin";
+      });
   }
 
   render() {
@@ -39,7 +41,7 @@ class MIndex extends Component {
               <Content
                 key={booking.booking_id}
                 review={booking}
-                handleStatusChange = {this.handleStatusChange}
+                handleStatusChange={this.handleStatusChange}
               />
             ))}
         </div>
