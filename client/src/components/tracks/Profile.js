@@ -17,10 +17,11 @@ class Profile extends Component {
         status: 2
       })
       .then(res => {
+        // console.log(res);
         this.setState({ reviews: res.data });
       })
       .catch(console.error);
-    localStorage.removeItem("bookingID");
+    // localStorage.removeItem("bookingID");
   };
 
   componentDidMount() {

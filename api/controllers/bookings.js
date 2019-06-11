@@ -79,7 +79,6 @@ WHERE Bookings.customer_id = ? AND Bookings.status = 1";
           req.body.booking_id
         ])
         .catch(console.error);
-      this.getActiveBookingsM(req, res);
     } else {
       res.sendStatus(400); // Bad Request
     }
