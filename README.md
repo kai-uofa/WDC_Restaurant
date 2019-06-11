@@ -16,9 +16,11 @@ Open a terminal, go to project root and run the following:
 **NOTE**: 
 for live version, use live_database.sql 
 to dump database: `mysqldump -u root -p --databases dev_database > dev_database_new.sql`
-3. Install NodeJS: https://nodejs.org/en/download/package-manager/#windows
-- For better development, it is recommended to install [Nodemon](https://github.com/remy/nodemon)  
-`npm install -g nodemon`
-4. Start server:  
-- Live Environment: `npm start` (PORT: 3000)
-- Development Environment: `npm run dev` (PORT: 4205)
+3. Start server:  
+- Go to api folder
+- Install node_modules `npm install`
+- Run server: `npm start` (PORT: 5000)
+4. Start front end:
+- Go to client folder
+- Install node_modules `npm install`
+- Run server: `npm start` (PORT: 3000)
