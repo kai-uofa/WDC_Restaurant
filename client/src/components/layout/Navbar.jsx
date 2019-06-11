@@ -27,13 +27,6 @@ const NavBar = props => {
           {/* <!--Navbar collapse--> */}
           <div id="navBarCollapse" className="collapse navbar-collapse">
             <ul className="navbar-nav ml-auto">
-              {user && (
-                <li className="nav-item ">
-                  <Link className="nav-link btn btn-light mr-4" to="/profile">
-                    Hello {user.firstName}
-                  </Link>
-                </li>
-              )}
               <li className="nav-item">
                 <Link className="nav-link btn btn-light mr-4" to="/">
                   Home
@@ -48,6 +41,13 @@ const NavBar = props => {
                   >
                     Quick Booking
                   </button>
+                </li>
+              )}
+              {user && (
+                <li className="nav-item ">
+                  <Link className="nav-link btn btn-light mr-4" to="/profile">
+                    Hello {user.firstName}
+                  </Link>
                 </li>
               )}
               {user && (

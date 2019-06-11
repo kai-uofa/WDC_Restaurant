@@ -22,28 +22,32 @@ class Profilecontent extends Component {
 
   handleOnClick = e => {
     localStorage.setItem("bookingID", this.props.review.booking_id);
-    localStorage.setItem("bookingDate", moment(this.props.review.date).format("YYYY-MM-DD"));
+    localStorage.setItem(
+      "bookingDate",
+      moment(this.props.review.date).format("YYYY-MM-DD")
+    );
     localStorage.setItem("bookingTime", this.props.review.start_time);
     localStorage.setItem("bookingGuests", this.props.review.no_of_people);
   };
 
   handleOnSubmit = e => {
     let date, time, guests;
-    if (this.state.date === '') {
-      date = localStorage.getItem('bookingDate');
+    if (this.state.date === "") {
+      date = localStorage.getItem("bookingDate");
     } else {
       date = this.state.date;
     }
-    if (this.state.time === '') {
-      time = localStorage.getItem('bookingTime');
+    if (this.state.time === "") {
+      time = localStorage.getItem("bookingTime");
     } else {
       time = this.state.time;
     }
-    if (this.state.guests === '') {
-      guests = localStorage.getItem('bookingGuests');
+    if (this.state.guests === "") {
+      guests = localStorage.getItem("bookingGuests");
     } else {
       guests = this.state.guests;
     }
+
     axios
       .post("/users/updatebooking", {
         date: date,

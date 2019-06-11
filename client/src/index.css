@@ -103,11 +103,11 @@ body {
   margin-top: 8rem;
 }
 
-.imageProfile {
-  width: 15.8rem;
-}
 .btnDU {
   justify-content: space-around;
+}
+.editProfile {
+  margin-top: 5em;
 }
 @media (max-width: 770px) {
   .member .content {

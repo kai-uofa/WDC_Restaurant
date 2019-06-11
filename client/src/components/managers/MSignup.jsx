@@ -131,7 +131,7 @@ class SignUp extends Component {
     e.preventDefault();
     if (this.validateForm()) {
       // Send request to server
-      console.log(this.state.description)
+      console.log(this.state.description);
       axios
         .post("/managers/signup", {
           resName: this.state.resName,
@@ -151,7 +151,9 @@ class SignUp extends Component {
           if (error.response.status === 200) {
             this.setState({ wrong: "" });
           } else if (error.response.status === 409) {
-            this.setState({ wrong: "This email has already been used,please try another one" });
+            this.setState({
+              wrong: "This email has already been used,please try another one"
+            });
           }
         });
 
@@ -172,27 +174,21 @@ class SignUp extends Component {
   };
 
   render() {
-    // TODO: handle server response codes 200, 409, 401
-    // TODO: handle user session login (req.session.email)
-    // if (this.state.redirect || sessionStorage.getItem("userData")) {
-    //   return <Redirect to={"/"} />;
-    // }
-
     return (
       <div>
         <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
           <div>
-            <br></br>
-            <br></br>
+            <br />
+            <br />
             <h2>Get started with Us</h2>
             <p>
-              Tell us a little about you and your restaurant, and we’ll
-              contact you via phone or email to provide information about
-              WDC products and services.
-                </p>
+              Tell us a little about you and your restaurant, and we’ll contact
+              you via phone or email to provide information about WDC products
+              and services.
+            </p>
           </div>
           {/* <div class="container py-5"> */}
-          <div style={{ color: 'red' }}>{this.state.wrong}</div>
+          <div style={{ color: "red" }}>{this.state.wrong}</div>
           <div class="row">
             <div class="col-md-10 mx-auto">
               <div class="container py-5">
@@ -201,12 +197,11 @@ class SignUp extends Component {
                     <form
                       className="form-validate"
                       method="post"
-                      onSubmit={this.normalSignUp}>
+                      onSubmit={this.normalSignUp}
+                    >
                       <div class="form-group row">
                         <div class="col-sm-6">
-                          <label htmlFor="resName">
-                            Restaurant Name
-                  </label>
+                          <label htmlFor="resName">Restaurant Name</label>
                           <input
                             name="resName"
                             id="resName"
@@ -219,13 +214,15 @@ class SignUp extends Component {
                             data-msg="Please enter your Restaurant Name"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.resName}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.resName}
+                          </div>
                         </div>
 
                         <div class="col-sm-6">
                           <label htmlFor="firstName" class="form-label">
                             Manager First Name
-                  </label>
+                          </label>
                           <input
                             name="firstName"
                             id="firstName"
@@ -238,7 +235,9 @@ class SignUp extends Component {
                             data-msg="Please enter your first name"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.firstName}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.firstName}
+                          </div>
                         </div>
                       </div>
                       {/* here2 */}
@@ -247,7 +246,7 @@ class SignUp extends Component {
                         <div class="col-sm-6">
                           <label for="resAddress" class="form-label">
                             Address
-                  </label>
+                          </label>
                           <input
                             name="resAddress"
                             id="resAddress"
@@ -260,13 +259,15 @@ class SignUp extends Component {
                             data-msg="Please enter your Restaurant Location"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.resAddress}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.resAddress}
+                          </div>
                         </div>
                         {/* Manager Last Name */}
                         <div class="col-sm-6">
                           <label for="lastName" class="form-label">
                             Manager Last Name
-                  </label>
+                          </label>
                           <input
                             name="lastName"
                             id="lastName"
@@ -279,7 +280,9 @@ class SignUp extends Component {
                             data-msg="Please enter your last name"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.lastName}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.lastName}
+                          </div>
                         </div>
                       </div>
                       {/* here3 */}
@@ -288,7 +291,7 @@ class SignUp extends Component {
                         <div class="col-sm-6">
                           <label for="capacity" class="form-label">
                             Capacity
-                  </label>
+                          </label>
                           <input
                             name="capacity"
                             id="capacity"
@@ -302,13 +305,15 @@ class SignUp extends Component {
                             data-msg="How many customer your Restaurant can hold"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.capacity}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.capacity}
+                          </div>
                         </div>
                         {/* Manager Email */}
                         <div class="col-sm-6">
                           <label for="email" class="form-label">
                             Email Address
-                  </label>
+                          </label>
                           <input
                             name="email"
                             id="email"
@@ -321,7 +326,9 @@ class SignUp extends Component {
                             data-msg="Please enter your email"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.email}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.email}
+                          </div>
                         </div>
                       </div>
                       {/* here4 */}
@@ -330,18 +337,17 @@ class SignUp extends Component {
                         <div class="col-sm-6">
                           <label for="password" class="form-label">
                             Restaurant Description (Optional)
-                  </label>
+                          </label>
                           <textarea
                             name="description"
                             id="description"
-                            style={{ height: '110px' }}
+                            style={{ height: "110px" }}
                             placeholder="Tell us about your Restaurant"
                             value={this.state.description}
                             onChange={this.handleChange}
                             type="text"
                             data-msg="Please  enter your description"
                             class="form-control"
-
                           />
                         </div>
                         {/* Password */}
@@ -349,7 +355,7 @@ class SignUp extends Component {
                           <label for="password" class="form-label">
                             {" "}
                             Password
-                      </label>
+                          </label>
                           <input
                             name="password"
                             id="password"
@@ -361,12 +367,14 @@ class SignUp extends Component {
                             data-msg="Please enter your password"
                             class="form-control"
                           />
-                          <div className="errorMsg">{this.state.errors.password}</div>
+                          <div className="errorMsg">
+                            {this.state.errors.password}
+                          </div>
                           {/* Password2 */}
 
                           <label for="password2" class="form-label">
                             Confirm your password
-                        </label>
+                          </label>
                           <input
                             name="password2"
                             id="password2"
@@ -378,13 +386,15 @@ class SignUp extends Component {
                             data-msg="Please enter your password"
                             class="form-control"
                           />
-
                         </div>
                       </div>
 
-                      <button type="submit" class="btn btn-lg btn-block btn-primary">
+                      <button
+                        type="submit"
+                        class="btn btn-lg btn-block btn-primary"
+                      >
                         Submit Form
-                </button>
+                      </button>
                     </form>
                   </div>
                 </div>

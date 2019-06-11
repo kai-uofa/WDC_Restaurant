@@ -14,12 +14,12 @@ const Recommend = () => {
             </p>
             <h2>Popular Restarants</h2>
           </div>
-          <div className="col-md-4 d-flex justify-content-end">
+          {/* <div className="col-md-4 d-flex justify-content-end">
             <a href="..." className="text-muted text-sm">
               See all guides
               <i className="fas fa-angle-double-right ml-2" />
             </a>
-          </div>
+          </div> */}
         </div>
         <div className="row">
           <div className=" col-xl-3 col-lg-6 col-md-12 mb-5 ">

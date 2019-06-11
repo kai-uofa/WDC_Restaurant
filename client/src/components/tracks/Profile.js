@@ -3,9 +3,12 @@ import Profilecontent from "./Profilecontent";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 class Profile extends Component {
-  state = {
-    reviews: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      reviews: []
+    };
+  }
 
   handleOnDelete = review => {
     axios
@@ -33,20 +36,22 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className="container editProfile">
-        <div className="row userCard">
-          {this.state.reviews
-            .slice(0)
-            .reverse()
-            .map(review => (
-              <Profilecontent
-                key={review.booking_id}
-                review={review}
-                handleOnDelete={this.handleOnDelete}
-              />
-            ))}
+      <React.Fragment>
+        <div className="container ">
+          <div className="row userCard">
+            {this.state.reviews
+              .slice(0)
+              .reverse()
+              .map(review => (
+                <Profilecontent
+                  key={review.booking_id}
+                  review={review}
+                  handleOnDelete={this.handleOnDelete}
+                />
+              ))}
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
