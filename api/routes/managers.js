@@ -1,19 +1,19 @@
 /* eslint-disable no-plusplus */
-const express = require("express");
-const Managers = require("../controllers/managers");
-const Bookings = require("../controllers/bookings");
+const express = require('express');
+const Managers = require('../controllers/managers');
+const Bookings = require('../controllers/bookings');
 
 const router = express.Router();
 
-router.post("/signin", function(req, res, next) {
+router.post('/signin', function(req, res, next) {
   Managers.signIn(req, res);
 });
 
-router.post("/signup", function(req, res, next) {
+router.post('/signup', function(req, res, next) {
   Managers.signUp(req, res);
 });
 
-router.get("/", async function(req, res, next) {
+router.get('/', async function(req, res, next) {
   if (await Managers.managerValidation(req.decoded)) {
     Bookings.getActiveBookingsM(req, res);
   } else {
@@ -21,7 +21,7 @@ router.get("/", async function(req, res, next) {
   }
 });
 
-router.post("/status", async function(req, res, next) {
+router.post('/status', async function(req, res, next) {
   if (await Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingStatus(req, res);
     Bookings.getActiveBookingsM(req, res);
@@ -30,7 +30,7 @@ router.post("/status", async function(req, res, next) {
   }
 });
 
-router.post("/details", async function(req, res, next) {
+router.post('/details', async function(req, res, next) {
   if (await Managers.managerValidation(req.decoded)) {
     Bookings.updateBookingDetails(req, res);
   } else {

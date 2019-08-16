@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-multi-str */
 /* eslint-disable prettier/prettier */

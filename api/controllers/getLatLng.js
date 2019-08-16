@@ -3,10 +3,8 @@
 const db = require('../models/dbconnection');
 // const googleMapsService = require('./apikeys/googleMapsService');
 
-const query =
-  'SELECT restaurant_address FROM Restaurants WHERE restaurant_id = ?';
-const queryIns =
-  'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
+const query = 'SELECT restaurant_address FROM Restaurants WHERE restaurant_id = ?';
+const queryIns = 'UPDATE Restaurants SET restaurant_latitude = ?, restaurant_longitude = ? WHERE restaurant_id = ?';
 
 // README: Update this for loop to match with id in database
 // for (let i = 2; i < 69; i++) {
