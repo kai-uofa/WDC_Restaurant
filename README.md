@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/kien0826/169ad40f-2afe-4fe6-8d17-dc5ea03f7a9d/a8ab2c65-cf36-4d7b-acd5-8c7629a402f2/_apis/work/boardbadge/d18caf2e-6876-46d0-a677-ed0b1d18d6e1)](https://dev.azure.com/kien0826/169ad40f-2afe-4fe6-8d17-dc5ea03f7a9d/_boards/board/t/a8ab2c65-cf36-4d7b-acd5-8c7629a402f2/Microsoft.RequirementCategory)
 # WDC Restaurants
 A restaurant booking web application that allows users to book tables at restaurants, and restaurants to manage their bookings
 
