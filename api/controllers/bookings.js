@@ -12,19 +12,19 @@ const Bookings = {
     if (resId.length > 0) {
       const query =
         'SELECT \
-Customers.customer_id, \
-Customers.first_name, \
-Customers.last_name, \
-Bookings.no_of_people, \
-Bookings.date, \
-Bookings.start_time, \
-Bookings.restaurant_id, \
-Bookings.booking_id, \
-Restaurants.restaurant_image \
-FROM Customers \
-INNER JOIN Bookings ON Customers.customer_id = Bookings.customer_id \
-INNER JOIN Restaurants ON Bookings.restaurant_id = Restaurants.restaurant_id \
-WHERE Bookings.restaurant_id = ? AND Bookings.status = 1';
+          Customers.customer_id, \
+          Customers.first_name, \
+          Customers.last_name, \
+          Bookings.no_of_people, \
+          Bookings.date, \
+          Bookings.start_time, \
+          Bookings.restaurant_id, \
+          Bookings.booking_id, \
+          Restaurants.restaurant_image \
+          FROM Customers \
+          INNER JOIN Bookings ON Customers.customer_id = Bookings.customer_id \
+          INNER JOIN Restaurants ON Bookings.restaurant_id = Restaurants.restaurant_id \
+          WHERE Bookings.restaurant_id = ? AND Bookings.status = 1';
       db.query(query, [resId[0].restaurant_id])
         .then(results => {
           res.json(results);
